@@ -84,6 +84,7 @@ local states = {
 
 local function create(x, y)
   local creature = {
+    id = ID.new(),
     behavior = {
       nextTime = 0,
       currentState = nil,

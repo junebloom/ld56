@@ -30,6 +30,7 @@ local states = {
 
 local function create(x, y)
   local node = {
+    id = ID.new(),
     position = Vector(x, y),
     spriteOffset = Vector(0, TileSize),
     hitbox = {

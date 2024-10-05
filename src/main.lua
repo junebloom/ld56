@@ -1,5 +1,6 @@
 dbg = require("utilities.debugger")
 Vector = require("utilities.brinevector")
+ID = require("utilities.id")
 
 ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
@@ -27,7 +28,7 @@ Resource = 0
 DEBUG = true
 
 function setBehaviorState(entity, state)
-  if (DEBUG) then print(state.name) end
+  if DEBUG then print("entity "..entity.id..": "..state.name) end
   entity.behavior.currentState = state
   state.enter(entity)
 end
@@ -49,5 +50,5 @@ end
 function love.draw()
   drawSprites(Entities)
   love.graphics.print("resource:"..Resource, 32, 32, 0, PixelScale, PixelScale)
-  drawHitBoxes(Entities)
+  if DEBUG then drawHitBoxes(Entities) end
 end
