@@ -10,7 +10,12 @@ local function create(x, y)
             creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
           end,
           exit = function (creature)
-            setEntityState(creature, creature.behavior.states.wander)
+            local n = math.random()
+            if n <= 0.01 then
+              setEntityState(creature, creature.behavior.states.wander)
+            else
+              setEntityState(creature, creature.behavior.states.moveToResource)
+            end
           end
         },
         wander = {
@@ -34,7 +39,7 @@ local function create(x, y)
             for _,e in pairs(entities) do
               if (e.harvestable) then
                 local distanceToEntity = e.position - creature.position
-                if not closest or distanceToEntity < closest.position - creature.position then
+                if not closest or distanceToEntity.length < (closest.position - creature.position).length then
                   closest = e
                 end
               end
@@ -43,15 +48,21 @@ local function create(x, y)
             if closest then
               creature.behavior.states.moveToResource.target = closest
               creature.input = closest.position - creature.position
+            else
+              creature.behavior.currentState.exit(creature)
             end
           end,
           exit = function (creature)
             creature.input = Vector(0, 0)
-            setEntityState(creature, creature.behavior.states.harvestResource)
+            if creature.behavior.states.moveToResource.target then
+              setEntityState(creature, creature.behavior.states.harvestResource)
+            else
+              setEntityState(creature, creature.behavior.states.idle)
+            end
           end,
           update = function (creature)
             local target = creature.behavior.states.moveToResource.target
-            if (creature.position - target.position).length < 8 * PixelScale then
+            if not target or (creature.position - target.position).length < 8 * PixelScale then
               creature.behavior.currentState.exit(creature)
             end
           end
@@ -106,7 +117,7 @@ local function create(x, y)
     end
   }
 
-  setEntityState(creature, creature.behavior.states.moveToResource)
+  setEntityState(creature, creature.behavior.states.idle)
 
   return creature
 end

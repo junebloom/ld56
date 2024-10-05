@@ -19,7 +19,7 @@ local function create(x, y)
           enter = function(node)
             print("growing...")
             node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
-            node.behavior.nextTime = 6 - math.sqrt(node.stats.production)
+            node.behavior.nextTime = 11 - math.sqrt(node.stats.production)
           end,
           exit = function (node)
             setEntityState(node, node.behavior.states.ready)

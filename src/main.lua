@@ -21,13 +21,15 @@ entities = {}
 local resource = 0
 
 function setEntityState(entity, state)
-  state.enter(entity)
   entity.behavior.currentState = state
+  state.enter(entity)
 end
 
 function love.load()
-  table.insert(entities, ResourceNode.create(128, 128))
-  table.insert(entities, Creature.create(256, 256))
+  -- table.insert(entities, ResourceNode.create(128, 128))
+  table.insert(entities, ResourceNode.create(256, 128))
+  -- table.insert(entities, Creature.create(256, 256))
+  table.insert(entities, Creature.create(256, 264))
 end
 
 function love.update(dt)

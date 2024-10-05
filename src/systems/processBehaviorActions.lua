@@ -5,9 +5,9 @@ local function processBehaviorActions(entities, dt)
 
       if e.behavior.nextTime <= 0 then
         e.behavior.currentState.exit(e)
+      else
+        if e.behavior.currentState.update then e.behavior.currentState.update(e, dt) end
       end
-
-      if e.behavior.currentState.update then e.behavior.currentState.update(e, dt) end
     end
   end
 end
