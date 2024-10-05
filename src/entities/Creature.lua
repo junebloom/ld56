@@ -11,7 +11,7 @@ local function create(x, y)
           end,
           exit = function (creature)
             local n = math.random()
-            if n <= 0.01 then
+            if n <= 0.8 then
               setEntityState(creature, creature.behavior.states.wander)
             else
               setEntityState(creature, creature.behavior.states.moveToResource)
@@ -36,7 +36,7 @@ local function create(x, y)
             print("creature moving to harvest")
             creature.behavior.nextTime = 99999
             local closest = nil
-            for _,e in pairs(entities) do
+            for _,e in pairs(Entities) do
               if (e.harvestable) then
                 local distanceToEntity = e.position - creature.position
                 if not closest or distanceToEntity.length < (closest.position - creature.position).length then

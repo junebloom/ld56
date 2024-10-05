@@ -10,7 +10,7 @@ local function create(x, y)
       production = 1
     },
     harvestable = true,
-    timeToHarvest = 1,
+    timeToHarvest = 10,
     behavior = {
       nextTime = 0,
       currentState = {},

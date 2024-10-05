@@ -16,7 +16,7 @@ SpriteSheet:setFilter("nearest", "nearest")
 
 TileSize = 8
 PixelScale = 6
-entities = {}
+Entities = {}
 
 local resource = 0
 
@@ -26,20 +26,20 @@ function setEntityState(entity, state)
 end
 
 function love.load()
-  -- table.insert(entities, ResourceNode.create(128, 128))
-  table.insert(entities, ResourceNode.create(256, 128))
-  -- table.insert(entities, Creature.create(256, 256))
-  table.insert(entities, Creature.create(256, 264))
+  table.insert(Entities, ResourceNode.create(128, 128))
+  table.insert(Entities, ResourceNode.create(256, 128))
+  table.insert(Entities, Creature.create(256, 256))
+  table.insert(Entities, Creature.create(200, 256))
 end
 
 function love.update(dt)
-  processBehaviorActions(entities, dt)
-  moveEntities(entities, dt)
+  processBehaviorActions(Entities, dt)
+  moveEntities(Entities, dt)
   -- setAnimationsFromInput(entities, dt)
   -- processAnimations(entities, dt)
 end
 
 function love.draw()
-  drawSprites(entities)
-  drawHitBoxes(entities)
+  drawSprites(Entities)
+  drawHitBoxes(Entities)
 end
