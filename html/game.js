@@ -90,7 +90,10 @@ Module.expectedDataFileDownloads++;
       function assert(check, msg) {
         if (!check) throw msg + new Error().stack;
       }
-      
+      Module['FS_createPath']('/', 'assets', true, true);
+      Module['FS_createPath']('/', 'entities', true, true);
+      Module['FS_createPath']('/', 'systems', true, true);
+      Module['FS_createPath']('/', 'utilities', true, true);
 
       function DataRequest(start, end, crunched, audio) {
         this.start = start;
@@ -284,6 +287,6 @@ Module.expectedDataFileDownloads++;
     }
 
   }
-  loadPackage({"package_uuid":"b574ee76-751d-44a7-bdbe-39c539276f46","remote_package_size":33772,"files":[{"filename":"/brinevector.lua","crunched":0,"start":0,"end":7711,"audio":false},{"filename":"/debugger.lua","crunched":0,"start":7711,"end":28186,"audio":false},{"filename":"/main.lua","crunched":0,"start":28186,"end":31558,"audio":false},{"filename":"/rosie.png","crunched":0,"start":31558,"end":32258,"audio":false},{"filename":"/rosie_walk_1.png","crunched":0,"start":32258,"end":33010,"audio":false},{"filename":"/rosie_walk_2.png","crunched":0,"start":33010,"end":33772,"audio":false}]});
+  loadPackage({"package_uuid":"1179ea78-e7eb-4d56-be7c-70196d80c1b4","remote_package_size":210525,"files":[{"filename":"/assets/font.kra","crunched":0,"start":0,"end":44450,"audio":false},{"filename":"/assets/font.kra~","crunched":0,"start":44450,"end":88881,"audio":false},{"filename":"/assets/font.png","crunched":0,"start":88881,"end":89524,"audio":false},{"filename":"/assets/font.png~","crunched":0,"start":89524,"end":90151,"audio":false},{"filename":"/assets/spritesheet.kra","crunched":0,"start":90151,"end":130610,"audio":false},{"filename":"/assets/spritesheet.kra~","crunched":0,"start":130610,"end":171468,"audio":false},{"filename":"/assets/spritesheet.png","crunched":0,"start":171468,"end":171815,"audio":false},{"filename":"/assets/spritesheet.png~","crunched":0,"start":171815,"end":172031,"audio":false},{"filename":"/conf.lua","crunched":0,"start":172031,"end":172103,"audio":false},{"filename":"/entities/Creature.lua","crunched":0,"start":172103,"end":176140,"audio":false},{"filename":"/entities/ResourceNode.lua","crunched":0,"start":176140,"end":177706,"audio":false},{"filename":"/main.lua","crunched":0,"start":177706,"end":179172,"audio":false},{"filename":"/systems/detectCollisions.lua","crunched":0,"start":179172,"end":179477,"audio":false},{"filename":"/systems/drawHitboxes.lua","crunched":0,"start":179477,"end":179778,"audio":false},{"filename":"/systems/drawSprites.lua","crunched":0,"start":179778,"end":180094,"audio":false},{"filename":"/systems/moveEntities.lua","crunched":0,"start":180094,"end":180303,"audio":false},{"filename":"/systems/processAnimations.lua","crunched":0,"start":180303,"end":180795,"audio":false},{"filename":"/systems/processBehaviorActions.lua","crunched":0,"start":180795,"end":181200,"audio":false},{"filename":"/systems/setAnimationsFromInput.lua","crunched":0,"start":181200,"end":181692,"audio":false},{"filename":"/utilities/brinevector.lua","crunched":0,"start":181692,"end":189403,"audio":false},{"filename":"/utilities/collision.lua","crunched":0,"start":189403,"end":190050,"audio":false},{"filename":"/utilities/debugger.lua","crunched":0,"start":190050,"end":210525,"audio":false}]});
 
 })();

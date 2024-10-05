@@ -15,7 +15,7 @@ love.graphics.setBackgroundColor(5/255, 31/255, 57/255)
 SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
 SpriteSheet:setFilter("nearest", "nearest")
 
-Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.")
+Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
 Font:setFilter("nearest", "nearest")
 love.graphics.setFont(Font)
 
@@ -23,7 +23,7 @@ TileSize = 8
 PixelScale = 6
 Entities = {}
 
-local resource = 0
+Resource = 0
 
 function setEntityState(entity, state)
   entity.behavior.currentState = state
@@ -46,6 +46,6 @@ end
 
 function love.draw()
   drawSprites(Entities)
-  love.graphics.print("100%", 32, 32, 0, PixelScale, PixelScale)
+  love.graphics.print("resource:"..Resource, 32, 32, 0, PixelScale, PixelScale)
   drawHitBoxes(Entities)
 end

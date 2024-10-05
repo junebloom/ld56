@@ -36,7 +36,7 @@ local function create(x, y)
           exit = function(node)
             print("harvested!")
             node.harvestable = false
-            -- resource = resource + 1
+            Resource = Resource + 1
             setEntityState(node, node.behavior.states.growing)
           end,
           update = function(node)
