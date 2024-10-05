@@ -5,7 +5,7 @@ local states = {
       node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
       node.behavior.nextTime = 11 - math.sqrt(node.stats.production)
     end,
-    exit = function (node)
+    exit = function(node)
       setBehaviorState(node, node.behavior.states.ready)
     end
   },
@@ -32,9 +32,9 @@ local function create(x, y)
   local node = {
     id = ID.new(),
     position = Vector(x, y),
-    spriteOffset = Vector(0, TileSize),
+    spriteOffset = Vector(0, -TileSize),
     hitbox = {
-      size = Vector(8 * PixelScale, 8 *PixelScale),
+      size = Vector(8 * PixelScale, 8 * PixelScale),
       offset = Vector(0, 0)
     },
     stats = {
@@ -50,6 +50,10 @@ local function create(x, y)
   }
 
   setBehaviorState(node, node.behavior.states.ready)
+
+  -- for _,upgrade in pairs(PurchasedUpgrades) do
+  --   if upgrade.type == "node" then upgrade.apply(node) end
+  -- end
 
   return node
 end

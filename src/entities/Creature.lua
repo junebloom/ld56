@@ -4,7 +4,7 @@ local states = {
     enter = function(creature)
       creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
     end,
-    exit = function (creature)
+    exit = function(creature)
       local n = math.random()
       if n <= 0.8 then
         setBehaviorState(creature, creature.behavior.states.wander)
@@ -27,11 +27,11 @@ local states = {
   },
   moveToResource = {
     name = "moveToResource",
-    enter = function (creature)
+    enter = function(creature)
       creature.behavior.nextTime = 99999
       local closest = nil
 
-      for _,e in pairs(Entities) do
+      for _, e in pairs(Entities) do
         if (e.harvestable) then
           local distanceToEntity = e.position - creature.position
           if not closest or distanceToEntity.length < (closest.position - creature.position).length then
@@ -47,7 +47,7 @@ local states = {
         creature.behavior.currentState.exit(creature)
       end
     end,
-    exit = function (creature)
+    exit = function(creature)
       creature.input = Vector(0, 0)
       if creature.behavior.target then
         setBehaviorState(creature, creature.behavior.states.harvestResource)
@@ -55,7 +55,7 @@ local states = {
         setBehaviorState(creature, creature.behavior.states.idle)
       end
     end,
-    update = function (creature)
+    update = function(creature)
       local target = creature.behavior.target
       if not target or (creature.position - target.position).length < 8 * PixelScale then
         creature.behavior.currentState.exit(creature)
@@ -65,13 +65,13 @@ local states = {
   harvestResource = {
     name = "harvestResource",
     enter = function(creature)
-      -- 
+      --
     end,
     exit = function(creature)
       creature.behavior.target = nil
       setBehaviorState(creature, creature.behavior.states.idle)
     end,
-    update = function (creature, dt)
+    update = function(creature, dt)
       local target = creature.behavior.target
       target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
       if not target.harvestable then
@@ -84,6 +84,7 @@ local states = {
 local function create(x, y)
   local creature = {
     id = ID.new(),
+    type = "creature",
     behavior = {
       target = nil,
       nextTime = 0,
@@ -95,14 +96,14 @@ local function create(x, y)
       power = 1,
       scary = 1,
       defense = 1,
-      speed = 1,
+      moveSpeed = 1,
       smart = 1, -- cap 36
       efficiency = 1
     },
     input = Vector(0, 0),
     position = Vector(x, y),
-    sprite = love.graphics.newQuad(0,0,TileSize,TileSize, SpriteSheet),
-    spriteOffset = Vector(0,0),
+    sprite = love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
+    spriteOffset = Vector(0, 0),
     facing = 1,
     frameTime = 0,
     currentFrame = 1,
@@ -123,6 +124,10 @@ local function create(x, y)
   }
 
   setBehaviorState(creature, creature.behavior.states.idle)
+
+  -- for _,upgrade in pairs(PurchasedUpgrades) do
+  --   if upgrade.type.creature then upgrade.apply(creature) end
+  -- end
 
   return creature
 end
