@@ -4,13 +4,12 @@ Vector = require("utilities.brinevector")
 ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
-local processBehaviorActions = require("systems.processBehaviorActions")
+local processBehaviorStates = require("systems.processBehaviorStates")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
 local drawHitBoxes = require("systems.drawHitboxes")
 
 love.graphics.setBackgroundColor(5/255, 31/255, 57/255)
-
 
 SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
 SpriteSheet:setFilter("nearest", "nearest")
@@ -21,11 +20,14 @@ love.graphics.setFont(Font)
 
 TileSize = 8
 PixelScale = 6
-Entities = {}
 
+Entities = {}
 Resource = 0
 
-function setEntityState(entity, state)
+DEBUG = true
+
+function setBehaviorState(entity, state)
+  if (DEBUG) then print(state.name) end
   entity.behavior.currentState = state
   state.enter(entity)
 end
@@ -38,7 +40,7 @@ function love.load()
 end
 
 function love.update(dt)
-  processBehaviorActions(Entities, dt)
+  processBehaviorStates(Entities, dt)
   moveEntities(Entities, dt)
   -- setAnimationsFromInput(entities, dt)
   -- processAnimations(entities, dt)

@@ -1,4 +1,4 @@
-local function processBehaviorActions(entities, dt)
+local function processBehaviorStates(entities, dt)
   for _,e in pairs(entities) do
     if e.behavior ~= nil then
       e.behavior.nextTime = e.behavior.nextTime - dt
@@ -12,4 +12,4 @@ local function processBehaviorActions(entities, dt)
   end
 end
 
-return processBehaviorActions
+return processBehaviorStates

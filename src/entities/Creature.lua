@@ -1,89 +1,93 @@
+local states = {
+  idle = {
+    name = "idle",
+    enter = function(creature)
+      creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
+    end,
+    exit = function (creature)
+      local n = math.random()
+      if n <= 0.8 then
+        setBehaviorState(creature, creature.behavior.states.wander)
+      else
+        setBehaviorState(creature, creature.behavior.states.moveToResource)
+      end
+    end
+  },
+  wander = {
+    name = "wander",
+    enter = function(creature)
+      creature.input.x = (math.random() - 0.5) * 2
+      creature.input.y = (math.random() - 0.5) * 2
+      creature.behavior.nextTime = math.random() + 0.2
+    end,
+    exit = function(creature)
+      creature.input = Vector(0, 0)
+      setBehaviorState(creature, creature.behavior.states.idle)
+    end
+  },
+  moveToResource = {
+    name = "moveToResource",
+    target = nil,
+    enter = function (creature)
+      creature.behavior.nextTime = 99999
+      local closest = nil
+
+      for _,e in pairs(Entities) do
+        if (e.harvestable) then
+          local distanceToEntity = e.position - creature.position
+          if not closest or distanceToEntity.length < (closest.position - creature.position).length then
+            closest = e
+          end
+        end
+      end
+
+      if closest then
+        creature.behavior.states.moveToResource.target = closest
+        creature.input = closest.position - creature.position
+      else
+        creature.behavior.currentState.exit(creature)
+      end
+    end,
+    exit = function (creature)
+      creature.input = Vector(0, 0)
+      if creature.behavior.states.moveToResource.target then
+        setBehaviorState(creature, creature.behavior.states.harvestResource)
+      else
+        setBehaviorState(creature, creature.behavior.states.idle)
+      end
+    end,
+    update = function (creature)
+      local target = creature.behavior.states.moveToResource.target
+      if not target or (creature.position - target.position).length < 8 * PixelScale then
+        creature.behavior.currentState.exit(creature)
+      end
+    end
+  },
+  harvestResource = {
+    name = "harvestResource",
+    enter = function(creature)
+      -- 
+    end,
+    exit = function(creature)
+      creature.behavior.states.moveToResource.target = nil
+      setBehaviorState(creature, creature.behavior.states.idle)
+    end,
+    update = function (creature, dt)
+      local target = creature.behavior.states.moveToResource.target
+      target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
+      if not target.harvestable then
+        creature.behavior.currentState.exit(creature)
+      end
+    end
+  }
+}
+
 local function create(x, y)
   local creature = {
     behavior = {
       nextTime = 0,
-      currentState = {},
-      states = {
-        idle = {
-          enter = function(creature)
-            print("creature idling")
-            creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
-          end,
-          exit = function (creature)
-            local n = math.random()
-            if n <= 0.8 then
-              setEntityState(creature, creature.behavior.states.wander)
-            else
-              setEntityState(creature, creature.behavior.states.moveToResource)
-            end
-          end
-        },
-        wander = {
-          enter = function(creature)
-            print("creature wandering")
-            creature.input.x = (math.random() - 0.5) * 2
-            creature.input.y = (math.random() - 0.5) * 2
-            creature.behavior.nextTime = math.random() + 0.2
-          end,
-          exit = function(creature)
-            creature.input = Vector(0, 0)
-            setEntityState(creature, creature.behavior.states.idle)
-          end
-        },
-        moveToResource = {
-          target = nil,
-          enter = function (creature)
-            print("creature moving to harvest")
-            creature.behavior.nextTime = 99999
-            local closest = nil
-            for _,e in pairs(Entities) do
-              if (e.harvestable) then
-                local distanceToEntity = e.position - creature.position
-                if not closest or distanceToEntity.length < (closest.position - creature.position).length then
-                  closest = e
-                end
-              end
-            end
-
-            if closest then
-              creature.behavior.states.moveToResource.target = closest
-              creature.input = closest.position - creature.position
-            else
-              creature.behavior.currentState.exit(creature)
-            end
-          end,
-          exit = function (creature)
-            creature.input = Vector(0, 0)
-            if creature.behavior.states.moveToResource.target then
-              setEntityState(creature, creature.behavior.states.harvestResource)
-            else
-              setEntityState(creature, creature.behavior.states.idle)
-            end
-          end,
-          update = function (creature)
-            local target = creature.behavior.states.moveToResource.target
-            if not target or (creature.position - target.position).length < 8 * PixelScale then
-              creature.behavior.currentState.exit(creature)
-            end
-          end
-        },
-        harvestResource = {
-          enter = function(creature)
-            print("creature harvesting")
-          end,
-          exit = function(creature)
-            creature.behavior.states.moveToResource.target = nil
-            setEntityState(creature, creature.behavior.states.idle)
-          end,
-          update = function (creature, dt)
-            local target = creature.behavior.states.moveToResource.target
-            target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
-            if not target.harvestable then
-              creature.behavior.currentState.exit(creature)
-            end
-          end
-        }
-      },
+      currentState = nil,
+      states = states
     },
     stats = {
       greed = 1,
@@ -117,7 +121,7 @@ local function create(x, y)
     end
   }
 
-  setEntityState(creature, creature.behavior.states.idle)
+  setBehaviorState(creature, creature.behavior.states.idle)
 
   return creature
 end
