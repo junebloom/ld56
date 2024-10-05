@@ -1,11 +1,98 @@
 local dbg = require("debugger")
 local Vector = require("brinevector")
 
-local entities = {
-  player = {
+local pixelScale = 6
+
+local resource = 0
+
+local entities = {}
+
+function setEntityState(entity, state)
+  state.enter(entity)
+  entity.behavior.currentState = state
+end
+
+function createCreature(x, y)
+  local creature = {
+    behavior = {
+      nextTime = 0,
+      currentState = {},
+      states = {
+        idle = {
+          enter = function(creature)
+            creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
+          end,
+          exit = function (creature)
+            setEntityState(creature, creature.behavior.states.wander)
+          end
+        },
+        wander = {
+          enter = function(creature)
+            creature.input.x = (math.random() - 0.5) * 2
+            creature.input.y = (math.random() - 0.5) * 2
+            creature.behavior.nextTime = math.random() + 0.2
+          end,
+          exit = function(creature)
+            creature.input = Vector(0, 0)
+            setEntityState(creature, creature.behavior.states.idle)
+          end
+        },
+        moveToResource = {
+          target = nil,
+          enter = function (creature)
+            print("moving to harvest")
+            creature.behavior.nextTime = 99999
+            local closest = nil
+            for _,e in pairs(entities) do
+              if (e.ready) then
+                local distanceToEntity = e.position - creature.position
+                if not closest or distanceToEntity < closest.position - creature.position then
+                  closest = e
+                end
+              end
+            end
+
+            if closest then
+              creature.behavior.states.moveToResource.target = closest
+              creature.input = closest.position - creature.position
+            end
+          end,
+          exit = function (creature)
+            print("done moving to harvest")
+            creature.input = Vector(0, 0)
+            setEntityState(creature, creature.behavior.states.harvestResource)
+          end,
+          update = function (creature)
+            local target = creature.behavior.states.moveToResource.target
+            if (creature.position - target.position).length < 8 * pixelScale then
+              creature.behavior.currentState.exit(creature)
+            end
+          end
+        },
+        harvestResource = {
+          enter = function(creature)
+            print("harvesting")
+          end,
+          exit = function(creature)
+            print("done harvesting")
+          end
+        }
+      },
+    },
+    stats = {
+      greed = 1,
+      power = 1,
+      scary = 1,
+      defense = 1,
+      speed = 1,
+      smart = 1 -- cap 36
+    },
+    hitbox = {
+      size = Vector(8 * pixelScale, 8 *pixelScale),
+      offset = Vector(0, 0)
+    },
     input = Vector(0, 0),
-    position = Vector(0, 0),
-    maxSpeed = 200,
+    position = Vector(x, y),
     sprite = nil,
     facing = 1,
     frameTime = 0,
@@ -17,29 +104,69 @@ local entities = {
         frames = {}
       }
     },
-    hitbox = {
-      size = Vector(48, 96),
-      offset = Vector(-24,-96),
-    },
     setAnimation = function(self, animation)
       if self.animation == animation then return end
       self.animation = animation
       self.frameTime = 0
       self.currentFrame = 1
     end
-  },
-  {
-    position = Vector(256, 256),
+  }
+
+  setEntityState(creature, creature.behavior.states.moveToResource)
+
+  return creature
+end
+
+function createResourceNode(x, y)
+  local node = {
+    position = Vector(x, y),
     hitbox = {
-      size = Vector(64, 64),
+      size = Vector(8 * pixelScale, 8 *pixelScale),
       offset = Vector(0, 0)
+    },
+    stats = {
+      production = 1
+    },
+    ready = true,
+    behavior = {
+      nextTime = 0,
+      currentState = {},
+      states = {
+        grow = {
+          enter = function(node)
+            print("growing...")
+            node.behavior.nextTime = 6 - math.sqrt(node.stats.production)
+          end,
+          exit = function (node)
+            node.ready = true
+            setEntityState(node, node.behavior.states.ready)
+          end
+        },
+        ready = {
+          enter = function(node)
+            print("ready!")
+            node.behavior.nextTime = 99999
+          end,
+          exit = function(node)
+            node.ready = false
+            resource = resource + 1
+            setEntityState(node, node.behavior.states.grow)
+          end,
+          update = function(node)
+          end
+        }
+      },
     }
   }
-}
+
+  setEntityState(node, node.behavior.states.ready)
+
+  return node
+end
 
 -- Utilities
 
-local function getBounds(entity)
+function getBounds(entity)
   return {
     left = entity.position.x + entity.hitbox.offset.x,
     right = entity.position.x + entity.hitbox.size.x + entity.hitbox.offset.x,
@@ -48,11 +175,11 @@ local function getBounds(entity)
   }
 end
 
-local function isPointInAABB(point, aabb)
+function isPointInAABB(point, aabb)
   return point.x > aabb.left and point.x < aabb.right and point.y < aabb.bottom and point.y > aabb.top
 end
 
-local function isAABBColliding (a, b)
+function isAABBColliding (a, b)
   return a.left < b.right
     and a.right > b.left
     and a.top < b.bottom
@@ -61,15 +188,15 @@ end
 
 -- Systems
 
-local function moveEntities(entities, dt)
+function moveEntities(entities, dt)
   for _,e in pairs(entities) do
     if e.input then
-      e.position = e.position + e.input.normalized * e.maxSpeed * dt
+      e.position = e.position + e.input.normalized * e.stats.speed * 10 * dt
     end
   end
 end
 
-local function detectCollisions(entities)
+function detectCollisions(entities)
   for _,a in pairs(entities) do
     for _,b in pairs(entities) do
       if a ~= b and a.hitbox and b.hitbox then
@@ -81,8 +208,22 @@ local function detectCollisions(entities)
   end
 end
 
+function processCreatureActions(entities, dt)
+  for _,e in pairs(entities) do
+    if e.behavior ~= nil then
+      e.behavior.nextTime = e.behavior.nextTime - dt
+
+      if e.behavior.nextTime <= 0 then
+        e.behavior.currentState.exit(e)
+      end
+
+      if e.behavior.currentState.update then e.behavior.currentState.update(e, dt) end
+    end
+  end
+end
+
 -- Determine sprite facing and animation from input
-local function setAnimationsFromInput(entities)
+function setAnimationsFromInput(entities)
   for _,e in pairs(entities) do
     if e.input then
       if e.input.x > 0 then e.facing = 1 end
@@ -100,7 +241,7 @@ local function setAnimationsFromInput(entities)
 end
 
 -- Update sprite animation frames
-local function processAnimations(entities, dt)
+function processAnimations(entities, dt)
   for _,e in pairs(entities) do
     if e.animations then
       e.frameTime = e.frameTime + dt
@@ -140,21 +281,17 @@ end
 -- Love callbacks
 
 function love.load()
-  for _,animation in pairs(entities.player.animations) do
-    for _,frame in pairs(animation.frames) do
-      frame:setFilter("nearest", "nearest")
-    end
-  end
+  -- for _,animation in pairs(entities.creature.animations) do
+  --   for _,frame in pairs(animation.frames) do
+  --     frame:setFilter("nearest", "nearest")
+  --   end
+  -- end
+  table.insert(entities, createResourceNode(128, 128))
+  table.insert(entities, createCreature(256, 256))
 end
 
 function love.update(dt)
-  -- Construct player input vector
-  entities.player.input = Vector(0, 0)
-  if love.keyboard.isDown("d") then entities.player.input.x = entities.player.input.x + 1 end
-  if love.keyboard.isDown("a") then entities.player.input.x = entities.player.input.x - 1 end
-  if love.keyboard.isDown("s") then entities.player.input.y = entities.player.input.y + 1 end
-  if love.keyboard.isDown("w") then entities.player.input.y = entities.player.input.y - 1 end
-
+  processCreatureActions(entities, dt)
   moveEntities(entities, dt)
   detectCollisions(entities, dt)
   -- setAnimationsFromInput(entities, dt)
@@ -162,6 +299,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  drawSprites()  
+  -- drawSprites()
   drawHitBoxes()
 end
