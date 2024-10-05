@@ -44,7 +44,7 @@ function createCreature(x, y)
             creature.behavior.nextTime = 99999
             local closest = nil
             for _,e in pairs(entities) do
-              if (e.ready) then
+              if (e.harvestable) then
                 local distanceToEntity = e.position - creature.position
                 if not closest or distanceToEntity < closest.position - creature.position then
                   closest = e
@@ -71,10 +71,12 @@ function createCreature(x, y)
         },
         harvestResource = {
           enter = function(creature)
-            print("harvesting")
           end,
           exit = function(creature)
             print("done harvesting")
+          end,
+          update = function (creature)
+            -- TODO: use closest reference to update node being harvested
           end
         }
       },
@@ -85,7 +87,8 @@ function createCreature(x, y)
       scary = 1,
       defense = 1,
       speed = 1,
-      smart = 1 -- cap 36
+      smart = 1, -- cap 36
+      efficiency = 1
     },
     hitbox = {
       size = Vector(8 * pixelScale, 8 *pixelScale),
@@ -127,18 +130,19 @@ function createResourceNode(x, y)
     stats = {
       production = 1
     },
-    ready = true,
+    harvestable = true,
+    timeToHarvest = 1,
     behavior = {
       nextTime = 0,
       currentState = {},
       states = {
-        grow = {
+        growing = {
           enter = function(node)
             print("growing...")
             node.behavior.nextTime = 6 - math.sqrt(node.stats.production)
           end,
           exit = function (node)
-            node.ready = true
+            node.harvestable = true
             setEntityState(node, node.behavior.states.ready)
           end
         },
@@ -148,11 +152,12 @@ function createResourceNode(x, y)
             node.behavior.nextTime = 99999
           end,
           exit = function(node)
-            node.ready = false
+            node.harvestable = false
             resource = resource + 1
-            setEntityState(node, node.behavior.states.grow)
+            setEntityState(node, node.behavior.states.growing)
           end,
           update = function(node)
+            if node.timeToHarvest <= 0 then node.behavior.currentState.exit(node) end
           end
         }
       },
@@ -165,26 +170,6 @@ function createResourceNode(x, y)
 end
 
 -- Utilities
-
-function getBounds(entity)
-  return {
-    left = entity.position.x + entity.hitbox.offset.x,
-    right = entity.position.x + entity.hitbox.size.x + entity.hitbox.offset.x,
-    top = entity.position.y + entity.hitbox.offset.y,
-    bottom = entity.position.y + entity.hitbox.size.y + entity.hitbox.offset.y,
-  }
-end
-
-function isPointInAABB(point, aabb)
-  return point.x > aabb.left and point.x < aabb.right and point.y < aabb.bottom and point.y > aabb.top
-end
-
-function isAABBColliding (a, b)
-  return a.left < b.right
-    and a.right > b.left
-    and a.top < b.bottom
-    and a.bottom > b.top
-end
 
 -- Systems
 
