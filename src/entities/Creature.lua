@@ -27,7 +27,6 @@ local states = {
   },
   moveToResource = {
     name = "moveToResource",
-    target = nil,
     enter = function (creature)
       creature.behavior.nextTime = 99999
       local closest = nil
@@ -42,7 +41,7 @@ local states = {
       end
 
       if closest then
-        creature.behavior.states.moveToResource.target = closest
+        creature.behavior.target = closest
         creature.input = closest.position - creature.position
       else
         creature.behavior.currentState.exit(creature)
@@ -50,14 +49,14 @@ local states = {
     end,
     exit = function (creature)
       creature.input = Vector(0, 0)
-      if creature.behavior.states.moveToResource.target then
+      if creature.behavior.target then
         setBehaviorState(creature, creature.behavior.states.harvestResource)
       else
         setBehaviorState(creature, creature.behavior.states.idle)
       end
     end,
     update = function (creature)
-      local target = creature.behavior.states.moveToResource.target
+      local target = creature.behavior.target
       if not target or (creature.position - target.position).length < 8 * PixelScale then
         creature.behavior.currentState.exit(creature)
       end
@@ -69,11 +68,11 @@ local states = {
       -- 
     end,
     exit = function(creature)
-      creature.behavior.states.moveToResource.target = nil
+      creature.behavior.target = nil
       setBehaviorState(creature, creature.behavior.states.idle)
     end,
     update = function (creature, dt)
-      local target = creature.behavior.states.moveToResource.target
+      local target = creature.behavior.target
       target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
       if not target.harvestable then
         creature.behavior.currentState.exit(creature)
@@ -86,6 +85,7 @@ local function create(x, y)
   local creature = {
     id = ID.new(),
     behavior = {
+      target = nil,
       nextTime = 0,
       currentState = nil,
       states = states
