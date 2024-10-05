@@ -1,8 +1,9 @@
 local function create(x, y)
   local node = {
     position = Vector(x, y),
+    spriteOffset = Vector(0, TileSize),
     hitbox = {
-      size = Vector(8 * pixelScale, 8 *pixelScale),
+      size = Vector(8 * PixelScale, 8 *PixelScale),
       offset = Vector(0, 0)
     },
     stats = {
@@ -17,6 +18,7 @@ local function create(x, y)
         growing = {
           enter = function(node)
             print("growing...")
+            node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
             node.behavior.nextTime = 6 - math.sqrt(node.stats.production)
           end,
           exit = function (node)
@@ -26,6 +28,7 @@ local function create(x, y)
         ready = {
           enter = function(node)
             print("ready!")
+            node.sprite = love.graphics.newQuad(TileSize, TileSize, TileSize, TileSize * 2, SpriteSheet)
             node.timeToHarvest = 1
             node.harvestable = true
             node.behavior.nextTime = 99999

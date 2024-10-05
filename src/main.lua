@@ -6,9 +6,16 @@ Creature = require("entities.Creature")
 
 local processBehaviorActions = require("systems.processBehaviorActions")
 local moveEntities = require("systems.moveEntities")
+local drawSprites = require("systems.drawSprites")
 local drawHitBoxes = require("systems.drawHitboxes")
 
-pixelScale = 6
+love.graphics.setBackgroundColor(5/255, 31/255, 57/255)
+
+SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
+SpriteSheet:setFilter("nearest", "nearest")
+
+TileSize = 8
+PixelScale = 6
 entities = {}
 
 local resource = 0
@@ -19,13 +26,6 @@ function setEntityState(entity, state)
 end
 
 function love.load()
-  -- TODO: Fix this
-  -- for _,animation in pairs(entities.creature.animations) do
-  --   for _,frame in pairs(animation.frames) do
-  --     frame:setFilter("nearest", "nearest")
-  --   end
-  -- end
-
   table.insert(entities, ResourceNode.create(128, 128))
   table.insert(entities, Creature.create(256, 256))
 end
@@ -38,6 +38,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  -- drawSprites()
+  drawSprites(entities)
   drawHitBoxes(entities)
 end

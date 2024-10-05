@@ -51,7 +51,7 @@ local function create(x, y)
           end,
           update = function (creature)
             local target = creature.behavior.states.moveToResource.target
-            if (creature.position - target.position).length < 8 * pixelScale then
+            if (creature.position - target.position).length < 8 * PixelScale then
               creature.behavior.currentState.exit(creature)
             end
           end
@@ -83,13 +83,10 @@ local function create(x, y)
       smart = 1, -- cap 36
       efficiency = 1
     },
-    hitbox = {
-      size = Vector(8 * pixelScale, 8 *pixelScale),
-      offset = Vector(0, 0)
-    },
     input = Vector(0, 0),
     position = Vector(x, y),
-    sprite = nil,
+    sprite = love.graphics.newQuad(0,0,TileSize,TileSize, SpriteSheet),
+    spriteOffset = Vector(0,0),
     facing = 1,
     frameTime = 0,
     currentFrame = 1,
@@ -97,7 +94,8 @@ local function create(x, y)
     animations = {
       idle = {
         fps = 6,
-        frames = {}
+        frames = {
+        }
       }
     },
     setAnimation = function(self, animation)
