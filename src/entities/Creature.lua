@@ -6,6 +6,7 @@ local function create(x, y)
       states = {
         idle = {
           enter = function(creature)
+            print("creature idling")
             creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
           end,
           exit = function (creature)
@@ -14,6 +15,7 @@ local function create(x, y)
         },
         wander = {
           enter = function(creature)
+            print("creature wandering")
             creature.input.x = (math.random() - 0.5) * 2
             creature.input.y = (math.random() - 0.5) * 2
             creature.behavior.nextTime = math.random() + 0.2
@@ -26,7 +28,7 @@ local function create(x, y)
         moveToResource = {
           target = nil,
           enter = function (creature)
-            print("moving to harvest")
+            print("creature moving to harvest")
             creature.behavior.nextTime = 99999
             local closest = nil
             for _,e in pairs(entities) do
@@ -44,7 +46,6 @@ local function create(x, y)
             end
           end,
           exit = function (creature)
-            print("done moving to harvest")
             creature.input = Vector(0, 0)
             setEntityState(creature, creature.behavior.states.harvestResource)
           end,
@@ -57,13 +58,18 @@ local function create(x, y)
         },
         harvestResource = {
           enter = function(creature)
-            print("harvesting")
+            print("creature harvesting")
           end,
           exit = function(creature)
-            print("done harvesting")
+            creature.behavior.states.moveToResource.target = nil
+            setEntityState(creature, creature.behavior.states.idle)
           end,
-          update = function (creature)
-            -- TODO: use closest reference to update node being harvested
+          update = function (creature, dt)
+            local target = creature.behavior.states.moveToResource.target
+            target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
+            if not target.harvestable then
+              creature.behavior.currentState.exit(creature)
+            end
           end
         }
       },

@@ -20,18 +20,20 @@ local function create(x, y)
             node.behavior.nextTime = 6 - math.sqrt(node.stats.production)
           end,
           exit = function (node)
-            node.harvestable = true
             setEntityState(node, node.behavior.states.ready)
           end
         },
         ready = {
           enter = function(node)
             print("ready!")
+            node.timeToHarvest = 1
+            node.harvestable = true
             node.behavior.nextTime = 99999
           end,
           exit = function(node)
+            print("harvested!")
             node.harvestable = false
-            resource = resource + 1
+            -- resource = resource + 1
             setEntityState(node, node.behavior.states.growing)
           end,
           update = function(node)
