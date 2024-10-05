@@ -1,4 +1,4 @@
-function getBounds(entity)
+local function getBounds(entity)
   return {
     left = entity.position.x + entity.hitbox.offset.x,
     right = entity.position.x + entity.hitbox.size.x + entity.hitbox.offset.x,
@@ -7,15 +7,15 @@ function getBounds(entity)
   }
 end
 
-function isPointInAABB(point, aabb)
+local function isPointInAABB(point, aabb)
   return point.x > aabb.left and point.x < aabb.right and point.y < aabb.bottom and point.y > aabb.top
 end
 
-function isAABBColliding (a, b)
+local function isAABBColliding(a, b)
   return a.left < b.right
-    and a.right > b.left
-    and a.top < b.bottom
-    and a.bottom > b.top
+      and a.right > b.left
+      and a.top < b.bottom
+      and a.bottom > b.top
 end
 
-return {getBounds, isPointInAABB, isAABBColliding}
+return { getBounds = getBounds, isPointInAABB = isPointInAABB, isAABBColliding = isAABBColliding }

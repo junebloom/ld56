@@ -6,6 +6,7 @@ Upgrades = require("upgrades")
 ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
+local processMouse = require("systems.processMouse")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
@@ -82,6 +83,8 @@ end
 
 function love.update(dt)
   local scaledDeltaTime = dt * TimeScale
+
+  processMouse(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
   -- setAnimationsFromInput(entities, scaledDeltaTime)

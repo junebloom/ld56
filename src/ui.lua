@@ -8,7 +8,7 @@ local function initUI()
     spriteOffset = Vector(-TileSize, -TileSize * 1.5),
     hitbox = {
       size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
-      offset = Vector(-TileSize, -TileSize * 1.5)
+      offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
     }
   })
 end
