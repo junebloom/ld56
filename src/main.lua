@@ -11,8 +11,13 @@ local drawHitBoxes = require("systems.drawHitboxes")
 
 love.graphics.setBackgroundColor(5/255, 31/255, 57/255)
 
+
 SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
 SpriteSheet:setFilter("nearest", "nearest")
+
+Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.")
+Font:setFilter("nearest", "nearest")
+love.graphics.setFont(Font)
 
 TileSize = 8
 PixelScale = 6
@@ -41,5 +46,6 @@ end
 
 function love.draw()
   drawSprites(Entities)
+  love.graphics.print("100%", 32, 32, 0, PixelScale, PixelScale)
   drawHitBoxes(Entities)
 end
