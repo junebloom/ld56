@@ -73,10 +73,10 @@ function ApplyUpgradeToEntities(upgrade, arg)
   end
 end
 
-function GetUpgradeChoices()
+function GetUpgradeChoices(tier)
   local availableUpgrades = {}
   for _, upgrade in pairs(Upgrades) do
-    if upgrade.tier <= CreatureTier and upgrade.available then
+    if upgrade.tier == tier and upgrade.available then
       table.insert(availableUpgrades, upgrade)
     end
   end

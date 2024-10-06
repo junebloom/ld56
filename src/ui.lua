@@ -46,9 +46,9 @@ local UI = {
         size = Vector(180, 48),
         offset = Vector(-90, -20)
       },
-      onMouseDown = function(button)
+      onMouseDown = function(shopButton)
         if Resource >= UpgradeCosts[1] then
-          local choices = GetUpgradeChoices()
+          local choices = GetUpgradeChoices(1)
           for i = 1, 3 do
             UI.cards[i].upgrade = choices[i]
             UI.cards[i].text = choices[i].glyph
@@ -71,9 +71,9 @@ local UI = {
         size = Vector(48, 48),
         offset = Vector(-24, -20)
       },
-      onMouseDown = function(button)
-        if Resource >= UpgradeCosts[1] then
-          local choices = GetUpgradeChoices()
+      onMouseDown = function(shopButton)
+        if Resource >= UpgradeCosts[2] then
+          local choices = GetUpgradeChoices(2)
           for i = 1, 3 do
             UI.cards[i].upgrade = choices[i]
             UI.cards[i].text = choices[i].glyph
@@ -96,9 +96,9 @@ local UI = {
         size = Vector(48, 48),
         offset = Vector(-24, -20)
       },
-      onMouseDown = function(button)
-        if Resource >= UpgradeCosts[1] then
-          local choices = GetUpgradeChoices()
+      onMouseDown = function(shopButton)
+        if Resource >= UpgradeCosts[3] then
+          local choices = GetUpgradeChoices(3)
           for i = 1, 3 do
             UI.cards[i].upgrade = choices[i]
             UI.cards[i].text = choices[i].glyph
