@@ -262,8 +262,8 @@ local upgrades = {
   -- Growth
 
   AllGrowthUp = {
-    tier = "Growth",
-    available = true,
+    tier = 69,
+    available = false,
     glyph = "vp",
     name = "vast potential",
     description = "base creature growth speed increased by 100%",
@@ -307,6 +307,7 @@ local upgrades = {
 
   -- Non-player facing upgrades for growth stat harvesting
   HarvestGrowthStat = {
+    tier = 68,
     smart = {
       tier = 1,
       available = false,
