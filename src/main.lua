@@ -46,7 +46,7 @@ function CheckGrowthThresholds(creature)
   end
 
   if shouldGrow then
-    if DEBUG then print("Thresholds reached -- going up a tier!") end
+    if DEBUG then print("Stat thresholds reached -- going up a tier!") end
     CreatureTier = CreatureTier + 1
   end
 end
@@ -98,11 +98,13 @@ function SetBehaviorState(entity, state)
 end
 
 function love.load()
-  table.insert(Entities, ResourceNode.create(128, 128))
-  table.insert(Entities, StatNode.create(600, 128, "scary"))
+  table.insert(Entities, ResourceNode.create(64 * PixelScale, 48 * PixelScale))
 
-  table.insert(Entities, Creature.create(256, 256))
-  table.insert(Entities, Creature.create(200, 256))
+  table.insert(Entities, StatNode.create(30 * PixelScale, 30 * PixelScale, "smart"))
+  table.insert(Entities, StatNode.create(49 * PixelScale, 78 * PixelScale, "scary"))
+  table.insert(Entities, StatNode.create(93 * PixelScale, 26 * PixelScale, "power"))
+
+  table.insert(Entities, Creature.create(64 * PixelScale, 63 * PixelScale))
   UI.init()
 end
 
