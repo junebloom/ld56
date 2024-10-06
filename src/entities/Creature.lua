@@ -158,14 +158,14 @@ local function create(x, y)
       idle = {
         fps = 6,
         frames = {
-          love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
+          love.graphics.newQuad(TileSize * 0, 0, TileSize, TileSize, SpriteSheet),
         }
       },
       walk = {
         fps = 6,
         frames = {
-          love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
-          love.graphics.newQuad(TileSize, 0, TileSize, TileSize, SpriteSheet),
+          love.graphics.newQuad(TileSize * 1, 0, TileSize, TileSize, SpriteSheet),
+          love.graphics.newQuad(TileSize * 0, 0, TileSize, TileSize, SpriteSheet),
         }
       }
     },
