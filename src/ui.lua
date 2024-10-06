@@ -4,8 +4,8 @@ local function newCard(xoffset)
   local card = {
     id = ID.new(),
     type = "button",
-    upgrade = Upgrades.MoveSpeedUpgrade,
-    text = Upgrades.MoveSpeedUpgrade.glyph,
+    upgrade = nil,
+    text = "",
     hovered = false,
     hidden = true,
     position = Vector(center.x - xoffset, center.y),
@@ -22,14 +22,43 @@ local function newCard(xoffset)
       end
     end,
     onMouseDown = function(card)
-      -- TODO: handle click
-      print("clicked " .. card.id)
+      ApplyUpgradeToEntities(card.upgrade)
+      Resource = Resource - UpgradeCosts[card.upgrade.tier]
+      UI.setShopHidden(true)
+      UI.shopButtons[1].hidden = false
     end
   }
   return card
 end
 
 local UI = {
+  shopButtons = {
+    {
+      id = ID.new(),
+      type = "button",
+      text = "upgrade",
+      hidden = false,
+      position = Vector(100, love.graphics.getHeight() - 32),
+      hitbox = {
+        size = Vector(180, 48),
+        offset = Vector(-90, -20)
+      },
+      onMouseDown = function(button)
+        if Resource >= UpgradeCosts[1] then
+          local choices = GetUpgradeChoices()
+          for i = 1, 3 do
+            UI.cards[i].upgrade = choices[i]
+            UI.cards[i].text = choices[i].glyph
+          end
+
+          UI.setShopHidden(false)
+          button.hidden = true
+        else
+          print("can't afford upgrade")
+        end
+      end
+    }
+  },
   cards = {
     newCard(-24 * PixelScale),
     newCard(0),
@@ -52,6 +81,7 @@ local UI = {
 }
 
 function UI.init()
+  table.insert(Entities, UI.shopButtons[1])
   table.insert(Entities, UI.cards[1])
   table.insert(Entities, UI.cards[2])
   table.insert(Entities, UI.cards[3])
@@ -59,7 +89,7 @@ function UI.init()
   table.insert(Entities, UI.bottomText)
 end
 
-function UI.setHidden(hidden)
+function UI.setShopHidden(hidden)
   UI.cards[1].hidden = hidden
   UI.cards[2].hidden = hidden
   UI.cards[3].hidden = hidden

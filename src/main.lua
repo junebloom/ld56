@@ -21,9 +21,10 @@ Entities = {}
 TimeScale = 1
 DEBUG = true
 
-Resource = 0
+Resource = 1
 
 Upgrades = require("upgrades")
+UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
 
 -- Configure graphics
@@ -84,10 +85,6 @@ function love.keypressed(key)
     else
       TimeScale = 0
     end
-  else
-    if key == "space" then
-      UI.setHidden(not UI.topText.hidden)
-    end
   end
 end
 
@@ -111,5 +108,6 @@ end
 function love.draw()
   drawSprites(Entities)
   drawText(Entities)
+  love.graphics.print(Resource, 8, 8, 0, PixelScale)
   if DEBUG then drawHitBoxes(Entities) end
 end

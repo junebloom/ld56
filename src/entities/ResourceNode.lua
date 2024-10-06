@@ -13,7 +13,7 @@ local states = {
     name = "ready",
     enter = function(node)
       node.sprite = love.graphics.newQuad(TileSize, TileSize, TileSize, TileSize * 2, SpriteSheet)
-      node.timeToHarvest = 1
+      node.timeToHarvest = node.stats.production
       node.harvestable = true
       node.behavior.nextTime = 99999
     end,
@@ -38,7 +38,7 @@ local function create(x, y)
       offset = Vector(0, 0)
     },
     stats = {
-      production = 1
+      production = 10
     },
     harvestable = true,
     timeToHarvest = 10,
