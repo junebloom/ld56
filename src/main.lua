@@ -24,6 +24,7 @@ TimeScale = 1
 Entities = {}
 
 Resource = 3
+CreatureTier = 2
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
