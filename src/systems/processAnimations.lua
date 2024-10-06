@@ -1,7 +1,7 @@
 -- Update sprite animation frames
 local function processAnimations(entities, dt)
-  for _,e in pairs(entities) do
-    if e.animations then
+  for _, e in pairs(entities) do
+    if e.animation then
       e.frameTime = e.frameTime + dt
 
       if (e.frameTime >= 1 / e.animation.fps) then
