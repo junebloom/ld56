@@ -1,13 +1,13 @@
+-- Import utilities
 dbg = require("utilities.debugger")
 Vector = require("utilities.brinevector")
 ID = require("utilities.id")
 
-Upgrades = require("upgrades")
+-- Import entities
 ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
-local initUI = require("ui")
-
+-- Import systems
 local processMouse = require("systems.processMouse")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local moveEntities = require("systems.moveEntities")
@@ -15,28 +15,29 @@ local drawSprites = require("systems.drawSprites")
 local drawText = require("systems.drawText")
 local drawHitBoxes = require("systems.drawHitboxes")
 
-love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
-
-SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
-SpriteSheet:setFilter("nearest", "nearest")
-
-Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
-Font:setFilter("nearest", "nearest")
-love.graphics.setFont(Font)
-
-TileSize = 8
-PixelScale = 6
-
+-- Game state
 Entities = {}
 TimeScale = 1
 DEBUG = true
 
-UIState = {
-  IsShopOpen = false
-}
-
 Resource = 0
+
+Upgrades = require("upgrades")
 PurchasedUpgrades = {}
+
+-- Configure graphics
+love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
+
+local font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
+font:setFilter("nearest", "nearest")
+love.graphics.setFont(font)
+
+SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
+SpriteSheet:setFilter("nearest", "nearest")
+
+TileSize = 8
+PixelScale = 6
+UI = require("ui")
 
 function ApplyUpgradeToEntities(upgrade)
   for _, e in pairs(Entities) do
@@ -72,7 +73,7 @@ function love.load()
   table.insert(Entities, ResourceNode.create(600, 128))
   table.insert(Entities, Creature.create(256, 256))
   table.insert(Entities, Creature.create(200, 256))
-  initUI()
+  UI.init()
 end
 
 function love.keypressed(key)
