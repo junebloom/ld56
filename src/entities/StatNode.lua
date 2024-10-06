@@ -18,8 +18,15 @@ local states = {
       node.behavior.nextTime = 99999
     end,
     exit = function(node)
-      ApplyUpgradeToEntities(Upgrades.HarvestGrowthStat[node.stat])
-      table.insert(PurchasedUpgrades, Upgrades.HarvestGrowthStat[node.stat])
+      local upgrade = {
+        types = Upgrades.HarvestGrowthStat[node.stat].types,
+        apply = function()
+          ApplyUpgradeToEntities(Upgrades.HarvestGrowthStat[node.stat], node)
+        end
+      }
+
+      ApplyUpgradeToEntities(upgrade)
+      table.insert(PurchasedUpgrades, upgrade)
 
       node.harvestable = false
       SetBehaviorState(node, node.behavior.states.growing)

@@ -309,49 +309,28 @@ local upgrades = {
   HarvestGrowthStat = {
     tier = 68,
     smart = {
-      tier = 1,
-      available = false,
-      repeatable = false,
-      prereq = false,
-      glyph = "nope",
-      name = "grow smart up",
-      description = "smart",
       types = {
         creature = true
       },
-      apply = function(creature)
+      apply = function(creature, node)
         creature.stats.smart = creature.stats.smart + 24
         CheckGrowthThresholds(creature)
       end
     },
     scary = {
-      tier = 1,
-      available = false,
-      repeatable = false,
-      prereq = false,
-      glyph = "nope",
-      name = "grow scary up",
-      description = "scary",
       types = {
         creature = true
       },
-      apply = function(creature)
+      apply = function(creature, node)
         creature.stats.scary = creature.stats.scary + 24
         CheckGrowthThresholds(creature)
       end
     },
     power = {
-      tier = 1,
-      available = false,
-      repeatable = false,
-      prereq = false,
-      glyph = "nope",
-      name = "grow power up",
-      description = "power",
       types = {
         creature = true
       },
-      apply = function(creature)
+      apply = function(creature, node)
         creature.stats.power = creature.stats.power + 24
         CheckGrowthThresholds(creature)
       end
