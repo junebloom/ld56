@@ -4,7 +4,7 @@ local states = {
     enter = function(creature)
       creature.input = Vector(0, 0)
       creature.behavior.nextTime = (11 - math.sqrt(creature.stats.smart)) * 0.5
-      creature:setAnimation(creature.animations.idle)
+      creature:setAnimation(creature.animations.idle[CreatureTier])
     end,
     exit = function(creature)
       local n = math.random()
