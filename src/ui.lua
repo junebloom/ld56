@@ -65,7 +65,7 @@ local UI = {
       id = ID.new(),
       type = "button",
       text = "t2",
-      hidden = false,
+      hidden = true,
       position = Vector((38 + shopButtonOffset) * PixelScale, love.graphics.getHeight() - 5 * PixelScale),
       hitbox = {
         size = Vector(48, 48),
@@ -90,7 +90,7 @@ local UI = {
       id = ID.new(),
       type = "button",
       text = "t3",
-      hidden = false,
+      hidden = true,
       position = Vector((50 + shopButtonOffset) * PixelScale, love.graphics.getHeight() - 5 * PixelScale),
       hitbox = {
         size = Vector(48, 48),
@@ -154,8 +154,12 @@ end
 
 function UI.setButtonsHidden(hidden)
   UI.shopButtons[1].hidden = hidden
-  UI.shopButtons[2].hidden = hidden
-  UI.shopButtons[3].hidden = hidden
+  if (CreatureTier >= 2) then
+    UI.shopButtons[2].hidden = hidden
+  end
+  if (CreatureTier >= 3) then
+    UI.shopButtons[3].hidden = hidden
+  end
 end
 
 return UI
