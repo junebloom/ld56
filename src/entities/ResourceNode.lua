@@ -19,7 +19,7 @@ local states = {
     end,
     exit = function(node)
       node.harvestable = false
-      Resource = Resource + (node.stats.nodeTier^2) * node.stats.production * node.greedMultiplier
+      Resource = Resource + (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier
       node.greedMultiplier = 1
       SetBehaviorState(node, node.behavior.states.growing)
     end,
@@ -32,7 +32,7 @@ local states = {
 local function create(x, y)
   local node = {
     id = ID.new(),
-    type = "node",
+    type = "resourceNode",
     position = Vector(x, y),
     spriteOffset = Vector(0, -TileSize),
     hitbox = {
@@ -44,7 +44,7 @@ local function create(x, y)
       nodeTier = 1
     },
     harvestable = true,
-    baseTimeToHarvest = 10, 
+    baseTimeToHarvest = 10,
     timeToHarvest = 10,
     greedMultiplier = 1,
     behavior = {

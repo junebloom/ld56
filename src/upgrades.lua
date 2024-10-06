@@ -32,7 +32,7 @@ local upgrades = {
     name = "production speed up",
     description = "nodes produce 33% faster",
     types = {
-      node = true
+      resourceNode = true
     },
     apply = function(node)
       node.stats.production = node.stats.production * 2 / 3
@@ -87,7 +87,7 @@ local upgrades = {
     name = "loosh node lv 2",
     description = "increase the tier of all loosh nodes",
     types = {
-      node = true
+      resourceNode = true
     },
     apply = function(node)
       node.stats.nodeTier = 2

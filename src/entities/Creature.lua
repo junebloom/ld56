@@ -9,7 +9,7 @@ local states = {
     exit = function(creature)
       local n = math.random()
       if n <= creature.behavior.mood then
-        SetBehaviorState(creature, creature.behavior.states.moveToResource)
+        SetBehaviorState(creature, creature.behavior.states.moveToNode)
       else
         SetBehaviorState(creature, creature.behavior.states.wander)
       end
@@ -27,16 +27,28 @@ local states = {
       SetBehaviorState(creature, creature.behavior.states.idle)
     end
   },
-  moveToResource = {
-    name = "moveToResource",
+  moveToNode = {
+    name = "moveToNode",
     enter = function(creature)
       creature.behavior.nextTime = 99999
-      local closest = nil
 
+      -- Select node type to move to
+      local targetType = nil
+      local n = math.random()
+      if n < 0.5 then
+        targetType = "resourceNode"
+      elseif n < 0.75 then
+        targetType = "statNode"
+      else
+        targetType = "enemyNode"
+      end
+
+      -- Find closest valid node of selected type
+      local closest = nil
       for _, e in pairs(Entities) do
-        if (e.harvestable) then
-          local distanceToEntity = e.position - creature.position
-          if not closest or distanceToEntity.length < (closest.position - creature.position).length then
+        if (e.type == targetType and (e.harvestable or e.type ~= "resourceNode")) then
+          local distance = e.position - creature.position
+          if not closest or distance.length < (closest.position - creature.position).length then
             closest = e
           end
         end
@@ -52,10 +64,17 @@ local states = {
     end,
     exit = function(creature)
       creature.input = Vector(0, 0)
-      if creature.behavior.target then
-        SetBehaviorState(creature, creature.behavior.states.harvestResource)
-      else
+      local target = creature.behavior.target
+      if not target then
         SetBehaviorState(creature, creature.behavior.states.idle)
+      elseif target.type == "resourceNode" then
+        SetBehaviorState(creature, creature.behavior.states.harvest)
+      elseif target.type == "statNode" then
+        SetBehaviorState(creature, creature.behavior.states.harvest)
+      elseif target.type == "enemyNode" then
+        SetBehaviorState(creature, creature.behavior.states.attack)
+      else
+        error("unrecognized target type")
       end
     end,
     update = function(creature)
@@ -65,8 +84,8 @@ local states = {
       end
     end
   },
-  harvestResource = {
-    name = "harvestResource",
+  harvest = {
+    name = "harvest",
     enter = function(creature)
       creature:setAnimation(creature.animations.idle)
     end,
@@ -114,7 +133,7 @@ local function create(x, y)
       nextTime = 0,
       currentState = nil,
       lastState = nil,
-      mood = 0.2, --Chance to harvest 
+      mood = 0.2, --Chance to harvest
       states = states
     },
     stats = {

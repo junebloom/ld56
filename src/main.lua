@@ -18,7 +18,7 @@ local drawText = require("systems.drawText")
 local drawHitBoxes = require("systems.drawHitboxes")
 
 -- Game state
-DEBUG = false
+DEBUG = true
 TimeScale = 1
 Entities = {}
 
@@ -83,21 +83,21 @@ function love.load()
 end
 
 function love.keypressed(key)
-  if key == "escape" then
-    if TimeScale == 0 then
-      TimeScale = 1
-    else
-      TimeScale = 0
-    end
-    -- else
-    --   if key == "space" then
-    --     local e = Entities[1]
-    --     if e.behavior.currentState ~= e.behavior.states.hurt then
-    --       e.ouch = 1
-    --       SetBehaviorState(e, e.behavior.states.hurt)
-    --     end
-    --   end
-  end
+  -- if key == "escape" then
+  --   if TimeScale == 0 then
+  --     TimeScale = 1
+  --   else
+  --     TimeScale = 0
+  --   end
+  --   else
+  --     if key == "space" then
+  --       local e = Entities[1]
+  --       if e.behavior.currentState ~= e.behavior.states.hurt then
+  --         e.ouch = 1
+  --         SetBehaviorState(e, e.behavior.states.hurt)
+  --       end
+  --     end
+  -- end
 end
 
 function love.mousepressed()
@@ -123,6 +123,6 @@ function love.draw()
 
   drawSprites(Entities)
   drawText(Entities)
-  love.graphics.print(math.floor(Resource*10), 8, 8, 0, PixelScale)
+  love.graphics.print(math.floor(Resource * 10), 8, 8, 0, PixelScale)
   if DEBUG then drawHitBoxes(Entities) end
 end
