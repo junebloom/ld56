@@ -62,14 +62,14 @@ local upgrades = {
     repeatable = false,
     glyph = "f+",
     name = "focus up",
-    description = "creatures idle for little less time",
+    description = "creatures idle and wander a little less",
     types = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 3
+      creature.stats.smart = creature.stats.smart + 8
       Upgrades.SmartUp.available = false
-      Upgrades.SmartUpT2.available = true
+      Upgrades.SmartUpT2.prereq = true
     end
   },
   DefenseUp = {
@@ -85,6 +85,7 @@ local upgrades = {
     apply = function(creature)
       creature.stats.defense = creature.stats.defense + 1
       Upgrades.DefenseUp.available = false
+      Upgrades.DefenseUpT2.available = true
     end
   },
   GreedUp = {
@@ -128,35 +129,69 @@ local upgrades = {
     tier = 2,
     available = false,
     repeatable = false,
+    prereq = false,
     glyph = "f++",
     name = "focus up +",
-    description = "creatures idle for less time",
+    description = "creatures idle and wander less",
     types = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 5
+      creature.stats.smart = creature.stats.smart + 16
       Upgrades.SmartUpT2.available = false
-      Upgrades.SmartUpT3.available = true
+      Upgrades.SmartUpT3.prereq = true
+    end
+  },
+  DefenseUpT2 = {
+    tier = 2,
+    available = false,
+    repeatable = false,
+    prereq = false,
+    glyph = "d+",
+    name = "defense up",
+    description = "improve defense by 100%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.defense = creature.stats.defense + 1
+      Upgrades.DefenseUp.available = false
     end
   },
 
 
-
   -- Tier 3
 
-  SmartUpT3 = {
+
+  DefenseUpT3 = {
     tier = 3,
     available = false,
     repeatable = false,
-    glyph = "f++",
-    name = "focus up +",
-    description = "creatures idle for a lot less time",
+    prereq = false,
+    glyph = "d+",
+    name = "defense up",
+    description = "improve defense by an additional 100%",
     types = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 7
+      creature.stats.defense = creature.stats.defense + 1
+      Upgrades.DefenseUpT3.available = false
+    end
+  },
+  SmartUpT3 = {
+    tier = 3,
+    available = false,
+    repeatable = false,
+    prereq = false,
+    glyph = "f++",
+    name = "focus up +",
+    description = "creatures idle and wander a lot less",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.smart = creature.stats.smart + 24
       Upgrades.SmartUpT2.available = false
     end
   },
@@ -164,21 +199,21 @@ local upgrades = {
 
   -- Growth
 
-  SmartUpGrowth = {
-    tier = "Growth",
-    available = false,
-    repeatable = false,
-    glyph = "-hf-",
-    name = "hyperfocus",
-    description = "creatures idle for far less time",
-    types = {
-      creature = true
-    },
-    apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 9
-      Upgrades.SmartUpGrowth.available = false
-    end
-  },
+  -- SmartUpGrowth = {
+  --   tier = "Growth",
+  --   available = false,
+  --   repeatable = false,
+  --   glyph = "-hf-",
+  --   name = "hyperfocus",
+  --   description = "creatures idle for far less time",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --     creature.stats.smart = creature.stats.smart + 9
+  --     Upgrades.SmartUpGrowth.available = false
+  --   end
+  -- },
 
   --PackTactics = {
   --  tier = "Growth",

@@ -3,12 +3,12 @@ local states = {
     name = "idle",
     enter = function(creature)
       creature.input = Vector(0, 0)
-      creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
+      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.smart)) * 0.5
       creature:setAnimation(creature.animations.idle)
     end,
     exit = function(creature)
       local n = math.random()
-      if n <= creature.behavior.mood then
+      if n <= (creature.behavior.mood + creature.stats.smart * 0.01) then
         SetBehaviorState(creature, creature.behavior.states.moveToNode)
       else
         SetBehaviorState(creature, creature.behavior.states.wander)
@@ -142,7 +142,7 @@ local function create(x, y)
       scary = 1,
       defense = 1,
       moveSpeed = 1,
-      smart = 1, -- cap 36
+      smart = 1, -- cap 121
       efficiency = 1
     },
     ouch = 0, -- damage received on hurt
@@ -178,7 +178,7 @@ local function create(x, y)
   }
 
   SetBehaviorState(creature, creature.behavior.states.idle)
-  creature.behavior.nextTime = 0
+  creature.behavior.nextTime = 0.1
 
   for _, upgrade in pairs(PurchasedUpgrades) do
     if upgrade.types.creature then upgrade.apply(creature) end
