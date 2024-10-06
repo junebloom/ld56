@@ -137,12 +137,16 @@ local function create(x, y)
       states = states
     },
     stats = {
-      greed = 1,
+      overallGrowthMulti = 1,
       power = 1,
+      powerGrowthMulti = 1,
       scary = 1,
+      scaryGrowthMulti = 1,
+      smart = 1, -- cap 121
+      smartGrowthMulti = 1,
       defense = 1,
       moveSpeed = 1,
-      smart = 1, -- cap 121
+      greed = 1,
       efficiency = 1
     },
     ouch = 0, -- damage received on hurt
