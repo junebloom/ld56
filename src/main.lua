@@ -11,15 +11,16 @@ Creature = require("entities.Creature")
 local processMouseHover = require("src.systems.processMouseHover")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local processEntityUpdate = require("systems.processEntityUpdate")
+local processAnimations = require("systems.processAnimations")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
 local drawText = require("systems.drawText")
 local drawHitBoxes = require("systems.drawHitboxes")
 
 -- Game state
-Entities = {}
+DEBUG = false
 TimeScale = 1
-DEBUG = true
+Entities = {}
 
 Resource = 1
 
@@ -28,6 +29,8 @@ UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
 
 -- Configure graphics
+local bgImage = love.graphics.newImage("assets/bg.png")
+bgImage:setFilter("nearest", "nearest")
 love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
 
 local font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
@@ -72,10 +75,10 @@ function SetBehaviorState(entity, state)
 end
 
 function love.load()
-  table.insert(Entities, Creature.create(256, 256))
-  table.insert(Entities, Creature.create(200, 256))
   table.insert(Entities, ResourceNode.create(128, 128))
   table.insert(Entities, ResourceNode.create(600, 128))
+  table.insert(Entities, Creature.create(256, 256))
+  table.insert(Entities, Creature.create(200, 256))
   UI.init()
 end
 
@@ -86,14 +89,14 @@ function love.keypressed(key)
     else
       TimeScale = 0
     end
-  else
-    if key == "space" then
-      local e = Entities[1]
-      if e.behavior.currentState ~= e.behavior.states.hurt then
-        e.ouch = 1
-        SetBehaviorState(e, e.behavior.states.hurt)
-      end
-    end
+    -- else
+    --   if key == "space" then
+    --     local e = Entities[1]
+    --     if e.behavior.currentState ~= e.behavior.states.hurt then
+    --       e.ouch = 1
+    --       SetBehaviorState(e, e.behavior.states.hurt)
+    --     end
+    --   end
   end
 end
 
@@ -111,10 +114,13 @@ function love.update(dt)
   moveEntities(Entities, scaledDeltaTime)
   processEntityUpdate(Entities)
   -- setAnimationsFromInput(entities, scaledDeltaTime)
-  -- processAnimations(entities, scaledDeltaTime)
+  processAnimations(Entities, scaledDeltaTime)
 end
 
 function love.draw()
+  love.graphics.setColor(1, 1, 1, 0.5)
+  love.graphics.draw(bgImage, 0, 0, 0, PixelScale, PixelScale)
+
   drawSprites(Entities)
   drawText(Entities)
   love.graphics.print(Resource, 8, 8, 0, PixelScale)

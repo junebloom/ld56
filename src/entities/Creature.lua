@@ -4,6 +4,7 @@ local states = {
     enter = function(creature)
       creature.input = Vector(0, 0)
       creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
+      creature:setAnimation(creature.animations.idle)
     end,
     exit = function(creature)
       local n = math.random()
@@ -20,6 +21,7 @@ local states = {
       creature.input.x = (math.random() - 0.5) * 2
       creature.input.y = (math.random() - 0.5) * 2
       creature.behavior.nextTime = math.random() + 0.2
+      creature:setAnimation(creature.animations.walk)
     end,
     exit = function(creature)
       SetBehaviorState(creature, creature.behavior.states.idle)
@@ -43,6 +45,7 @@ local states = {
       if closest then
         creature.behavior.target = closest
         creature.input = closest.position - creature.position
+        creature:setAnimation(creature.animations.walk)
       else
         creature.behavior.currentState.exit(creature)
       end
@@ -65,7 +68,7 @@ local states = {
   harvestResource = {
     name = "harvestResource",
     enter = function(creature)
-      --
+      creature:setAnimation(creature.animations.idle)
     end,
     exit = function(creature)
       creature.behavior.target = nil
@@ -84,6 +87,7 @@ local states = {
     enter = function(creature)
       print("ouch")
       creature.input = Vector(0, 0)
+      creature:setAnimation(creature.animations.idle)
 
       local x = creature.ouch
       local y = creature.stats.defense
@@ -131,6 +135,14 @@ local function create(x, y)
       idle = {
         fps = 6,
         frames = {
+          love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
+        }
+      },
+      walk = {
+        fps = 6,
+        frames = {
+          love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
+          love.graphics.newQuad(TileSize, 0, TileSize, TileSize, SpriteSheet),
         }
       }
     },
