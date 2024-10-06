@@ -114,7 +114,7 @@ local function create(x, y)
       nextTime = 0,
       currentState = nil,
       lastState = nil,
-      mood = 0.2, --Chance to harvest 
+      mood = 0.2, --Chance to harvest
       states = states
     },
     stats = {
@@ -159,9 +159,10 @@ local function create(x, y)
   }
 
   SetBehaviorState(creature, creature.behavior.states.idle)
+  creature.behavior.nextTime = 0
 
   for _, upgrade in pairs(PurchasedUpgrades) do
-    if upgrade.type.creature then upgrade.apply(creature) end
+    if upgrade.types.creature then upgrade.apply(creature) end
   end
 
   return creature
