@@ -22,8 +22,9 @@ local function newCard(xoffset)
       end
     end,
     onMouseDown = function(card)
-      ApplyUpgradeToEntities(card.upgrade)
+      table.insert(PurchasedUpgrades, card.upgrade)
       Resource = Resource - UpgradeCosts[card.upgrade.tier]
+      ApplyUpgradeToEntities(card.upgrade)
       UI.setShopHidden(true)
       UI.shopButtons[1].hidden = false
     end

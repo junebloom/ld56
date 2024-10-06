@@ -125,9 +125,9 @@ local function create(x, y)
 
   SetBehaviorState(creature, creature.behavior.states.idle)
 
-  -- for _,upgrade in pairs(PurchasedUpgrades) do
-  --   if upgrade.type.creature then upgrade.apply(creature) end
-  -- end
+  for _, upgrade in pairs(PurchasedUpgrades) do
+    if upgrade.type.creature then upgrade.apply(creature) end
+  end
 
   return creature
 end
