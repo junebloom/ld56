@@ -37,6 +37,7 @@ UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
 
 function CheckGrowthThresholds(creature)
+  if CreatureTier >= 4 then return end
   local shouldGrow = true
 
   for stat, thresholds in pairs(GrowthThresholds) do
