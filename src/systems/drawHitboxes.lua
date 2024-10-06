@@ -1,6 +1,6 @@
 local function drawHitBoxes(entities)
   for _, e in pairs(entities) do
-    if e.hitbox then
+    if e.hitbox and not e.hidden then
       if e.hovered then
         love.graphics.setColor(0, 1, 0)
       else

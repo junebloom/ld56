@@ -7,6 +7,7 @@ local function newCard(xoffset)
     upgrade = Upgrades.MoveSpeedUpgrade,
     text = Upgrades.MoveSpeedUpgrade.glyph,
     hovered = false,
+    hidden = true,
     position = Vector(center.x - xoffset, center.y),
     sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
     spriteOffset = Vector(-TileSize, -TileSize * 1.5),
@@ -38,12 +39,14 @@ local UI = {
     id = ID.new(),
     type = "label",
     text = "choose an uwupgrade",
+    hidden = true,
     position = Vector(center.x, center.y - 24 * PixelScale),
   },
   bottomText = {
     id = ID.new(),
     type = "label",
     text = "it will make you gayer",
+    hidden = true,
     position = Vector(center.x, center.y + 24 * PixelScale),
   }
 }
@@ -54,6 +57,14 @@ function UI.init()
   table.insert(Entities, UI.cards[3])
   table.insert(Entities, UI.topText)
   table.insert(Entities, UI.bottomText)
+end
+
+function UI.setHidden(hidden)
+  UI.cards[1].hidden = hidden
+  UI.cards[2].hidden = hidden
+  UI.cards[3].hidden = hidden
+  UI.topText.hidden = hidden
+  UI.bottomText.hidden = hidden
 end
 
 return UI

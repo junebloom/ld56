@@ -84,12 +84,16 @@ function love.keypressed(key)
     else
       TimeScale = 0
     end
+  else
+    if key == "space" then
+      UI.setHidden(not UI.topText.hidden)
+    end
   end
 end
 
 function love.mousepressed()
   for _, e in pairs(Entities) do
-    if e.hovered and e.onMouseDown then e:onMouseDown() end
+    if e.hovered and e.onMouseDown and not e.hidden then e:onMouseDown() end
   end
 end
 
