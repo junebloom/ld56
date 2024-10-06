@@ -76,7 +76,9 @@ end
 function GetUpgradeChoices()
   local availableUpgrades = {}
   for _, upgrade in pairs(Upgrades) do
-    if upgrade.available then table.insert(availableUpgrades, upgrade) end
+    if upgrade.tier <= CreatureTier and upgrade.available then
+      table.insert(availableUpgrades, upgrade)
+    end
   end
 
   local choices = {}

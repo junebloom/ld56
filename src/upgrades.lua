@@ -1,8 +1,12 @@
 local upgrades = {
+
+  -- Creature Upgrades
+
+  -- Tier 1
+
   MoveSpeedUp = {
     tier = 1,
     available = true,
-    repeatable = true,
     glyph = "ms+",
     name = "move speed up",
     description = "increase base creature move speed by 50%",
@@ -13,10 +17,51 @@ local upgrades = {
       creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
     end
   },
+  PowerGrowthUp = {
+    tier = 1,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.powerGrowthMulti = creature.stats.powerGrowthMulti + 0.5
+      Upgrades.PowerGrowthUp.available = false
+    end
+  },
+  ScaryGrowthUp = {
+    tier = 1,
+    available = true,
+    glyph = "fe",
+    name = "fear efficiency",
+    description = "creatures gain 50% more spookiness",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.scaryGrowthMulti = creature.stats.scaryGrowthMulti + 0.5
+      Upgrades.ScaryGrowthUp.available = false
+    end
+  },
+  SmartGrowthUp = {
+    tier = 1,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.smartGrowthMulti = creature.stats.smartGrowthMulti + 0.5
+      Upgrades.SmartGrowthUp.available = false
+    end
+  },
   MoveSpeedMulti = {
     tier = 1,
     available = true,
-    repeatable = false,
     glyph = "ms*",
     name = "move speed up",
     description = "multiply current move speed by 120%",
@@ -25,13 +70,12 @@ local upgrades = {
     },
     apply = function(creature)
       creature.stats.moveSpeed = creature.stats.moveSpeed * 1.2
-      Upgrades.DefenseUp.available = false
+      Upgrades.MoveSpeedMulti.available = false
     end
   },
   EfficiencyUp = {
     tier = 1,
     available = true,
-    repeatable = true,
     glyph = "hs",
     name = "harvest speed up",
     description = "harvest effiiciency increased",
@@ -45,7 +89,6 @@ local upgrades = {
   ProductionUp = {
     tier = 1,
     available = true,
-    repeatable = true,
     glyph = "p+",
     name = "production speed up",
     description = "resource nodes produce 25% faster",
@@ -54,13 +97,12 @@ local upgrades = {
       statNode = true
     },
     apply = function(node)
-      node.stats.production = node.stats.production * 3 / 4
+      node.stats.production = node.stats.production * 1.5
     end
   },
   SmartUp = {
     tier = 1,
     available = true,
-    repeatable = false,
     glyph = "f+",
     name = "focus up",
     description = "creatures idle and wander a little less",
@@ -70,13 +112,12 @@ local upgrades = {
     apply = function(creature)
       creature.stats.smart = creature.stats.smart + 8
       Upgrades.SmartUp.available = false
-      Upgrades.SmartUpT2.prereq = true
+      Upgrades.SmartUpT2.available = true
     end
   },
   DefenseUp = {
     tier = 1,
     available = true,
-    repeatable = false,
     glyph = "d+",
     name = "defense up",
     description = "improve defense by 100%",
@@ -92,7 +133,6 @@ local upgrades = {
   GreedUp = {
     tier = 1,
     available = true,
-    repeatable = false,
     glyph = "g+",
     name = "resourceful",
     description = "harvesting is worth 20% more",
@@ -104,34 +144,12 @@ local upgrades = {
       Upgrades.GreedUp.available = false
     end
   },
-  LooshNodeT2 = {
-    tier = 1,
-    available = true,
-    repeatable = false,
-    glyph = "t2",
-    name = "loosh node lv 2",
-    description = "increase the tier of all loosh nodes",
-    types = {
-      resourceNode = true
-    },
-    apply = function(node)
-      node.stats.nodeTier = 2
-      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
-      Upgrades.LooshNodeTier2.available = false
-    end
-  },
-
-
-
 
   -- Tier 2
-  -- Creature Upgrades
 
   SmartUpT2 = {
     tier = 2,
     available = false,
-    repeatable = false,
-    prereq = false,
     glyph = "f++",
     name = "focus up +",
     description = "creatures idle and wander less",
@@ -147,8 +165,6 @@ local upgrades = {
   DefenseUpT2 = {
     tier = 2,
     available = false,
-    repeatable = false,
-    prereq = false,
     glyph = "d+",
     name = "defense up",
     description = "improve defense by 100%",
@@ -161,50 +177,11 @@ local upgrades = {
     end
   },
 
-  -- ResourceNode Upgrades
-  LooshNodeT2 = {
-    tier = 2,
-    available = false,
-    repeatable = false,
-    glyph = "t2",
-    name = "loosh node lv 2",
-    description = "increase the tier of all loosh nodes",
-    types = {
-      resourceNode = true
-    },
-    apply = function(node)
-      node.stats.nodeTier = 2
-      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
-      Upgrades.LooshNodeTier2.available = false
-    end
-  },
-  LooshNodeT3 = {
-    tier = 1,
-    available = true,
-    repeatable = false,
-    prereq = false,
-    glyph = "t2",
-    name = "loosh node lv 2",
-    description = "increase the tier of all loosh nodes",
-    types = {
-      resourceNode = true
-    },
-    apply = function(node)
-      node.stats.nodeTier = 3
-      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
-      Upgrades.LooshNodeTier2.available = false
-    end
-  },
-
-
   -- Tier 3
-
 
   DefenseUpT3 = {
     tier = 3,
     available = false,
-    repeatable = false,
-    prereq = false,
     glyph = "d+",
     name = "defense up",
     description = "improve defense by an additional 100%",
@@ -219,8 +196,6 @@ local upgrades = {
   SmartUpT3 = {
     tier = 3,
     available = false,
-    repeatable = false,
-    prereq = false,
     glyph = "f++",
     name = "focus up +",
     description = "creatures idle and wander a lot less",
@@ -233,13 +208,77 @@ local upgrades = {
     end
   },
 
+  -- ResourceNode Upgrades
+
+  LooshNodeT1 = {
+    tier = 1,
+    available = false,
+    glyph = "l+",
+    name = "loosh node lv 2",
+    description = "greatly increase loosh node production amount and required harvest time",
+    types = {
+      resourceNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.LooshNodeT1.available = false
+    end
+  },
+  LooshNodeT2 = {
+    tier = 2,
+    available = false,
+    glyph = "l+",
+    name = "loosh node lv 2",
+    description = "greatly increase loosh node production amount and required harvest time",
+    types = {
+      resourceNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.LooshNodeT2.available = false
+    end
+  },
+  LooshNodeT3 = {
+    tier = 3,
+    available = false,
+    glyph = "l++",
+    name = "loosh node lv 3",
+    description = "greatly increase loosh node production amount and required harvest time",
+    types = {
+      resourceNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 3
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.LooshNodeT3.available = false
+    end
+  },
 
   -- Growth
+
+  AllGrowthUp = {
+    tier = "Growth",
+    available = true,
+    glyph = "vp",
+    name = "vast potential",
+    description = "base creature growth speed increased by 100%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.overallGrowthMulti = creature.stats.overallGrowthMulti + 1
+      Upgrades.AllGrowthUp.available = false
+    end
+  },
 
   -- SmartUpGrowth = {
   --   tier = "Growth",
   --   available = false,
-  --   repeatable = false,
   --   glyph = "-hf-",
   --   name = "hyperfocus",
   --   description = "creatures idle for far less time",
