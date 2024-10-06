@@ -8,10 +8,10 @@ local states = {
     end,
     exit = function(creature)
       local n = math.random()
-      if n <= 0.8 then
-        SetBehaviorState(creature, creature.behavior.states.wander)
-      else
+      if n <= creature.behavior.mood then
         SetBehaviorState(creature, creature.behavior.states.moveToResource)
+      else
+        SetBehaviorState(creature, creature.behavior.states.wander)
       end
     end
   },
@@ -77,6 +77,9 @@ local states = {
     update = function(creature, dt)
       local target = creature.behavior.target
       target.timeToHarvest = target.timeToHarvest - dt * creature.stats.efficiency
+      if target.greedMultiplier ~= creature.stats.greed then
+        target.greedMultiplier = creature.stats.greed
+      end
       if not target.harvestable then
         creature.behavior.currentState.exit(creature)
       end
@@ -111,6 +114,7 @@ local function create(x, y)
       nextTime = 0,
       currentState = nil,
       lastState = nil,
+      mood = 0.2, --Chance to harvest 
       states = states
     },
     stats = {
