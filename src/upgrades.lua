@@ -266,22 +266,54 @@ local upgrades = {
   --  end
   --},
 
-  --Growth Tier up
-
-  GrowthT1 = {
-    tier = 1,
-    available = false,
-    glyph = "t2",
-    name = "tier 2",
-    description = "creatures grow to tier 2",
-    types = {
-      creature = true
+  -- Growth stat increases
+  growthStatUp = {
+    smart = {
+      tier = 1,
+      available = false,
+      repeatable = false,
+      prereq = false,
+      glyph = "nope",
+      name = "grow smart up",
+      description = "smart",
+      types = {
+        creature = true
+      },
+      apply = function(creature)
+        creature.stats.smart = creature.stats.smart + 24
+      end
     },
-    apply = function(creature)
-      CreatureTier = 2
-    end
-  },
-
+    scary = {
+      tier = 1,
+      available = false,
+      repeatable = false,
+      prereq = false,
+      glyph = "nope",
+      name = "grow scary up",
+      description = "scary",
+      types = {
+        creature = true
+      },
+      apply = function(creature)
+        creature.stats.scary = creature.stats.scary + 24
+      end
+    },
+    power = {
+      tier = 1,
+      available = false,
+      repeatable = false,
+      prereq = false,
+      glyph = "nope",
+      name = "grow power up",
+      description = "power",
+      types = {
+        creature = true
+      },
+      apply = function(creature)
+        creature.stats.power = creature.stats.power + 24
+      end
+    },
+  }
 }
 
 return upgrades

@@ -5,6 +5,7 @@ ID = require("utilities.id")
 
 -- Import entities
 ResourceNode = require("entities.ResourceNode")
+StatNode = require("entities.StatNode")
 Creature = require("entities.Creature")
 
 -- Import systems
@@ -24,7 +25,7 @@ TimeScale = 1
 Entities = {}
 
 Resource = 3
-CreatureTier = 1
+CreatureTier = 2
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
@@ -46,9 +47,9 @@ TileSize = 8
 PixelScale = 6
 UI = require("ui")
 
-function ApplyUpgradeToEntities(upgrade)
+function ApplyUpgradeToEntities(upgrade, arg)
   for _, e in pairs(Entities) do
-    if upgrade.types[e.type] then upgrade.apply(e) end
+    if upgrade.types[e.type] then upgrade.apply(e, arg) end
   end
 end
 
@@ -78,7 +79,8 @@ end
 
 function love.load()
   table.insert(Entities, ResourceNode.create(128, 128))
-  table.insert(Entities, ResourceNode.create(600, 128))
+  table.insert(Entities, StatNode.create(600, 128, "scary"))
+
   table.insert(Entities, Creature.create(256, 256))
   table.insert(Entities, Creature.create(200, 256))
   UI.init()
