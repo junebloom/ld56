@@ -12,6 +12,7 @@ local processMouseHover = require("src.systems.processMouseHover")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local processEntityUpdate = require("systems.processEntityUpdate")
 local processAnimations = require("systems.processAnimations")
+local processFacing = require("systems.processFacing")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
 local drawText = require("systems.drawText")
@@ -112,8 +113,8 @@ function love.update(dt)
   processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
-  processEntityUpdate(Entities)
-  -- setAnimationsFromInput(entities, scaledDeltaTime)
+  processEntityUpdate(Entities, scaledDeltaTime)
+  processFacing(Entities)
   processAnimations(Entities, scaledDeltaTime)
 end
 
@@ -123,6 +124,14 @@ function love.draw()
 
   drawSprites(Entities)
   drawText(Entities)
+
   love.graphics.print(math.floor(Resource * 10), 8, 8, 0, PixelScale)
-  if DEBUG then drawHitBoxes(Entities) end
+
+  if DEBUG then
+    drawHitBoxes(Entities)
+    love.graphics.setColor(0, 1, 1)
+    for _, e in pairs(Entities) do
+      love.graphics.circle("line", e.position.x, e.position.y, 2)
+    end
+  end
 end

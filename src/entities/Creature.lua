@@ -149,7 +149,7 @@ local function create(x, y)
     input = Vector(0, 0),
     position = Vector(x, y),
     sprite = love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
-    spriteOffset = Vector(0, 0),
+    spriteOffset = Vector(-TileSize / 2, -TileSize),
     facing = 1,
     frameTime = 0,
     currentFrame = 1,

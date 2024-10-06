@@ -34,11 +34,7 @@ local function create(x, y)
     id = ID.new(),
     type = "resourceNode",
     position = Vector(x, y),
-    spriteOffset = Vector(0, -TileSize),
-    hitbox = {
-      size = Vector(8 * PixelScale, 8 * PixelScale),
-      offset = Vector(0, 0)
-    },
+    spriteOffset = Vector(-TileSize / 2, -TileSize * 1.5),
     stats = {
       production = 1,
       nodeTier = 1
@@ -51,7 +47,11 @@ local function create(x, y)
       nextTime = 0,
       currentState = nil,
       states = states
-    }
+    },
+    -- hitbox = {
+    --   size = Vector(8 * PixelScale, 8 * PixelScale),
+    --   offset = Vector(0, 0)
+    -- }
   }
 
   SetBehaviorState(node, node.behavior.states.ready)
