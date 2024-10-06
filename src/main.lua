@@ -10,6 +10,7 @@ Creature = require("entities.Creature")
 -- Import systems
 local processMouse = require("systems.processMouse")
 local processBehaviorStates = require("systems.processBehaviorStates")
+local processEntityUpdate = require("systems.processEntityUpdate")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
 local drawText = require("systems.drawText")
@@ -62,7 +63,7 @@ function GetUpgradeChoices()
   return choices
 end
 
-function setBehaviorState(entity, state)
+function SetBehaviorState(entity, state)
   if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
   entity.behavior.currentState = state
   state.enter(entity)
@@ -92,6 +93,7 @@ function love.update(dt)
   processMouse(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
+  processEntityUpdate(Entities)
   -- setAnimationsFromInput(entities, scaledDeltaTime)
   -- processAnimations(entities, scaledDeltaTime)
 end

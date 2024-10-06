@@ -7,9 +7,9 @@ local states = {
     exit = function(creature)
       local n = math.random()
       if n <= 0.8 then
-        setBehaviorState(creature, creature.behavior.states.wander)
+        SetBehaviorState(creature, creature.behavior.states.wander)
       else
-        setBehaviorState(creature, creature.behavior.states.moveToResource)
+        SetBehaviorState(creature, creature.behavior.states.moveToResource)
       end
     end
   },
@@ -22,7 +22,7 @@ local states = {
     end,
     exit = function(creature)
       creature.input = Vector(0, 0)
-      setBehaviorState(creature, creature.behavior.states.idle)
+      SetBehaviorState(creature, creature.behavior.states.idle)
     end
   },
   moveToResource = {
@@ -50,9 +50,9 @@ local states = {
     exit = function(creature)
       creature.input = Vector(0, 0)
       if creature.behavior.target then
-        setBehaviorState(creature, creature.behavior.states.harvestResource)
+        SetBehaviorState(creature, creature.behavior.states.harvestResource)
       else
-        setBehaviorState(creature, creature.behavior.states.idle)
+        SetBehaviorState(creature, creature.behavior.states.idle)
       end
     end,
     update = function(creature)
@@ -69,7 +69,7 @@ local states = {
     end,
     exit = function(creature)
       creature.behavior.target = nil
-      setBehaviorState(creature, creature.behavior.states.idle)
+      SetBehaviorState(creature, creature.behavior.states.idle)
     end,
     update = function(creature, dt)
       local target = creature.behavior.target
@@ -123,7 +123,7 @@ local function create(x, y)
     end
   }
 
-  setBehaviorState(creature, creature.behavior.states.idle)
+  SetBehaviorState(creature, creature.behavior.states.idle)
 
   -- for _,upgrade in pairs(PurchasedUpgrades) do
   --   if upgrade.type.creature then upgrade.apply(creature) end

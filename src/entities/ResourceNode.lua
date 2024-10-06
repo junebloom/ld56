@@ -6,7 +6,7 @@ local states = {
       node.behavior.nextTime = 11 - math.sqrt(node.stats.production)
     end,
     exit = function(node)
-      setBehaviorState(node, node.behavior.states.ready)
+      SetBehaviorState(node, node.behavior.states.ready)
     end
   },
   ready = {
@@ -20,7 +20,7 @@ local states = {
     exit = function(node)
       node.harvestable = false
       Resource = Resource + 1
-      setBehaviorState(node, node.behavior.states.growing)
+      SetBehaviorState(node, node.behavior.states.growing)
     end,
     update = function(node)
       if node.timeToHarvest <= 0 then node.behavior.currentState.exit(node) end
@@ -49,7 +49,7 @@ local function create(x, y)
     }
   }
 
-  setBehaviorState(node, node.behavior.states.ready)
+  SetBehaviorState(node, node.behavior.states.ready)
 
   -- for _,upgrade in pairs(PurchasedUpgrades) do
   --   if upgrade.type == "node" then upgrade.apply(node) end

@@ -1,52 +1,45 @@
 local center = Vector(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
 
+local function newCard(xoffset)
+  local card = {
+    id = ID.new(),
+    type = "button",
+    upgrade = Upgrades.MoveSpeedUpgrade,
+    text = Upgrades.MoveSpeedUpgrade.glyph,
+    hovered = false,
+    position = Vector(center.x - xoffset, center.y),
+    sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
+    spriteOffset = Vector(-TileSize, -TileSize * 1.5),
+    hitbox = {
+      size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
+      offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
+    },
+    update = function(card)
+      if card.hovered then
+        UI.topText.text = card.upgrade.name
+        UI.bottomText.text = card.upgrade.description
+      end
+    end
+  }
+  return card
+end
+
 local UI = {
   cards = {
-    {
-      type = "button",
-      upgrade = nil,
-      text = "",
-      position = Vector(center.x - 24 * PixelScale, center.y),
-      sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
-      spriteOffset = Vector(-TileSize, -TileSize * 1.5),
-      hitbox = {
-        size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
-        offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
-      }
-    },
-    {
-      type = "button",
-      upgrade = Upgrades.MoveSpeedUpgrade,
-      text = Upgrades.MoveSpeedUpgrade.glyph,
-      position = Vector(center.x, center.y),
-      sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
-      spriteOffset = Vector(-TileSize, -TileSize * 1.5),
-      hitbox = {
-        size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
-        offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
-      }
-    },
-    {
-      type = "button",
-      upgrade = nil,
-      text = "",
-      position = Vector(center.x + 24 * PixelScale, center.y),
-      sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
-      spriteOffset = Vector(-TileSize, -TileSize * 1.5),
-      hitbox = {
-        size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
-        offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
-      }
-    }
+    newCard(-24 * PixelScale),
+    newCard(0),
+    newCard(24 * PixelScale)
   },
   topText = {
+    id = ID.new(),
     type = "label",
-    text = "something",
+    text = "choose an uwupgrade",
     position = Vector(center.x, center.y - 24 * PixelScale),
   },
   bottomText = {
+    id = ID.new(),
     type = "label",
-    text = "meow: +50% ... 3 * 2 - 1 / 0",
+    text = "it will make you gayer",
     position = Vector(center.x, center.y + 24 * PixelScale),
   }
 }
