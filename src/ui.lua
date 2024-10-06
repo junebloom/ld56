@@ -16,7 +16,7 @@ local function newCard(xoffset)
       offset = Vector(-TileSize * PixelScale, -TileSize * 1.5 * PixelScale)
     },
     update = function(card)
-      if card.hovered then
+      if card.hovered and not card.hidden then
         UI.topText.text = card.upgrade.name
         UI.bottomText.text = card.upgrade.description
       end

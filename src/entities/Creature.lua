@@ -2,6 +2,7 @@ local states = {
   idle = {
     name = "idle",
     enter = function(creature)
+      creature.input = Vector(0, 0)
       creature.behavior.nextTime = 6 - math.sqrt(creature.stats.smart)
     end,
     exit = function(creature)
@@ -21,7 +22,6 @@ local states = {
       creature.behavior.nextTime = math.random() + 0.2
     end,
     exit = function(creature)
-      creature.input = Vector(0, 0)
       SetBehaviorState(creature, creature.behavior.states.idle)
     end
   },
@@ -78,6 +78,23 @@ local states = {
         creature.behavior.currentState.exit(creature)
       end
     end
+  },
+  hurt = {
+    name = "hurt",
+    enter = function(creature)
+      print("ouch")
+      creature.input = Vector(0, 0)
+
+      local x = creature.ouch
+      local y = creature.stats.defense
+
+      creature.behavior.nextTime = (x ^ 2 + x) * (1 / (y ^ 2) + 1)
+
+      if y >= x * 2 then creature.behavior.nextTime = 0 end
+    end,
+    exit = function(creature)
+      SetBehaviorState(creature, creature.behavior.lastState)
+    end
   }
 }
 
@@ -89,6 +106,7 @@ local function create(x, y)
       target = nil,
       nextTime = 0,
       currentState = nil,
+      lastState = nil,
       states = states
     },
     stats = {
@@ -100,6 +118,7 @@ local function create(x, y)
       smart = 1, -- cap 36
       efficiency = 1
     },
+    ouch = 0, -- damage received on hurt
     input = Vector(0, 0),
     position = Vector(x, y),
     sprite = love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),

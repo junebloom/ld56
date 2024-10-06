@@ -66,15 +66,16 @@ end
 
 function SetBehaviorState(entity, state)
   if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
+  entity.behavior.lastState = entity.behavior.currentState
   entity.behavior.currentState = state
   state.enter(entity)
 end
 
 function love.load()
-  table.insert(Entities, ResourceNode.create(128, 128))
-  table.insert(Entities, ResourceNode.create(600, 128))
   table.insert(Entities, Creature.create(256, 256))
   table.insert(Entities, Creature.create(200, 256))
+  table.insert(Entities, ResourceNode.create(128, 128))
+  table.insert(Entities, ResourceNode.create(600, 128))
   UI.init()
 end
 
@@ -84,6 +85,14 @@ function love.keypressed(key)
       TimeScale = 1
     else
       TimeScale = 0
+    end
+  else
+    if key == "space" then
+      local e = Entities[1]
+      if e.behavior.currentState ~= e.behavior.states.hurt then
+        e.ouch = 1
+        SetBehaviorState(e, e.behavior.states.hurt)
+      end
     end
   end
 end
