@@ -8,7 +8,7 @@ ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
 -- Import systems
-local processMouseHover = require("src.systems.processMouseHover")
+local processMouseHover = require("systems.processMouseHover")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local processEntityUpdate = require("systems.processEntityUpdate")
 local processAnimations = require("systems.processAnimations")
