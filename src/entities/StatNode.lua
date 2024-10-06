@@ -3,7 +3,7 @@ local states = {
     name = "growing",
     enter = function(node)
       node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
-      node.behavior.nextTime = 11 - math.sqrt(node.stats.production)
+      node.behavior.nextTime = node.growthTime * (1 / 0.5 + node.stats.production * 0.5)
     end,
     exit = function(node)
       SetBehaviorState(node, node.behavior.states.ready)
@@ -41,6 +41,7 @@ local function create(x, y, stat)
       production = 1,
       nodeTier = 1
     },
+    growthTime = 11,
     harvestable = true,
     baseTimeToHarvest = 10,
     timeToHarvest = 10,
