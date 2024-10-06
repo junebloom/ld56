@@ -19,6 +19,10 @@ local function newCard(xoffset)
         UI.topText.text = card.upgrade.name
         UI.bottomText.text = card.upgrade.description
       end
+    end,
+    onMouseDown = function(card)
+      -- TODO: handle click
+      print("clicked " .. card.id)
     end
   }
   return card

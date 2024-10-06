@@ -8,7 +8,7 @@ ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
 -- Import systems
-local processMouse = require("systems.processMouse")
+local processMouseHover = require("src.systems.processMouseHover")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local processEntityUpdate = require("systems.processEntityUpdate")
 local moveEntities = require("systems.moveEntities")
@@ -87,10 +87,16 @@ function love.keypressed(key)
   end
 end
 
+function love.mousepressed()
+  for _, e in pairs(Entities) do
+    if e.hovered and e.onMouseDown then e:onMouseDown() end
+  end
+end
+
 function love.update(dt)
   local scaledDeltaTime = dt * TimeScale
 
-  processMouse(Entities)
+  processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
   processEntityUpdate(Entities)

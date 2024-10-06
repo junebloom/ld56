@@ -1,6 +1,6 @@
 local collision = require("utilities.collision")
 
-local function processMouse(entities)
+local function processMouseHover(entities)
   for _, e in pairs(entities) do
     if e.hitbox then
       local bounds = collision.getBounds(e)
@@ -9,4 +9,4 @@ local function processMouse(entities)
   end
 end
 
-return processMouse
+return processMouseHover
