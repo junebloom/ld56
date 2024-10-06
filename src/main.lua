@@ -137,6 +137,8 @@ function love.draw()
 
   love.graphics.print(math.floor(Resource * 10), 8, 8, 0, PixelScale)
 
+  if (TimeScale == 0) then love.graphics.print("paused", 53 * PixelScale, 8, 0, PixelScale) end
+
   if DEBUG then
     drawHitBoxes(Entities)
     love.graphics.setColor(0, 1, 1)
