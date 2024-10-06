@@ -25,11 +25,31 @@ TimeScale = 1
 Entities = {}
 
 Resource = 3
-CreatureTier = 2
+CreatureTier = 1
+GrowthThresholds = {
+  smart = { 2, 5, 10 },
+  scary = { 2, 5, 10 },
+  power = { 2, 5, 10 }
+}
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
+
+function CheckGrowthThresholds(creature)
+  local shouldGrow = true
+
+  for stat, thresholds in pairs(GrowthThresholds) do
+    if creature.stats[stat] < thresholds[CreatureTier] then
+      shouldGrow = false
+    end
+  end
+
+  if shouldGrow then
+    if DEBUG then print("Thresholds reached -- going up a tier!") end
+    CreatureTier = CreatureTier + 1
+  end
+end
 
 -- Configure graphics
 local bgImage = love.graphics.newImage("assets/bg.png")

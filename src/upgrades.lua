@@ -266,8 +266,8 @@ local upgrades = {
   --  end
   --},
 
-  -- Growth stat increases
-  growthStatUp = {
+  -- Non-player facing upgrades for growth stat harvesting
+  HarvestGrowthStat = {
     smart = {
       tier = 1,
       available = false,
@@ -281,6 +281,7 @@ local upgrades = {
       },
       apply = function(creature)
         creature.stats.smart = creature.stats.smart + 24
+        CheckGrowthThresholds(creature)
       end
     },
     scary = {
@@ -296,6 +297,7 @@ local upgrades = {
       },
       apply = function(creature)
         creature.stats.scary = creature.stats.scary + 24
+        CheckGrowthThresholds(creature)
       end
     },
     power = {
@@ -311,6 +313,7 @@ local upgrades = {
       },
       apply = function(creature)
         creature.stats.power = creature.stats.power + 24
+        CheckGrowthThresholds(creature)
       end
     },
   }
