@@ -1,5 +1,8 @@
 local upgrades = {
 
+  -- TODO: Point statnodes upgrades to corresponding type
+  -- TODO: See if upgrades can create entity
+
   -- Creature Upgrades
 
   -- Tier 1
@@ -154,8 +157,8 @@ local upgrades = {
   MoveSpeedUpT2 = {
     tier = 2,
     available = true,
-    glyph = "ms+",
-    name = "move speed up",
+    glyph = "ms++",
+    name = "move speed up ++",
     description = "increase base creature move speed by 50%",
     types = {
       creature = true
@@ -169,8 +172,8 @@ local upgrades = {
   PowerGrowthUpT2 = {
     tier = 2,
     available = true,
-    glyph = "se",
-    name = "strength efficiency",
+    glyph = "se++",
+    name = "strength efficiency++",
     description = "creatures gain 50% more strength",
     types = {
       creature = true
@@ -184,8 +187,8 @@ local upgrades = {
   ScaryGrowthUpT2 = {
     tier = 2,
     available = true,
-    glyph = "fe",
-    name = "fear efficiency",
+    glyph = "fe++",
+    name = "fear efficiency++",
     description = "creatures gain 50% more spookiness",
     types = {
       creature = true
@@ -199,9 +202,9 @@ local upgrades = {
   SmartGrowthUpT2 = {
     tier = 2,
     available = true,
-    glyph = "se",
-    name = "strength efficiency",
-    description = "creatures gain 50% more strength",
+    glyph = "se++",
+    name = "cunning efficiency ++",
+    description = "creatures gain 50% more smarts",
     types = {
       creature = true
     },
@@ -215,7 +218,7 @@ local upgrades = {
     tier = 2,
     available = true,
     glyph = "ms*",
-    name = "move speed up",
+    name = "move speed up ++",
     description = "multiply current move speed by 120%",
     types = {
       creature = true
@@ -229,8 +232,8 @@ local upgrades = {
   EfficiencyUpT2 = {
     tier = 2,
     available = true,
-    glyph = "hs",
-    name = "harvest speed up",
+    glyph = "hs++",
+    name = "harvest speed up ++",
     description = "harvest efficiency doubled",
     types = {
       creature = true
@@ -244,8 +247,8 @@ local upgrades = {
   ProductionUpT2 = {
     tier = 2,
     available = true,
-    glyph = "p+",
-    name = "production speed up",
+    glyph = "p++",
+    name = "production speed up ++",
     description = "resource nodes produce 25% faster",
     types = {
       resourceNode = true,
@@ -261,7 +264,7 @@ local upgrades = {
     tier = 2,
     available = false,
     glyph = "f++",
-    name = "focus up +",
+    name = "focus up ++",
     description = "creatures idle and wander less",
     types = {
       creature = true
@@ -276,8 +279,8 @@ local upgrades = {
   DefenseUpT2 = {
     tier = 2,
     available = false,
-    glyph = "d+",
-    name = "defense up",
+    glyph = "d++",
+    name = "defense up ++",
     description = "improve defense by 100%",
     types = {
       creature = true
@@ -292,7 +295,7 @@ local upgrades = {
     tier = 2,
     available = false,
     glyph = "g++",
-    name = "resourceful+",
+    name = "resourceful++",
     description = "harvesting is worth 20% more",
     types = {
       creature = true
@@ -310,7 +313,7 @@ local upgrades = {
     tier = 3,
     available = true,
     glyph = "ms+",
-    name = "move speed up",
+    name = "move speed up +++",
     description = "increase base creature move speed by 50%",
     types = {
       creature = true
@@ -325,7 +328,7 @@ local upgrades = {
     tier = 3,
     available = true,
     glyph = "se",
-    name = "strength efficiency",
+    name = "strength efficiency+++",
     description = "creatures gain 50% more strength",
     types = {
       creature = true
@@ -340,7 +343,7 @@ local upgrades = {
     tier = 3,
     available = true,
     glyph = "fe",
-    name = "fear efficiency",
+    name = "fear efficiency +++",
     description = "creatures gain 50% more spookiness",
     types = {
       creature = true
@@ -355,8 +358,8 @@ local upgrades = {
     tier = 3,
     available = true,
     glyph = "se",
-    name = "strength efficiency",
-    description = "creatures gain 50% more strength",
+    name = "cunning efficiency +++",
+    description = "creatures gain 50% more smarts",
     types = {
       creature = true
     },
@@ -369,8 +372,8 @@ local upgrades = {
   MoveSpeedMultiT3 = {
     tier = 3,
     available = true,
-    glyph = "ms*",
-    name = "move speed up",
+    glyph = "*ms*",
+    name = "move speed up +++",
     description = "multiply current move speed by 120%",
     types = {
       creature = true
@@ -384,8 +387,8 @@ local upgrades = {
   EfficiencyUpT3 = {
     tier = 3,
     available = true,
-    glyph = "hs",
-    name = "harvest speed up",
+    glyph = "+hs+",
+    name = "harvest speed up +++",
     description = "harvest efficiency doubled",
     types = {
       creature = true
@@ -399,8 +402,8 @@ local upgrades = {
   ProductionUpT3 = {
     tier = 3,
     available = true,
-    glyph = "p+",
-    name = "production speed up",
+    glyph = "+p+",
+    name = "production speed up +++",
     description = "resource nodes produce 25% faster",
     types = {
       resourceNode = true,
@@ -415,8 +418,8 @@ local upgrades = {
   DefenseUpT3 = {
     tier = 3,
     available = false,
-    glyph = "d+",
-    name = "defense up",
+    glyph = "+d+",
+    name = "defense up +++",
     description = "improve defense by an additional 100%",
     types = {
       creature = true
@@ -429,8 +432,8 @@ local upgrades = {
   SmartUpT3 = {
     tier = 3,
     available = false,
-    glyph = "f++",
-    name = "focus up +",
+    glyph = "+f+",
+    name = "focus up +++",
     description = "creatures idle and wander a lot less",
     types = {
       creature = true
@@ -443,8 +446,8 @@ local upgrades = {
   GreedUpT3 = {
     tier = 3,
     available = false,
-    glyph = "g+++",
-    name = "resourceful++",
+    glyph = "+g+",
+    name = "resourceful+++",
     description = "harvesting is worth 20% more",
     types = {
       creature = true
@@ -494,7 +497,7 @@ local upgrades = {
   LooshNodeT3 = {
     tier = 3,
     available = false,
-    glyph = "l+++",
+    glyph = "+l+",
     name = "loosh node lv 4",
     description = "greatly increase loosh node production amount and required harvest time",
     types = {
@@ -522,6 +525,7 @@ local upgrades = {
       node.baseTimeToHarvest = node.baseTimeToHarvest * 4
       node.growthTime = node.growthTime + 5
       Upgrades.ScaryNodeT1.available = false
+      Upgrades.ScaryNodeT2.available = true
     end
   },
   ScaryNodeT2 = {
@@ -538,12 +542,13 @@ local upgrades = {
       node.baseTimeToHarvest = node.baseTimeToHarvest * 4
       node.growthTime = node.growthTime + 5
       Upgrades.ScaryNodeT2.available = false
+      Upgrades.ScaryNodeT3.available = true
     end
   },
   ScaryNodeT3 = {
     tier = 3,
     available = false,
-    glyph = "s+++",
+    glyph = "+s+",
     name = "spooky node lv 4",
     description = "greatly increase spooky node production amount and required harvest time",
     types = {
@@ -557,6 +562,107 @@ local upgrades = {
     end
   },
 
+  SmartNodeT1 = {
+    tier = 1,
+    available = true,
+    glyph = "s+",
+    name = "smart node lv 2",
+    description = "greatly increase cunning node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.SmartNodeT1.available = false
+      Upgrades.SmartNodeT2.available = true
+    end
+  },
+  SmartNodeT2 = {
+    tier = 2,
+    available = false,
+    glyph = "s++",
+    name = "smart node lv 3",
+    description = "greatly increase cunning node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.SmartNodeT2.available = false
+      Upgrades.SmartNodeT3.available = true
+    end
+  },
+  SmartNodeT3 = {
+    tier = 3,
+    available = false,
+    glyph = "+s+",
+    name = "smart node lv 4",
+    description = "greatly increase cunning node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 3
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.SmartNodeT3.available = false
+    end
+  },
+
+  PowerNodeT1 = {
+    tier = 1,
+    available = true,
+    glyph = "s+",
+    name = "strength node lv 2",
+    description = "greatly increase strength node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.PowerNodeT1.available = false
+      Upgrades.PowerNodeT2.available = true
+    end
+  },
+  PowerNodeT2 = {
+    tier = 2,
+    available = false,
+    glyph = "s++",
+    name = "strength node lv 3",
+    description = "greatly increase strength node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.PowerNodeT2.available = false
+      Upgrades.PowerNodeT3.available = true
+    end
+  },
+  PowerNodeT3 = {
+    tier = 3,
+    available = false,
+    glyph = "+s+",
+    name = "strength node lv 4",
+    description = "greatly increase strength node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 3
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.PowerNodeT3.available = false
+    end
+  },
 
   -- Growth
 
@@ -604,9 +710,34 @@ local upgrades = {
   --  end
   --},
 
-
   -- SoldOutUpgrade = {
   --   tier = 1,
+  --   available = false,
+  --   glyph = ":c",
+  --   name = "sold out",
+  --   description = "sorry come back later, no refunds",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --   end
+  -- },
+
+  -- SoldOutUpgradeT2 = {
+  --   tier = 2,
+  --   available = false,
+  --   glyph = ":c",
+  --   name = "sold out",
+  --   description = "sorry come back later, no refunds",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --   end
+  -- },
+
+  -- SoldOutUpgradeT3 = {
+  --   tier = 3,
   --   available = false,
   --   glyph = ":c",
   --   name = "sold out",
@@ -627,7 +758,8 @@ local upgrades = {
       },
       apply = function(creature, node)
         creature.stats.smart = creature.stats.smart +
-            (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier
+            (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier * creature.stats.smartGrowthMulti *
+            creature.stats.overallGrowthMulti
         CheckGrowthThresholds(creature)
       end
     },
@@ -636,7 +768,9 @@ local upgrades = {
         creature = true
       },
       apply = function(creature, node)
-        creature.stats.scary = creature.stats.scary + 24
+        creature.stats.scary = creature.stats.scary +
+            (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier * creature.stats.scaryGrowthMulti *
+            creature.stats.overallGrowthMulti
         CheckGrowthThresholds(creature)
       end
     },
@@ -645,7 +779,9 @@ local upgrades = {
         creature = true
       },
       apply = function(creature, node)
-        creature.stats.power = creature.stats.power + 24
+        creature.stats.power = creature.stats.power +
+            (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier * creature.stats.powerGrowthMulti *
+            creature.stats.overallGrowthMulti
         CheckGrowthThresholds(creature)
       end
     },
