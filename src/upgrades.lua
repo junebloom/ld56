@@ -48,9 +48,10 @@ local upgrades = {
     repeatable = true,
     glyph = "p+",
     name = "production speed up",
-    description = "nodes produce 25% faster",
+    description = "resource nodes produce 25% faster",
     types = {
-      resourceNode = true
+      resourceNode = true,
+      statNode = true
     },
     apply = function(node)
       node.stats.production = node.stats.production * 3 / 4
@@ -103,7 +104,7 @@ local upgrades = {
       Upgrades.GreedUp.available = false
     end
   },
-  LooshNodeTier2 = {
+  LooshNodeT2 = {
     tier = 1,
     available = true,
     repeatable = false,
@@ -124,6 +125,7 @@ local upgrades = {
 
 
   -- Tier 2
+  -- Creature Upgrades
 
   SmartUpT2 = {
     tier = 2,
@@ -156,6 +158,41 @@ local upgrades = {
     apply = function(creature)
       creature.stats.defense = creature.stats.defense + 1
       Upgrades.DefenseUp.available = false
+    end
+  },
+
+  -- ResourceNode Upgrades
+  LooshNodeT2 = {
+    tier = 2,
+    available = false,
+    repeatable = false,
+    glyph = "t2",
+    name = "loosh node lv 2",
+    description = "increase the tier of all loosh nodes",
+    types = {
+      resourceNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      Upgrades.LooshNodeTier2.available = false
+    end
+  },
+  LooshNodeT3 = {
+    tier = 1,
+    available = true,
+    repeatable = false,
+    prereq = false,
+    glyph = "t2",
+    name = "loosh node lv 2",
+    description = "increase the tier of all loosh nodes",
+    types = {
+      resourceNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 3
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      Upgrades.LooshNodeTier2.available = false
     end
   },
 
@@ -228,6 +265,23 @@ local upgrades = {
   --    creature.create(128,128)
   --  end
   --},
+
+  --Growth Tier up
+
+  GrowthT1 = {
+    tier = 1,
+    available = false,
+    glyph = "t2",
+    name = "tier 2",
+    description = "creatures grow to tier 2",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      CreatureTier = 2
+    end
+  },
+
 }
 
 return upgrades
