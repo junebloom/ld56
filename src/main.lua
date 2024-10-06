@@ -84,17 +84,15 @@ function love.load()
 end
 
 function love.keypressed(key)
-  if key == "escape" then
-    DEBUG = not DEBUG
-    -- else
-    --   if key == "space" then
-    --     local e = Entities[1]
-    --     if e.behavior.currentState ~= e.behavior.states.hurt then
-    --       e.ouch = 1
-    --       SetBehaviorState(e, e.behavior.states.hurt)
-    --     end
-    --   end
-  end
+  if key == "escape" then DEBUG = not DEBUG end
+  -- else
+  --   if key == "space" then
+  --     local e = Entities[1]
+  --     if e.behavior.currentState ~= e.behavior.states.hurt then
+  --       e.ouch = 1
+  --       SetBehaviorState(e, e.behavior.states.hurt)
+  --     end
+  --   end
 end
 
 function love.mousepressed(x, y)
