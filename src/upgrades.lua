@@ -15,6 +15,7 @@ local upgrades = {
     },
     apply = function(creature)
       creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
+      Upgrades.MoveSpeedUp.available = false
     end
   },
   PowerGrowthUp = {
@@ -78,12 +79,13 @@ local upgrades = {
     available = true,
     glyph = "hs",
     name = "harvest speed up",
-    description = "harvest effiiciency increased",
+    description = "harvest efficiency doubled",
     types = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.efficiency = creature.stats.efficiency + 1
+      creature.stats.efficiency = creature.stats.efficiency * 2
+      Upgrades.EfficiencyUp.available = false
     end
   },
   ProductionUp = {
@@ -98,6 +100,7 @@ local upgrades = {
     },
     apply = function(node)
       node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUp.available = false
     end
   },
   SmartUp = {
@@ -148,6 +151,112 @@ local upgrades = {
 
   -- Tier 2
 
+  MoveSpeedUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "ms+",
+    name = "move speed up",
+    description = "increase base creature move speed by 50%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
+      Upgrades.MoveSpeedUpT2.available = false
+    end
+  },
+
+  PowerGrowthUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.powerGrowthMulti = creature.stats.powerGrowthMulti + 0.5
+      Upgrades.PowerGrowthUpT2.available = false
+    end
+  },
+
+  ScaryGrowthUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "fe",
+    name = "fear efficiency",
+    description = "creatures gain 50% more spookiness",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.scaryGrowthMulti = creature.stats.scaryGrowthMulti + 0.5
+      Upgrades.ScaryGrowthUpT2.available = false
+    end
+  },
+
+  SmartGrowthUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.smartGrowthMulti = creature.stats.smartGrowthMulti + 0.5
+      Upgrades.SmartGrowthUpT2.available = false
+    end
+  },
+
+  MoveSpeedMultiT2 = {
+    tier = 2,
+    available = true,
+    glyph = "ms*",
+    name = "move speed up",
+    description = "multiply current move speed by 120%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.moveSpeed = creature.stats.moveSpeed * 1.2
+      Upgrades.MoveSpeedMultiT2.available = false
+    end
+  },
+
+  EfficiencyUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "hs",
+    name = "harvest speed up",
+    description = "harvest efficiency doubled",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.efficiency = creature.stats.efficiency * 2
+      Upgrades.EfficiencyUpT2.available = false
+    end
+  },
+
+  ProductionUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "p+",
+    name = "production speed up",
+    description = "resource nodes produce 25% faster",
+    types = {
+      resourceNode = true,
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUpT2.available = false
+    end
+  },
+
   SmartUpT2 = {
     tier = 2,
     available = false,
@@ -163,6 +272,7 @@ local upgrades = {
       Upgrades.SmartUpT3.prereq = true
     end
   },
+
   DefenseUpT2 = {
     tier = 2,
     available = false,
@@ -177,6 +287,7 @@ local upgrades = {
       Upgrades.DefenseUp.available = false
     end
   },
+
   GreedUpT2 = {
     tier = 2,
     available = false,
@@ -194,6 +305,112 @@ local upgrades = {
   },
 
   -- Tier 3
+
+  MoveSpeedUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "ms+",
+    name = "move speed up",
+    description = "increase base creature move speed by 50%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
+      Upgrades.MoveSpeedUpT3.available = false
+    end
+  },
+
+  PowerGrowthUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.powerGrowthMulti = creature.stats.powerGrowthMulti + 0.5
+      Upgrades.PowerGrowthUpT3.available = false
+    end
+  },
+
+  ScaryGrowthUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "fe",
+    name = "fear efficiency",
+    description = "creatures gain 50% more spookiness",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.scaryGrowthMulti = creature.stats.scaryGrowthMulti + 0.5
+      Upgrades.ScaryGrowthUpT3.available = false
+    end
+  },
+
+  SmartGrowthUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "se",
+    name = "strength efficiency",
+    description = "creatures gain 50% more strength",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.smartGrowthMulti = creature.stats.smartGrowthMulti + 0.5
+      Upgrades.SmartGrowthUpT3.available = false
+    end
+  },
+
+  MoveSpeedMultiT3 = {
+    tier = 3,
+    available = true,
+    glyph = "ms*",
+    name = "move speed up",
+    description = "multiply current move speed by 120%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.moveSpeed = creature.stats.moveSpeed * 1.2
+      Upgrades.MoveSpeedMultiT3.available = false
+    end
+  },
+
+  EfficiencyUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "hs",
+    name = "harvest speed up",
+    description = "harvest efficiency doubled",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.efficiency = creature.stats.efficiency * 2
+      Upgrades.EfficiencyUpT3.available = false
+    end
+  },
+
+  ProductionUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "p+",
+    name = "production speed up",
+    description = "resource nodes produce 25% faster",
+    types = {
+      resourceNode = true,
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUpT3.available = false
+    end
+  },
 
   DefenseUpT3 = {
     tier = 3,
@@ -387,6 +604,20 @@ local upgrades = {
   --  end
   --},
 
+
+  -- SoldOutUpgrade = {
+  --   tier = 1,
+  --   available = false,
+  --   glyph = ":c",
+  --   name = "sold out",
+  --   description = "sorry come back later, no refunds",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --   end
+  -- },
+
   -- Non-player facing upgrades for growth stat harvesting
   HarvestGrowthStat = {
     tier = 68,
@@ -395,7 +626,8 @@ local upgrades = {
         creature = true
       },
       apply = function(creature, node)
-        creature.stats.smart = creature.stats.smart + 24
+        creature.stats.smart = creature.stats.smart +
+            (node.stats.nodeTier ^ 2) * node.stats.production * node.greedMultiplier
         CheckGrowthThresholds(creature)
       end
     },
