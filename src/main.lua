@@ -97,7 +97,8 @@ function love.keypressed(key)
   end
 end
 
-function love.mousepressed()
+function love.mousepressed(x, y)
+  if DEBUG then print("clicked: ", x, y, math.floor(x / PixelScale), math.floor(y / PixelScale)) end
   for _, e in pairs(Entities) do
     if e.hovered and e.onMouseDown and not e.hidden then e:onMouseDown() end
   end
