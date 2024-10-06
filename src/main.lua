@@ -85,6 +85,13 @@ end
 
 function love.keypressed(key)
   if key == "escape" then DEBUG = not DEBUG end
+  if DEBUG then
+    if key == "1" then TimeScale = 1 end
+    if key == "2" then TimeScale = 3 end
+    if key == "3" then TimeScale = 5 end
+    if key == "4" then TimeScale = 10 end
+    if key == "5" then TimeScale = 20 end
+  end
   -- else
   --   if key == "space" then
   --     local e = Entities[1]
