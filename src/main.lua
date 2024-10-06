@@ -21,7 +21,7 @@ Entities = {}
 TimeScale = 1
 DEBUG = true
 
-Resource = 1
+Resource = 3
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
@@ -117,6 +117,6 @@ end
 function love.draw()
   drawSprites(Entities)
   drawText(Entities)
-  love.graphics.print(Resource, 8, 8, 0, PixelScale)
+  love.graphics.print(math.floor(Resource*10), 8, 8, 0, PixelScale)
   if DEBUG then drawHitBoxes(Entities) end
 end
