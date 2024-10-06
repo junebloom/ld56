@@ -6,14 +6,14 @@ Upgrades = require("upgrades")
 ResourceNode = require("entities.ResourceNode")
 Creature = require("entities.Creature")
 
+local initUI = require("ui")
+
 local processMouse = require("systems.processMouse")
 local processBehaviorStates = require("systems.processBehaviorStates")
 local moveEntities = require("systems.moveEntities")
 local drawSprites = require("systems.drawSprites")
 local drawText = require("systems.drawText")
 local drawHitBoxes = require("systems.drawHitboxes")
-
-local initUI = require("ui")
 
 love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
 
@@ -30,6 +30,10 @@ PixelScale = 6
 Entities = {}
 TimeScale = 1
 DEBUG = true
+
+UIState = {
+  IsShopOpen = false
+}
 
 Resource = 0
 PurchasedUpgrades = {}
@@ -65,7 +69,7 @@ end
 
 function love.load()
   table.insert(Entities, ResourceNode.create(128, 128))
-  table.insert(Entities, ResourceNode.create(256, 128))
+  table.insert(Entities, ResourceNode.create(600, 128))
   table.insert(Entities, Creature.create(256, 256))
   table.insert(Entities, Creature.create(200, 256))
   initUI()
