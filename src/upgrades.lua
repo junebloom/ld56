@@ -140,8 +140,9 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.greed = creature.stats.greed * 1.2
+      creature.stats.greed = creature.stats.greed + 0.2
       Upgrades.GreedUp.available = false
+      Upgrades.GreedUpT2.available = true
     end
   },
 
@@ -176,6 +177,21 @@ local upgrades = {
       Upgrades.DefenseUp.available = false
     end
   },
+  GreedUpT2 = {
+    tier = 2,
+    available = false,
+    glyph = "g++",
+    name = "resourceful+",
+    description = "harvesting is worth 20% more",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.greed = creature.stats.greed + 0.2
+      Upgrades.GreedUpT2.available = false
+      Upgrades.GreedUpT3.available = true
+    end
+  },
 
   -- Tier 3
 
@@ -207,12 +223,26 @@ local upgrades = {
       Upgrades.SmartUpT2.available = false
     end
   },
+  GreedUpT3 = {
+    tier = 3,
+    available = false,
+    glyph = "g+++",
+    name = "resourceful++",
+    description = "harvesting is worth 20% more",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.greed = creature.stats.greed + 0.2
+      Upgrades.GreedUpT3.available = false
+    end
+  },
 
   -- ResourceNode Upgrades
 
   LooshNodeT1 = {
     tier = 1,
-    available = false,
+    available = true,
     glyph = "l+",
     name = "loosh node lv 2",
     description = "greatly increase loosh node production amount and required harvest time",
@@ -224,13 +254,14 @@ local upgrades = {
       node.baseTimeToHarvest = node.baseTimeToHarvest * 4
       node.growthTime = node.growthTime + 5
       Upgrades.LooshNodeT1.available = false
+      Upgrades.LooshNodeT2.available = true
     end
   },
   LooshNodeT2 = {
     tier = 2,
     available = false,
-    glyph = "l+",
-    name = "loosh node lv 2",
+    glyph = "l++",
+    name = "loosh node lv 3",
     description = "greatly increase loosh node production amount and required harvest time",
     types = {
       resourceNode = true
@@ -240,13 +271,14 @@ local upgrades = {
       node.baseTimeToHarvest = node.baseTimeToHarvest * 4
       node.growthTime = node.growthTime + 5
       Upgrades.LooshNodeT2.available = false
+      Upgrades.LooshNodeT3.available = true
     end
   },
   LooshNodeT3 = {
     tier = 3,
     available = false,
-    glyph = "l++",
-    name = "loosh node lv 3",
+    glyph = "l+++",
+    name = "loosh node lv 4",
     description = "greatly increase loosh node production amount and required harvest time",
     types = {
       resourceNode = true
@@ -258,6 +290,56 @@ local upgrades = {
       Upgrades.LooshNodeT3.available = false
     end
   },
+
+  ScaryNodeT1 = {
+    tier = 1,
+    available = true,
+    glyph = "s+",
+    name = "spooky node lv 2",
+    description = "greatly increase spooky node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.ScaryNodeT1.available = false
+    end
+  },
+  ScaryNodeT2 = {
+    tier = 2,
+    available = false,
+    glyph = "s++",
+    name = "spooky node lv 3",
+    description = "greatly increase spooky node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 2
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.ScaryNodeT2.available = false
+    end
+  },
+  ScaryNodeT3 = {
+    tier = 3,
+    available = false,
+    glyph = "s+++",
+    name = "spooky node lv 4",
+    description = "greatly increase spooky node production amount and required harvest time",
+    types = {
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.nodeTier = 3
+      node.baseTimeToHarvest = node.baseTimeToHarvest * 4
+      node.growthTime = node.growthTime + 5
+      Upgrades.ScaryNodeT3.available = false
+    end
+  },
+
 
   -- Growth
 
