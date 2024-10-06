@@ -26,11 +26,13 @@ local function newCard(xoffset)
       Resource = Resource - UpgradeCosts[card.upgrade.tier]
       ApplyUpgradeToEntities(card.upgrade)
       UI.setShopHidden(true)
-      UI.shopButtons[1].hidden = false
+      UI.setButtonsHidden(false)
     end
   }
   return card
 end
+
+local shopButtonOffset = 0
 
 local UI = {
   shopButtons = {
@@ -39,7 +41,7 @@ local UI = {
       type = "button",
       text = "upgrade",
       hidden = false,
-      position = Vector(100, love.graphics.getHeight() - 32),
+      position = Vector((16 + shopButtonOffset) * PixelScale, love.graphics.getHeight() - 5 * PixelScale),
       hitbox = {
         size = Vector(180, 48),
         offset = Vector(-90, -20)
@@ -53,7 +55,57 @@ local UI = {
           end
 
           UI.setShopHidden(false)
-          button.hidden = true
+          UI.setButtonsHidden(true)
+        else
+          print("can't afford upgrade")
+        end
+      end
+    },
+    {
+      id = ID.new(),
+      type = "button",
+      text = "t2",
+      hidden = false,
+      position = Vector((38 + shopButtonOffset) * PixelScale, love.graphics.getHeight() - 5 * PixelScale),
+      hitbox = {
+        size = Vector(48, 48),
+        offset = Vector(-24, -20)
+      },
+      onMouseDown = function(button)
+        if Resource >= UpgradeCosts[1] then
+          local choices = GetUpgradeChoices()
+          for i = 1, 3 do
+            UI.cards[i].upgrade = choices[i]
+            UI.cards[i].text = choices[i].glyph
+          end
+
+          UI.setShopHidden(false)
+          UI.setButtonsHidden(true)
+        else
+          print("can't afford upgrade")
+        end
+      end
+    },
+    {
+      id = ID.new(),
+      type = "button",
+      text = "t3",
+      hidden = false,
+      position = Vector((50 + shopButtonOffset) * PixelScale, love.graphics.getHeight() - 5 * PixelScale),
+      hitbox = {
+        size = Vector(48, 48),
+        offset = Vector(-24, -20)
+      },
+      onMouseDown = function(button)
+        if Resource >= UpgradeCosts[1] then
+          local choices = GetUpgradeChoices()
+          for i = 1, 3 do
+            UI.cards[i].upgrade = choices[i]
+            UI.cards[i].text = choices[i].glyph
+          end
+
+          UI.setShopHidden(false)
+          UI.setButtonsHidden(true)
         else
           print("can't afford upgrade")
         end
@@ -83,6 +135,8 @@ local UI = {
 
 function UI.init()
   table.insert(Entities, UI.shopButtons[1])
+  table.insert(Entities, UI.shopButtons[2])
+  table.insert(Entities, UI.shopButtons[3])
   table.insert(Entities, UI.cards[1])
   table.insert(Entities, UI.cards[2])
   table.insert(Entities, UI.cards[3])
@@ -96,6 +150,12 @@ function UI.setShopHidden(hidden)
   UI.cards[3].hidden = hidden
   UI.topText.hidden = hidden
   UI.bottomText.hidden = hidden
+end
+
+function UI.setButtonsHidden(hidden)
+  UI.shopButtons[1].hidden = hidden
+  UI.shopButtons[2].hidden = hidden
+  UI.shopButtons[3].hidden = hidden
 end
 
 return UI
