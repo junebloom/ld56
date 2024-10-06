@@ -24,7 +24,7 @@ TimeScale = 1
 Entities = {}
 
 Resource = 3
-CreatureTier = 2
+CreatureTier = 1
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
@@ -87,6 +87,13 @@ end
 function love.keypressed(key)
   if key == "escape" then DEBUG = not DEBUG end
   if DEBUG then
+    if key == "tab" then
+      TimeScale = 0
+      print("\n!! Pausing and opening debugger !!")
+      dbg()
+      print("!! Remember to unpause after closing !!")
+    end
+    if key == "0" then TimeScale = 0 end
     if key == "1" then TimeScale = 1 end
     if key == "2" then TimeScale = 3 end
     if key == "3" then TimeScale = 5 end
