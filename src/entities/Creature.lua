@@ -90,7 +90,7 @@ local states = {
   harvest = {
     name = "harvest",
     enter = function(creature)
-      creature:setAnimation(creature.animations.idle[CreatureTier]) -- TODO: harvest animation
+      creature:setAnimation(creature.animations.harvest[CreatureTier])
     end,
     exit = function(creature)
       creature.behavior.target = nil
@@ -177,6 +177,21 @@ local function create(x, y)
           frames = {
             love.graphics.newQuad(TileSize * 2, 0, TileSize, TileSize, SpriteSheet),
           }
+        },
+        {
+          -- Tier 3
+          fps = 6,
+          frames = {
+            love.graphics.newQuad(TileSize * 4, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 4
+          fps = 6,
+          offset = Vector(-TileSize / 2, -TileSize),
+          frames = {
+            love.graphics.newQuad(TileSize * 7, 0, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
         }
       },
       walk = {
@@ -194,6 +209,58 @@ local function create(x, y)
           frames = {
             love.graphics.newQuad(TileSize * 3, 0, TileSize, TileSize, SpriteSheet),
             love.graphics.newQuad(TileSize * 2, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 3
+          fps = 6,
+          frames = {
+            love.graphics.newQuad(TileSize * 5, 0, TileSize, TileSize, SpriteSheet),
+            love.graphics.newQuad(TileSize * 6, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 4
+          fps = 6,
+          offset = Vector(-TileSize / 2, -TileSize),
+          frames = {
+            love.graphics.newQuad(TileSize * 9, 0, TileSize * 2, TileSize * 2, SpriteSheet),
+            love.graphics.newQuad(TileSize * 11, 0, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
+        }
+      },
+      harvest = {
+        {
+          -- Tier 1
+          fps = 3,
+          frames = {
+            love.graphics.newQuad(TileSize * 1, 0, TileSize, TileSize, SpriteSheet),
+            love.graphics.newQuad(TileSize * 0, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 2
+          fps = 3,
+          frames = {
+            love.graphics.newQuad(TileSize * 1, 0, TileSize, TileSize, SpriteSheet),
+            love.graphics.newQuad(TileSize * 3, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 3
+          fps = 3,
+          frames = {
+            love.graphics.newQuad(TileSize * 5, 0, TileSize, TileSize, SpriteSheet),
+            love.graphics.newQuad(TileSize * 4, 0, TileSize, TileSize, SpriteSheet),
+          }
+        },
+        {
+          -- Tier 4
+          fps = 3,
+          offset = Vector(-TileSize / 2, -TileSize),
+          frames = {
+            love.graphics.newQuad(TileSize * 9, 0, TileSize * 2, TileSize * 2, SpriteSheet),
+            love.graphics.newQuad(TileSize * 7, 0, TileSize * 2, TileSize * 2, SpriteSheet),
           }
         }
       }
