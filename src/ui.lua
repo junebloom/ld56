@@ -1,5 +1,10 @@
 local center = Vector(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
 
+local cardSprite = {
+  default = love.graphics.newQuad(12 * TileSize, 0, TileSize * 2, TileSize * 3, SpriteSheet),
+  hover = love.graphics.newQuad(14 * TileSize, 0, TileSize * 2, TileSize * 3, SpriteSheet),
+}
+
 local function newCard(xoffset)
   local card = {
     id = ID.new(),
@@ -9,7 +14,7 @@ local function newCard(xoffset)
     hovered = false,
     hidden = true,
     position = Vector(center.x - xoffset, center.y),
-    sprite = love.graphics.newQuad(0, TileSize * 3, TileSize * 2, TileSize * 3, SpriteSheet),
+    sprite = cardSprite.default,
     spriteOffset = Vector(-TileSize, -TileSize * 1.5),
     hitbox = {
       size = Vector(TileSize * 2 * PixelScale, TileSize * 3 * PixelScale),
@@ -19,6 +24,12 @@ local function newCard(xoffset)
       if card.hovered and not card.hidden then
         UI.topText.text = card.upgrade.name
         UI.bottomText.text = card.upgrade.description
+      end
+
+      if card.hovered then
+        card.sprite = cardSprite.hover
+      else
+        card.sprite = cardSprite.default
       end
     end,
     onMouseDown = function(card)
