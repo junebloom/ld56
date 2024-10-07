@@ -271,6 +271,7 @@ local function create(x, y)
       self.animation = animation
       self.frameTime = 0
       self.currentFrame = 1
+      self.flashing = false
     end,
     update = function(self, dt)
       self.stats.smart = DebugCreature.stats.smart + BasePassive.smart *

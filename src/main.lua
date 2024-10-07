@@ -77,6 +77,7 @@ function CheckGrowthThresholds(creature)
   if CreatureTier ~= newTier then
     if DEBUG then print("Moving to tier: " .. newTier) end
 
+    creature.flashing = true
     CreatureTier = newTier
     DoomClock = DoomClock + 60
   end
@@ -112,7 +113,7 @@ function ApplyUpgradeToEntities(upgrade, arg)
 end
 
 function SetBehaviorState(entity, state)
-  -- if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
+  if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
   entity.behavior.lastState = entity.behavior.currentState
   entity.behavior.currentState = state
   state.enter(entity)
@@ -174,7 +175,11 @@ function love.mousepressed(x, y)
   end
 end
 
+-- internal game clock
+t = 0
+
 function love.update(dt)
+  t = t + dt
   local scaledDeltaTime = dt * TimeScale
 
   DoomClock = DoomClock - scaledDeltaTime
@@ -188,18 +193,25 @@ function love.update(dt)
   processAnimations(Entities, scaledDeltaTime)
 end
 
-function love.draw()
-  love.graphics.setColor(1, 1, 1, 0.5)
-  love.graphics.draw(bgImage, 0, 0, 0, PixelScale, PixelScale)
+local bgFollower = DoomClock
 
+function love.draw()
+  bgFollower = bgFollower + ((DoomClock - bgFollower) * love.timer.getDelta() * TimeScale)
+  local bgProgress = 1 - bgFollower / 100
+  local bgEasing = 1 - math.sqrt(1 - bgProgress ^ 2)
+  local bgScale = PixelScale - 0.1 + bgEasing
+  love.graphics.setColor(1, 1, 1, 0.5)
+  love.graphics.draw(bgImage, -48, 0, -0.1, bgScale, bgScale)
+
+  love.graphics.setColor(1, 1, 1, 1)
   drawSprites(Entities)
   drawText(Entities)
 
   local looshString = math.floor(Resource * 10) .. " loosh"
+
   love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
-
-  love.graphics.printf(math.floor(DoomClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
-
+  love.graphics.printf("t - " .. math.floor(DoomClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
+  love.graphics.printf("tier" .. CreatureTier, 0, 1 * PixelScale, 128, "right", 0, PixelScale)
   if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
 
   if DEBUG then
@@ -215,5 +227,6 @@ function love.draw()
     love.graphics.print("scary: " .. DebugCreature.stats.scary, 0, 16)
     love.graphics.print("power: " .. DebugCreature.stats.power, 0, 32)
     love.graphics.print("tier: " .. CreatureTier, 0, 48)
+    love.graphics.print("fps: " .. love.timer.getFPS(), 0, 64)
   end
 end
