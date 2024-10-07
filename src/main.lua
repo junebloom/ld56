@@ -77,7 +77,7 @@ function CheckGrowthThresholds(creature)
   if CreatureTier ~= newTier then
     if DEBUG then print("Moving to tier: " .. newTier) end
 
-    creature.flashing = true
+    creature.flashing = 2
     CreatureTier = newTier
     DoomClock = DoomClock + 60
   end

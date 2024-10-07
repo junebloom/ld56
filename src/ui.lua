@@ -28,10 +28,10 @@ local function newCard(xoffset)
 
       if card.hovered then
         card.sprite = cardSprite.hover
-        card.flashing = true
+        card.flashing = 1
       else
         card.sprite = cardSprite.default
-        card.flashing = false
+        card.flashing = 0
       end
     end,
     onMouseDown = function(card)
@@ -70,9 +70,9 @@ local UI = {
         end
 
         if shopButton.hovered or not shopButton.clicked then
-          shopButton.flashing = true
+          shopButton.flashing = 1
         else
-          shopButton.flashing = false
+          shopButton.flashing = 0
         end
       end,
       onMouseDown = function(shopButton)
@@ -112,9 +112,9 @@ local UI = {
         end
 
         if shopButton.hovered or not shopButton.clicked then
-          shopButton.flashing = true
+          shopButton.flashing = 1
         else
-          shopButton.flashing = false
+          shopButton.flashing = 0
         end
       end,
       onMouseDown = function(shopButton)
@@ -154,9 +154,9 @@ local UI = {
         end
 
         if shopButton.hovered or not shopButton.clicked then
-          shopButton.flashing = true
+          shopButton.flashing = 1
         else
-          shopButton.flashing = false
+          shopButton.flashing = 0
         end
       end,
       onMouseDown = function(shopButton)

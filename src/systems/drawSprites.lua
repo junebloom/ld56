@@ -6,7 +6,7 @@ local function drawSprites(entities)
       if e.spriteOffset then offset = offset + e.spriteOffset end
       if e.animation and e.animation.offset then offset = offset + e.animation.offset end
 
-      local scale = e.flashing and PixelScale + math.sin(t * 10) or PixelScale
+      local scale = e.flashing and PixelScale + math.sin(t * 10) * e.flashing or PixelScale
 
       love.graphics.draw(SpriteSheet, e.sprite, e.position.x, e.position.y, 0, scale * (e.facing or 1), scale,
         -offset.x, -offset.y)
