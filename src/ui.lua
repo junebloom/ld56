@@ -1,8 +1,8 @@
 local center = Vector(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
 
 local cardSprite = {
-  default = love.graphics.newQuad(12 * TileSize, 0, TileSize * 2, TileSize * 3, SpriteSheet),
-  hover = love.graphics.newQuad(14 * TileSize, 0, TileSize * 2, TileSize * 3, SpriteSheet),
+  default = love.graphics.newQuad(3 * TileSize, 1 * TileSize, TileSize * 2, TileSize * 3, SpriteSheet),
+  hover = love.graphics.newQuad(5 * TileSize, 1 * TileSize, TileSize * 2, TileSize * 3, SpriteSheet),
 }
 
 local function newCard(xoffset)

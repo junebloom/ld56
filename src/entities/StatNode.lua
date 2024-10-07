@@ -2,7 +2,7 @@ local states = {
   growing = {
     name = "growing",
     enter = function(node)
-      node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
+      node:setAnimation(node.animations.growing[node.stat])
       node.behavior.nextTime = node.growthTime * (1 / 0.5 + node.stats.production * 0.5)
     end,
     exit = function(node)
@@ -12,7 +12,7 @@ local states = {
   ready = {
     name = "ready",
     enter = function(node)
-      node.sprite = love.graphics.newQuad(TileSize, TileSize, TileSize, TileSize * 2, SpriteSheet)
+      node:setAnimation(node.animations.ready[node.stat])
       node.timeToHarvest = node.baseTimeToHarvest
       node.harvestable = true
       node.behavior.nextTime = 99999
@@ -43,7 +43,7 @@ local function create(x, y, stat)
     type = "statNode",
     stat = stat,
     position = Vector(x, y),
-    spriteOffset = Vector(-TileSize / 2, -TileSize * 1.5),
+    spriteOffset = Vector(0, 0),
     stats = {
       production = 1,
       nodeTier = 1
@@ -58,10 +58,66 @@ local function create(x, y, stat)
       currentState = nil,
       states = states
     },
-    -- hitbox = {
-    --   size = Vector(8 * PixelScale, 8 * PixelScale),
-    --   offset = Vector(0, 0)
-    -- }
+    frameTime = 0,
+    currentFrame = 1,
+    animation = nil,
+    animations = {
+      growing = {
+        smart = {
+          fps = 3,
+          offset = Vector(-TileSize, -TileSize * 1.5),
+          frames = {
+            love.graphics.newQuad(TileSize * 0, TileSize * 6, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
+        },
+        scary = {
+          fps = 3,
+          offset = Vector(-TileSize / 2, -TileSize / 2),
+          frames = {
+            love.graphics.newQuad(TileSize * 0, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
+          }
+        },
+        power = {
+          fps = 3,
+          offset = Vector(-TileSize, -TileSize * 1.5),
+          frames = {
+            love.graphics.newQuad(TileSize * 0, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
+        }
+      },
+      ready = {
+        smart = {
+          fps = 3,
+          offset = Vector(-TileSize, -TileSize * 1.5),
+          frames = {
+            love.graphics.newQuad(TileSize * 2, TileSize * 6, TileSize * 2, TileSize * 2, SpriteSheet),
+            love.graphics.newQuad(TileSize * 4, TileSize * 6, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
+        },
+        scary = {
+          fps = 3,
+          offset = Vector(-TileSize / 2, -TileSize / 2),
+          frames = {
+            love.graphics.newQuad(TileSize * 1, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
+            love.graphics.newQuad(TileSize * 2, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
+          }
+        },
+        power = {
+          fps = 3,
+          offset = Vector(-TileSize, -TileSize * 1.5),
+          frames = {
+            love.graphics.newQuad(TileSize * 2, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
+            love.graphics.newQuad(TileSize * 4, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
+          }
+        }
+      },
+    },
+    setAnimation = function(self, animation)
+      if self.animation == animation then return end
+      self.animation = animation
+      self.frameTime = 0
+      self.currentFrame = 1
+    end
   }
 
   SetBehaviorState(node, node.behavior.states.ready)

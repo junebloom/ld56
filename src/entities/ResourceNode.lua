@@ -2,7 +2,7 @@ local states = {
   growing = {
     name = "growing",
     enter = function(node)
-      node.sprite = love.graphics.newQuad(0, TileSize, TileSize, TileSize * 2, SpriteSheet)
+      node:setAnimation(node.animations.growing)
       node.behavior.nextTime = node.growthTime * (1 / 0.5 + node.stats.production * 0.5)
     end,
     exit = function(node)
@@ -12,7 +12,7 @@ local states = {
   ready = {
     name = "ready",
     enter = function(node)
-      node.sprite = love.graphics.newQuad(TileSize, TileSize, TileSize, TileSize * 2, SpriteSheet)
+      node:setAnimation(node.animations.ready)
       node.timeToHarvest = node.baseTimeToHarvest
       node.harvestable = true
       node.behavior.nextTime = 99999
@@ -49,6 +49,30 @@ local function create(x, y)
       currentState = nil,
       states = states
     },
+    frameTime = 0,
+    currentFrame = 1,
+    animation = nil,
+    animations = {
+      growing = {
+        fps = 3,
+        frames = {
+          love.graphics.newQuad(TileSize * 0, TileSize, TileSize, TileSize * 2, SpriteSheet)
+        }
+      },
+      ready = {
+        fps = 3,
+        frames = {
+          love.graphics.newQuad(TileSize * 1, TileSize, TileSize, TileSize * 2, SpriteSheet),
+          love.graphics.newQuad(TileSize * 2, TileSize, TileSize, TileSize * 2, SpriteSheet)
+        }
+      },
+    },
+    setAnimation = function(self, animation)
+      if self.animation == animation then return end
+      self.animation = animation
+      self.frameTime = 0
+      self.currentFrame = 1
+    end
     -- hitbox = {
     --   size = Vector(8 * PixelScale, 8 * PixelScale),
     --   offset = Vector(0, 0)
