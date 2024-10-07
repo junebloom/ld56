@@ -48,6 +48,53 @@ end
 local shopButtonOffset = 0
 
 local UI = {
+  statBars = {
+    scary = {
+      hidden = false,
+      color = Colors[3],
+      position = Vector(2 * PixelScale, 2 * PixelScale),
+      hitbox = {
+        size = Vector(2 * PixelScale, 2 * PixelScale),
+        offset = Vector(0, 0)
+      },
+      update = function(self, dt)
+        if self.hovered and not UI.isShopOpen then
+          UI.topText.text = "scariness\nlv" .. GetStatTier(DebugCreature.stats.power)
+          UI.bottomText.text = "how terrifying."
+        end
+      end,
+    },
+    power = {
+      hidden = false,
+      color = Colors[4],
+      position = Vector(2 * PixelScale, 5 * PixelScale),
+      hitbox = {
+        size = Vector(2 * PixelScale, 2 * PixelScale),
+        offset = Vector(0, 0)
+      },
+      update = function(self, dt)
+        if self.hovered and not UI.isShopOpen then
+          UI.topText.text = "strength\nlv" .. GetStatTier(DebugCreature.stats.power)
+          UI.bottomText.text = "how powerful."
+        end
+      end,
+    },
+    smart = {
+      hidden = false,
+      color = Colors[5],
+      position = Vector(2 * PixelScale, 8 * PixelScale),
+      hitbox = {
+        size = Vector(2 * PixelScale, 2 * PixelScale),
+        offset = Vector(0, 0)
+      },
+      update = function(self, dt)
+        if self.hovered and not UI.isShopOpen then
+          UI.topText.text = "smarts\nlv" .. GetStatTier(DebugCreature.stats.power)
+          UI.bottomText.text = "how cunning."
+        end
+      end,
+    }
+  },
   isShopOpen = false,
   shopButtons = {
     {
@@ -209,6 +256,9 @@ local UI = {
 }
 
 function UI.init()
+  table.insert(Entities, UI.statBars.scary)
+  table.insert(Entities, UI.statBars.power)
+  table.insert(Entities, UI.statBars.smart)
   table.insert(Entities, UI.shopButtons[1])
   table.insert(Entities, UI.shopButtons[2])
   table.insert(Entities, UI.shopButtons[3])

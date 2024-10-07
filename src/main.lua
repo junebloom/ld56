@@ -62,8 +62,14 @@ NodePoints = {
 }
 
 -- Configure graphics
-
-love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
+Colors = {
+  { 5 / 255,   31 / 255,  57 / 255 },
+  { 29 / 255,  21 / 255,  89 / 255 },
+  { 74 / 255,  36 / 255,  128 / 255 },
+  { 197 / 255, 58 / 255,  157 / 255 },
+  { 244 / 255, 142 / 255, 128 / 255 },
+}
+love.graphics.setBackgroundColor(Colors[1])
 local bgStars = love.graphics.newImage("assets/stars.png")
 local bgPlanet = love.graphics.newImage("assets/planet.png")
 bgStars:setFilter("nearest", "nearest")
@@ -100,6 +106,14 @@ function CheckGrowthThresholds(creature)
     CreatureTier = newTier
     DoomClock = DoomClock + 60
   end
+end
+
+function GetStatTier(n)
+  local tier = 1
+  for i = 3, 1, -1 do
+    if n >= GrowthThresholds.smart[i] then tier = i + 1 end
+  end
+  return tier
 end
 
 function GetUpgradeChoices(tier)
@@ -235,7 +249,7 @@ function love.draw()
 
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.draw(bgStars, 0, 0, -0.2, PixelScale, PixelScale, 72, 32)
-  love.graphics.draw(bgPlanet, 0, 0, -0.1, bgScale, bgScale, 128, 48)
+  love.graphics.draw(bgPlanet, 64, 0, -0.1, bgScale, bgScale, 128, 64)
 
   drawSprites(Entities)
   drawText(Entities)
@@ -245,6 +259,15 @@ function love.draw()
   love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
   love.graphics.printf("t-" .. math.floor(SmoothClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
   love.graphics.printf("tier" .. CreatureTier, 0, 1 * PixelScale, 128, "right", 0, PixelScale)
+
+
+  for stat, bar in pairs(UI.statBars) do
+    bar.hitbox.size.x = PixelScale + 128 * math.min(DebugCreature.stats[stat], 10) / 10
+
+    love.graphics.setColor(bar.color)
+    love.graphics.rectangle("fill", bar.position.x, bar.position.y, bar.hitbox.size.x, bar.hitbox.size.y)
+  end
+
   if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
 
   if DEBUG then
