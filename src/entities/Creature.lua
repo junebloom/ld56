@@ -3,7 +3,7 @@ local states = {
     name = "idle",
     enter = function(creature)
       creature.input = Vector(0, 0)
-      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.smart)) * 0.5
+      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.smart)) * 0.3
       creature:setAnimation(creature.animations.idle[CreatureTier])
     end,
     exit = function(creature)
@@ -35,20 +35,20 @@ local states = {
       -- Select node type to move to
       local targetType = nil
       local n = math.random()
-      if n < 0.5 then
+      if n < 0.6 then
         targetType = "resourceNode"
-      elseif n < 0.75 then
+      elseif n < 1 then
         targetType = "statNode"
       else
         targetType = "enemyNode"
       end
 
-      if creature.behavior.nextTarget ~= nil then targetType = creature.behavior.nextTarget end
+      -- if creature.behavior.nextTarget ~= nil then targetType = creature.behavior.nextTarget end
 
       -- Find closest valid node of selected type
       local closest = nil
       for _, e in pairs(Entities) do
-        if (e.type == targetType and (e.harvestable or e.type ~= "resourceNode")) then
+        if (e.type == targetType and (e.harvestable or e.supertype ~= "node")) then
           local distance = e.position - creature.position
           if not closest or distance.length < (closest.position - creature.position).length then
             closest = e
@@ -80,7 +80,7 @@ local states = {
       end
     end,
     update = function(creature)
-      creature.behavior.nextTarget = nil
+      -- creature.behavior.nextTarget = nil
       local target = creature.behavior.target
       if not target or (creature.position - target.position).length < 8 * PixelScale then
         creature.behavior.currentState.exit(creature)
@@ -212,7 +212,6 @@ local function create(x, y)
 
   -- Start up behavior
   SetBehaviorState(creature, creature.behavior.states.idle)
-  creature.behavior.nextTarget = "resourceNode"
   creature.behavior.nextTime = 0.1
 
 

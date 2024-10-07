@@ -41,6 +41,7 @@ local function create(x, y, stat)
   local node = {
     id = ID.new(),
     type = "statNode",
+    supertype = "node",
     stat = stat,
     position = Vector(x, y),
     spriteOffset = Vector(0, 0),
@@ -50,8 +51,8 @@ local function create(x, y, stat)
     },
     growthTime = 11,
     harvestable = true,
-    baseTimeToHarvest = 10,
-    timeToHarvest = 10,
+    baseTimeToHarvest = 3,
+    timeToHarvest = 3,
     greedMultiplier = 1,
     behavior = {
       nextTime = 0,
