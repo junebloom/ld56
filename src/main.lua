@@ -57,18 +57,21 @@ UI = require("ui")
 -- Global functions
 
 function CheckGrowthThresholds(creature)
-  if CreatureTier >= 4 then return end
-  local shouldGrow = true
+  local newTier = 4
 
+  -- Find the creature's lowest tier stat
   for stat, thresholds in pairs(GrowthThresholds) do
-    if creature.stats[stat] < thresholds[CreatureTier] then
-      shouldGrow = false
+    for i = 3, 1, -1 do
+      if creature.stats[stat] < thresholds[i] and i < newTier then
+        newTier = i
+      end
     end
   end
 
-  if shouldGrow then
-    if DEBUG then print("Stat thresholds reached -- going up a tier!") end
-    CreatureTier = CreatureTier + 1
+  if CreatureTier ~= newTier then
+    if DEBUG then print("Moving to tier: " .. newTier) end
+
+    CreatureTier = newTier
     DoomClock = DoomClock + 60
   end
 end
@@ -99,7 +102,7 @@ function ApplyUpgradeToEntities(upgrade, arg)
 end
 
 function SetBehaviorState(entity, state)
-  if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
+  -- if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
   entity.behavior.lastState = entity.behavior.currentState
   entity.behavior.currentState = state
   state.enter(entity)
