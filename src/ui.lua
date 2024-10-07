@@ -38,6 +38,7 @@ local function newCard(xoffset)
       table.insert(PurchasedUpgrades, card.upgrade)
       Resource = Resource - UpgradeCosts[card.upgrade.tier]
       ApplyUpgradeToEntities(card.upgrade)
+      TimeScale = 1
       UI.setShopHidden(true)
       UI.setButtonsHidden(false)
       UpgradeCostsBase[card.upgrade.tier] = UpgradeCostsBase[card.upgrade.tier] * 1.1
@@ -143,6 +144,7 @@ local UI = {
         if Resource >= UpgradeCosts[1] then
           local choices = GetUpgradeChoices(1)
           for i = 1, 3 do
+            TimeScale = 0
             UI.cards[i].upgrade = choices[i]
             UI.cards[i].text = choices[i].glyph
           end
@@ -181,6 +183,7 @@ local UI = {
       end,
       onMouseDown = function(shopButton)
         if Resource >= UpgradeCosts[2] then
+          TimeScale = 0
           local choices = GetUpgradeChoices(2)
           for i = 1, 3 do
             UI.cards[i].upgrade = choices[i]
@@ -221,6 +224,7 @@ local UI = {
       end,
       onMouseDown = function(shopButton)
         if Resource >= UpgradeCosts[3] then
+          TimeScale = 0
           local choices = GetUpgradeChoices(3)
           for i = 1, 3 do
             UI.cards[i].upgrade = choices[i]
