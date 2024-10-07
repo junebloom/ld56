@@ -1,4 +1,5 @@
 local function drawText(entities)
+  love.graphics.setFont(Font)
   love.graphics.setColor(1, 1, 1)
   for _, e in pairs(entities) do
     if e.text and not e.hidden then

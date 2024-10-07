@@ -42,9 +42,8 @@ local bgImage = love.graphics.newImage("assets/bg.png")
 bgImage:setFilter("nearest", "nearest")
 love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
 
-local font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
-font:setFilter("nearest", "nearest")
-love.graphics.setFont(font)
+Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
+Font:setFilter("nearest", "nearest")
 
 SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
 SpriteSheet:setFilter("nearest", "nearest")
@@ -106,6 +105,9 @@ end
 
 -- Love callbacks
 
+local debugFont = love.graphics.newFont(16)
+local initialCreature
+
 function love.load()
   table.insert(Entities, ResourceNode.create(64 * PixelScale, 48 * PixelScale))
 
@@ -113,7 +115,9 @@ function love.load()
   table.insert(Entities, StatNode.create(49 * PixelScale, 78 * PixelScale, "scary"))
   table.insert(Entities, StatNode.create(93 * PixelScale, 26 * PixelScale, "power"))
 
-  table.insert(Entities, Creature.create(64 * PixelScale, 63 * PixelScale))
+  initialCreature = Creature.create(64 * PixelScale, 63 * PixelScale)
+  table.insert(Entities, initialCreature)
+
   UI.init()
 end
 
@@ -178,9 +182,15 @@ function love.draw()
 
   if DEBUG then
     drawHitBoxes(Entities)
+
     love.graphics.setColor(0, 1, 1)
     for _, e in pairs(Entities) do
       love.graphics.circle("line", e.position.x, e.position.y, 2)
     end
+
+    love.graphics.setFont(debugFont)
+    love.graphics.print("smart: " .. initialCreature.stats.smart, 0, 0)
+    love.graphics.print("scary: " .. initialCreature.stats.scary, 0, 16)
+    love.graphics.print("power: " .. initialCreature.stats.power, 0, 32)
   end
 end
