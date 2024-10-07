@@ -10,7 +10,6 @@ local upgrades = {
   MoveSpeedUp = {
     tier = 1,
     available = true,
-    copies = 3,
     glyph = "ms+",
     name = "move speed up",
     description = "increase base creature move speed by 50%",
@@ -19,11 +18,7 @@ local upgrades = {
     },
     apply = function(creature)
       creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
-      if Upgrades.MoveSpeedUp.copies > 0 then
-        Upgrades.MoveSpeedUp.copies = Upgrades.MoveSpeedUp.copies - 1
-      else
-        Upgrades.MoveSpeedUp.available = false
-      end
+      Upgrades.MoveSpeedUp.available = false
     end
   },
 
@@ -90,7 +85,6 @@ local upgrades = {
   EfficiencyUp = {
     tier = 1,
     available = true,
-    copies = 3,
     glyph = "hs+",
     name = "harvest speed up +",
     description = "base harvest speed increased by 50%",
@@ -99,11 +93,7 @@ local upgrades = {
     },
     apply = function(creature)
       creature.stats.efficiency = creature.stats.efficiency + 0.5
-      if Upgrades.EfficiencyUp.copies > 0 then
-        Upgrades.EfficiencyUp.copies = Upgrades.EfficiencyUp.copies - 1
-      else
-        Upgrades.EfficiencyUp.available = false
-      end
+      Upgrades.EfficiencyUp.available = false
     end
   },
 
@@ -122,7 +112,7 @@ local upgrades = {
     end
   },
 
-  SmartUp = {
+  FocusUp = {
     tier = 1,
     available = true,
     glyph = "f+",
@@ -132,9 +122,9 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 8
-      Upgrades.SmartUp.available = false
-      Upgrades.SmartUpT2.available = true
+      creature.stats.focus = creature.stats.focus + 15
+      Upgrades.FocusUp.available = false
+      Upgrades.FocusUpT2.available = true
     end
   },
 
@@ -262,7 +252,7 @@ local upgrades = {
     end
   },
 
-  SmartUpT2 = {
+  FocusUpT2 = {
     tier = 2,
     available = false,
     glyph = "f++",
@@ -272,9 +262,9 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 16
-      Upgrades.SmartUpT2.available = false
-      Upgrades.SmartUpT3.prereq = true
+      creature.stats.focus = creature.stats.focus + 33
+      Upgrades.FocusUpT2.available = false
+      Upgrades.FocusUpT3.prereq = true
     end
   },
 
@@ -416,7 +406,7 @@ local upgrades = {
   --   end
   -- },
 
-  SmartUpT3 = {
+  FocusUpT3 = {
     tier = 3,
     available = false,
     glyph = "+f+",
@@ -426,8 +416,8 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 24
-      Upgrades.SmartUpT2.available = false
+      creature.stats.focus = creature.stats.focus + 51
+      Upgrades.FocusUpT3.available = false
     end
   },
 
@@ -717,7 +707,6 @@ local upgrades = {
   TimeManipulationT1 = {
     tier = 1,
     available = true,
-    copies = 3,
     glyph = "tm1",
     name = "tier time manipulation",
     description = "gain 5 seconds for every tier one node",
@@ -727,11 +716,7 @@ local upgrades = {
     },
     apply = function(node)
       DoomClock = DoomClock + 5
-      if Upgrades.TimeManipulationT1.copies > 0 then
-        Upgrades.TimeManipulationT1.copies = Upgrades.TimeManipulationT1.copies - 1
-      else
-        Upgrades.TimeManipulationT1.available = false
-      end
+      Upgrades.TimeManipulationT1.available = false
     end
   },
 
@@ -756,7 +741,7 @@ local upgrades = {
     end
   },
 
-  -- SmartUpGrowth = {
+  -- FocusUpGrowth = {
   --   tier = "Growth",
   --   available = false,
   --   glyph = "-hf-",
@@ -766,8 +751,8 @@ local upgrades = {
   --     creature = true
   --   },
   --   apply = function(creature)
-  --     creature.stats.smart = creature.stats.smart + 9
-  --     Upgrades.SmartUpGrowth.available = false
+  --     creature.stats.focus = creature.stats.focus + 9
+  --     Upgrades.FocusUpGrowth.available = false
   --   end
   -- },
 
@@ -785,18 +770,18 @@ local upgrades = {
   --  end
   --},
 
-  -- SoldOutUpgrade = {
-  --   tier = 1,
-  --   available = false,
-  --   glyph = ":c",
-  --   name = "sold out",
-  --   description = "sorry come back later, no refunds",
-  --   types = {
-  --     creature = true
-  --   },
-  --   apply = function(creature)
-  --   end
-  -- },
+  SoldOutUpgrade = {
+    tier = 1,
+    available = false,
+    glyph = ":c",
+    name = "sold out",
+    description = "sorry come back later, no refunds",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+    end
+  },
 
   -- SoldOutUpgradeT2 = {
   --   tier = 2,

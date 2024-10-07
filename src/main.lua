@@ -86,16 +86,20 @@ function GetUpgradeChoices(tier)
   local availableUpgrades = {}
   for _, upgrade in pairs(Upgrades) do
     if upgrade.tier == tier and upgrade.available then
+      if DEBUG then print(upgrade.name) end
       table.insert(availableUpgrades, upgrade)
     end
   end
 
   local choices = {}
   for i = 1, 3 do
-    local n = math.random(#availableUpgrades)
-    if DEBUG then print(availableUpgrades[n].name) end
-    table.insert(choices, availableUpgrades[n])
-    table.remove(availableUpgrades, n)
+    if #availableUpgrades == 0 then
+      table.insert(choices, Upgrades.SoldOutUpgrade)
+    else
+      local n = math.random(#availableUpgrades)
+      table.insert(choices, availableUpgrades[n])
+      table.remove(availableUpgrades, n)
+    end
   end
 
   return choices
