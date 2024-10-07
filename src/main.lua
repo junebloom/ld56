@@ -33,7 +33,13 @@ GrowthThresholds = {
   power = { 2, 5, 10 }
 }
 
--- TODO: Passive income/increases
+-- Base passive stat gain per second
+BasePassive = {
+  loosh = 0.1,
+  smart = 0.01,
+  scary = 0.01,
+  power = 0.01
+}
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
@@ -111,7 +117,7 @@ end
 -- Love callbacks
 
 local debugFont = love.graphics.newFont(16)
-local initialCreature
+DebugCreature = {}
 
 function love.load()
   table.insert(Entities, ResourceNode.create(64 * PixelScale, 48 * PixelScale))
@@ -120,8 +126,8 @@ function love.load()
   table.insert(Entities, StatNode.create(49 * PixelScale, 78 * PixelScale, "scary"))
   table.insert(Entities, StatNode.create(93 * PixelScale, 26 * PixelScale, "power"))
 
-  initialCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
-  table.insert(Entities, initialCreature)
+  DebugCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
+  table.insert(Entities, DebugCreature)
 
   UI.init()
 end
@@ -168,6 +174,8 @@ function love.update(dt)
   local scaledDeltaTime = dt * TimeScale
 
   DoomClock = DoomClock - scaledDeltaTime
+  Resource = Resource + BasePassive.loosh * DebugCreature.stats.greed * scaledDeltaTime
+
   processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
@@ -199,9 +207,9 @@ function love.draw()
     end
 
     love.graphics.setFont(debugFont)
-    love.graphics.print("smart: " .. initialCreature.stats.smart, 0, 0)
-    love.graphics.print("scary: " .. initialCreature.stats.scary, 0, 16)
-    love.graphics.print("power: " .. initialCreature.stats.power, 0, 32)
+    love.graphics.print("smart: " .. DebugCreature.stats.smart, 0, 0)
+    love.graphics.print("scary: " .. DebugCreature.stats.scary, 0, 16)
+    love.graphics.print("power: " .. DebugCreature.stats.power, 0, 32)
     love.graphics.print("tier: " .. CreatureTier, 0, 48)
   end
 end

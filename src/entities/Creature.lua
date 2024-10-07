@@ -203,6 +203,15 @@ local function create(x, y)
       self.animation = animation
       self.frameTime = 0
       self.currentFrame = 1
+    end,
+    update = function(self, dt)
+      self.stats.smart = DebugCreature.stats.smart + BasePassive.smart *
+          DebugCreature.stats.smartGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      self.stats.scary = DebugCreature.stats.scary + BasePassive.scary *
+          DebugCreature.stats.scaryGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      self.stats.power = DebugCreature.stats.power + BasePassive.power *
+          DebugCreature.stats.powerGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      CheckGrowthThresholds(self)
     end
   }
 
@@ -213,7 +222,6 @@ local function create(x, y)
   -- Start up behavior
   SetBehaviorState(creature, creature.behavior.states.idle)
   creature.behavior.nextTime = 0.1
-
 
   return creature
 end
