@@ -10,6 +10,7 @@ local upgrades = {
   MoveSpeedUp = {
     tier = 1,
     available = true,
+    copies = 3,
     glyph = "ms+",
     name = "move speed up",
     description = "increase base creature move speed by 50%",
@@ -18,7 +19,11 @@ local upgrades = {
     },
     apply = function(creature)
       creature.stats.moveSpeed = creature.stats.moveSpeed + 0.5
-      Upgrades.MoveSpeedUp.available = false
+      if Upgrades.MoveSpeedUp.copies > 0 then
+        Upgrades.MoveSpeedUp.copies = Upgrades.MoveSpeedUp.copies - 1
+      else
+        Upgrades.MoveSpeedUp.available = false
+      end
     end
   },
 
@@ -85,31 +90,35 @@ local upgrades = {
   EfficiencyUp = {
     tier = 1,
     available = true,
+    copies = 3,
     glyph = "hs+",
     name = "harvest speed up +",
-    description = "harvest efficiency doubled",
+    description = "base harvest speed increased by 50%",
+    types = {
+      creature = true
+    },
+    apply = function(creature)
+      creature.stats.efficiency = creature.stats.efficiency + 0.5
+      if Upgrades.EfficiencyUp.copies > 0 then
+        Upgrades.EfficiencyUp.copies = Upgrades.EfficiencyUp.copies - 1
+      else
+        Upgrades.EfficiencyUp.available = false
+      end
+    end
+  },
+
+  EfficiencyMulti = {
+    tier = 1,
+    available = true,
+    glyph = "qw*",
+    name = "quick worker",
+    description = "current harvest speed doubled",
     types = {
       creature = true
     },
     apply = function(creature)
       creature.stats.efficiency = creature.stats.efficiency * 2
-      Upgrades.EfficiencyUp.available = false
-    end
-  },
-
-  ProductionUp = {
-    tier = 1,
-    available = true,
-    glyph = "p+",
-    name = "production speed up +",
-    description = "resource nodes produce 25% faster",
-    types = {
-      resourceNode = true,
-      statNode = true
-    },
-    apply = function(node)
-      node.stats.production = node.stats.production * 1.5
-      Upgrades.ProductionUp.available = false
+      Upgrades.EfficiencyMulti.available = false
     end
   },
 
@@ -253,22 +262,6 @@ local upgrades = {
     end
   },
 
-  ProductionUpT2 = {
-    tier = 2,
-    available = true,
-    glyph = "p++",
-    name = "production speed up ++",
-    description = "resource nodes produce 25% faster",
-    types = {
-      resourceNode = true,
-      statNode = true
-    },
-    apply = function(node)
-      node.stats.production = node.stats.production * 1.5
-      Upgrades.ProductionUpT2.available = false
-    end
-  },
-
   SmartUpT2 = {
     tier = 2,
     available = false,
@@ -408,22 +401,6 @@ local upgrades = {
     end
   },
 
-  ProductionUpT3 = {
-    tier = 3,
-    available = true,
-    glyph = "+p+",
-    name = "production speed up +++",
-    description = "resource nodes produce 25% faster",
-    types = {
-      resourceNode = true,
-      statNode = true
-    },
-    apply = function(node)
-      node.stats.production = node.stats.production * 1.5
-      Upgrades.ProductionUpT3.available = false
-    end
-  },
-
   -- DefenseUpT3 = {
   --   tier = 3,
   --   available = false,
@@ -469,7 +446,56 @@ local upgrades = {
     end
   },
 
-  -- ResourceNode Upgrades
+  -- Node Upgrades
+
+
+  ProductionUp = {
+    tier = 1,
+    available = true,
+    glyph = "p+",
+    name = "production speed up +",
+    description = "resource nodes produce 25% faster",
+    types = {
+      resourceNode = true,
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUp.available = false
+    end
+  },
+
+  ProductionUpT2 = {
+    tier = 2,
+    available = true,
+    glyph = "p++",
+    name = "production speed up ++",
+    description = "resource nodes produce 25% faster",
+    types = {
+      resourceNode = true,
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUpT2.available = false
+    end
+  },
+
+  ProductionUpT3 = {
+    tier = 3,
+    available = true,
+    glyph = "+p+",
+    name = "production speed up +++",
+    description = "resource nodes produce 25% faster",
+    types = {
+      resourceNode = true,
+      statNode = true
+    },
+    apply = function(node)
+      node.stats.production = node.stats.production * 1.5
+      Upgrades.ProductionUpT3.available = false
+    end
+  },
 
   LooshNodeT1 = {
     tier = 1,
@@ -686,7 +712,34 @@ local upgrades = {
     end
   },
 
+  -- Wacky idea
+
+  TimeManipulationT1 = {
+    tier = 1,
+    available = true,
+    copies = 3,
+    glyph = "tm1",
+    name = "tier time manipulation",
+    description = "gain 5 seconds for every tier one node",
+    types = {
+      statNode = true,
+      resourceNode = true
+    },
+    apply = function(node)
+      DoomClock = DoomClock + 5
+      if Upgrades.TimeManipulationT1.copies > 0 then
+        Upgrades.TimeManipulationT1.copies = Upgrades.TimeManipulationT1.copies - 1
+      else
+        Upgrades.TimeManipulationT1.available = false
+      end
+    end
+  },
+
+
+
   -- Growth
+
+
 
   AllGrowthUp = {
     tier = 69,
