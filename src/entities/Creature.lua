@@ -144,6 +144,8 @@ local function create(x, y)
   local creature = {
     id = ID.new(),
     type = "creature",
+    nodeSpawn = false,
+    nodeSpawnType = "none",
     behavior = {
       target = nil,
       nextTarget = nil,
@@ -166,7 +168,9 @@ local function create(x, y)
       greed = 1,
       efficiency = 1,
       focus = 1, -- cap 121
-      splitTime = 15
+      splitTime = 15,
+      splitCost = 5,
+      splitCostUI = 50
     },
     hitbox = {
       size = Vector(48, 48),
@@ -181,15 +185,42 @@ local function create(x, y)
           DebugCreature.stats.powerGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
       CheckGrowthThresholds(self)
 
+      if DebugCreature.nodeSpawn == true then
+        local n = math.random(#NodePoints)
+        if DebugCreature.nodeSpawnType == "ResourceNode" then
+          table.insert(Entities, ResourceNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale))
+        else
+          if DebugCreature.nodeSpawnType == "statNode" then
+            local list = { "scary", "power", "smart" }
+            local r = math.random(3)
+            table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, list[r]))
+          else
+            table.insert(Entities,
+              StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, DebugCreature.nodeSpawnType))
+          end
+        end
+        table.remove(NodePoints, n)
+        DebugCreature.nodeSpawn = false
+        DebugCreature.nodeSpawnType = "none"
+      end
+
       if self.hovered and not UI.isShopOpen then
         UI.topText.text = "creature\n\n" .. self.behavior.currentState.name
-        UI.bottomText.text = "click to split.\ntakes " .. self.stats.splitTime .. " seconds."
+        UI.bottomText.text = "click to split.\ncosts " ..
+            DebugCreature.stats.splitCostUI .. " loosh.\ntakes " .. self.stats.splitTime .. " seconds."
       end
     end,
     onMouseDown = function(creature)
       if creature.behavior.currentState == creature.behavior.states.split then return end
-      creature.behavior.currentState.exit(creature)
-      SetBehaviorState(creature, creature.behavior.states.split)
+      if Resource >= DebugCreature.stats.splitCost then
+        creature.behavior.currentState.exit(creature)
+        SetBehaviorState(creature, creature.behavior.states.split)
+        Resource = Resource - DebugCreature.stats.splitCost
+        DebugCreature.stats.splitCost = (DebugCreature.stats.splitCost) ^ (6 / 5)
+        DebugCreature.stats.splitCostUI = math.floor(DebugCreature.stats.splitCost * 10)
+      else
+        print("can't afford split")
+      end
     end,
     ouch = 0, -- damage received on hurt
     input = Vector(0, 0),
