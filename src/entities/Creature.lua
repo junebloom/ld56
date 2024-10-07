@@ -107,6 +107,19 @@ local states = {
       end
     end
   },
+  split = {
+    name = "splitting",
+    enter = function(creature)
+      creature.input = Vector(0, 0)
+      creature:setAnimation(creature.animations.harvest[CreatureTier])
+      creature.behavior.nextTime = creature.stats.splitTime
+    end,
+    exit = function(creature)
+      table.insert(Entities, Creature.create(creature.position.x + PixelScale * 4, creature.position.y))
+      creature.position.x = creature.position.x - PixelScale * 4
+      SetBehaviorState(creature, creature.behavior.states.idle)
+    end
+  },
   hurt = {
     name = "ouch",
     enter = function(creature)
@@ -152,7 +165,8 @@ local function create(x, y)
       moveSpeed = 1,
       greed = 1,
       efficiency = 1,
-      focus = 1 -- cap 121
+      focus = 1, -- cap 121
+      splitTime = 15
     },
     hitbox = {
       size = Vector(48, 48),
@@ -169,8 +183,13 @@ local function create(x, y)
 
       if self.hovered and not UI.isShopOpen then
         UI.topText.text = "creature\n\n" .. self.behavior.currentState.name
-        UI.bottomText.text = "click to split.\ntakes 10 seconds."
+        UI.bottomText.text = "click to split.\ntakes " .. self.stats.splitTime .. " seconds."
       end
+    end,
+    onMouseDown = function(creature)
+      if creature.behavior.currentState == creature.behavior.states.split then return end
+      creature.behavior.currentState.exit(creature)
+      SetBehaviorState(creature, creature.behavior.states.split)
     end,
     ouch = 0, -- damage received on hurt
     input = Vector(0, 0),
