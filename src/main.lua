@@ -75,7 +75,7 @@ local bgPlanet = love.graphics.newImage("assets/planet.png")
 bgStars:setFilter("nearest", "nearest")
 bgPlanet:setFilter("nearest", "nearest")
 
-Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
+Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ", -2)
 Font:setFilter("nearest", "nearest")
 
 SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
