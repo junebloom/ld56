@@ -22,6 +22,7 @@ local drawHitBoxes = require("systems.drawHitboxes")
 -- Game state
 DEBUG = true
 TimeScale = 1
+DoomClock = 100
 Entities = {}
 
 Resource = 3
@@ -35,22 +36,6 @@ GrowthThresholds = {
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
-
-function CheckGrowthThresholds(creature)
-  if CreatureTier >= 4 then return end
-  local shouldGrow = true
-
-  for stat, thresholds in pairs(GrowthThresholds) do
-    if creature.stats[stat] < thresholds[CreatureTier] then
-      shouldGrow = false
-    end
-  end
-
-  if shouldGrow then
-    if DEBUG then print("Stat thresholds reached -- going up a tier!") end
-    CreatureTier = CreatureTier + 1
-  end
-end
 
 -- Configure graphics
 local bgImage = love.graphics.newImage("assets/bg.png")
@@ -68,9 +53,22 @@ TileSize = 8
 PixelScale = 6
 UI = require("ui")
 
-function ApplyUpgradeToEntities(upgrade, arg)
-  for _, e in pairs(Entities) do
-    if upgrade.types[e.type] then upgrade.apply(e, arg) end
+-- Global functions
+
+function CheckGrowthThresholds(creature)
+  if CreatureTier >= 4 then return end
+  local shouldGrow = true
+
+  for stat, thresholds in pairs(GrowthThresholds) do
+    if creature.stats[stat] < thresholds[CreatureTier] then
+      shouldGrow = false
+    end
+  end
+
+  if shouldGrow then
+    if DEBUG then print("Stat thresholds reached -- going up a tier!") end
+    CreatureTier = CreatureTier + 1
+    DoomClock = DoomClock + 60
   end
 end
 
@@ -93,12 +91,20 @@ function GetUpgradeChoices(tier)
   return choices
 end
 
+function ApplyUpgradeToEntities(upgrade, arg)
+  for _, e in pairs(Entities) do
+    if upgrade.types[e.type] then upgrade.apply(e, arg) end
+  end
+end
+
 function SetBehaviorState(entity, state)
   if DEBUG then print("entity " .. entity.id .. ": " .. state.name) end
   entity.behavior.lastState = entity.behavior.currentState
   entity.behavior.currentState = state
   state.enter(entity)
 end
+
+-- Love callbacks
 
 function love.load()
   table.insert(Entities, ResourceNode.create(64 * PixelScale, 48 * PixelScale))
@@ -147,6 +153,7 @@ end
 function love.update(dt)
   local scaledDeltaTime = dt * TimeScale
 
+  DoomClock = DoomClock - scaledDeltaTime
   processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
   moveEntities(Entities, scaledDeltaTime)
@@ -162,9 +169,12 @@ function love.draw()
   drawSprites(Entities)
   drawText(Entities)
 
-  love.graphics.print(math.floor(Resource * 10), 8, 8, 0, PixelScale)
+  local looshString = math.floor(Resource * 10) .. " loosh"
+  love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
 
-  if (TimeScale == 0) then love.graphics.print("paused", 53 * PixelScale, 8, 0, PixelScale) end
+  love.graphics.printf(math.floor(DoomClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
+
+  if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
 
   if DEBUG then
     drawHitBoxes(Entities)
