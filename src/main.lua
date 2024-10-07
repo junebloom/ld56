@@ -22,7 +22,7 @@ local drawHitBoxes = require("systems.drawHitboxes")
 -- Game state
 
 local function initGame()
-  DEBUG = true
+  DEBUG = false
   TimeScale = 1
   DoomClock = 100         -- TODO: game end state
   SmoothClock = DoomClock -- Smoothed doom clock (read only)
