@@ -3,12 +3,12 @@ local states = {
     name = "idle",
     enter = function(creature)
       creature.input = Vector(0, 0)
-      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.smart)) * 0.3
+      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.focus)) * 0.3
       creature:setAnimation(creature.animations.idle[CreatureTier])
     end,
     exit = function(creature)
       local n = math.random()
-      if n <= (creature.behavior.mood + creature.stats.smart * 0.01) then
+      if n <= (creature.behavior.mood + creature.stats.focus * 0.01) then
         SetBehaviorState(creature, creature.behavior.states.moveToNode)
       else
         SetBehaviorState(creature, creature.behavior.states.wander)
@@ -146,14 +146,15 @@ local function create(x, y)
       powerGrowthMulti = 1,
       scary = 1,
       scaryGrowthMulti = 1,
-      smart = 1, -- cap 121
+      smart = 1,
       smartGrowthMulti = 1,
       defense = 1,
       moveSpeed = 1,
       greed = 1,
-      efficiency = 1
+      efficiency = 1,
+      focus = 1 -- cap 121
     },
-    ouch = 0, -- damage received on hurt
+    ouch = 0,   -- damage received on hurt
     input = Vector(0, 0),
     position = Vector(x, y),
     sprite = love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),

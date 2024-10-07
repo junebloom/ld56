@@ -112,7 +112,7 @@ local upgrades = {
     end
   },
 
-  SmartUp = {
+  FocusUp = {
     tier = 1,
     available = true,
     glyph = "f+",
@@ -122,9 +122,9 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 8
-      Upgrades.SmartUp.available = false
-      Upgrades.SmartUpT2.available = true
+      creature.stats.focus = creature.stats.focus + 8
+      Upgrades.FocusUp.available = false
+      Upgrades.FocusUpT2.available = true
     end
   },
 
@@ -252,7 +252,7 @@ local upgrades = {
     end
   },
 
-  SmartUpT2 = {
+  FocusUpT2 = {
     tier = 2,
     available = false,
     glyph = "f++",
@@ -262,9 +262,9 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 16
-      Upgrades.SmartUpT2.available = false
-      Upgrades.SmartUpT3.prereq = true
+      creature.stats.focus = creature.stats.focus + 16
+      Upgrades.FocusUpT2.available = false
+      Upgrades.FocusUpT3.prereq = true
     end
   },
 
@@ -406,7 +406,7 @@ local upgrades = {
   --   end
   -- },
 
-  SmartUpT3 = {
+  FocusUpT3 = {
     tier = 3,
     available = false,
     glyph = "+f+",
@@ -416,8 +416,8 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.smart = creature.stats.smart + 24
-      Upgrades.SmartUpT2.available = false
+      creature.stats.focus = creature.stats.focus + 24
+      Upgrades.FocusUpT3.available = false
     end
   },
 
@@ -741,7 +741,7 @@ local upgrades = {
     end
   },
 
-  -- SmartUpGrowth = {
+  -- FocusUpGrowth = {
   --   tier = "Growth",
   --   available = false,
   --   glyph = "-hf-",
@@ -751,8 +751,8 @@ local upgrades = {
   --     creature = true
   --   },
   --   apply = function(creature)
-  --     creature.stats.smart = creature.stats.smart + 9
-  --     Upgrades.SmartUpGrowth.available = false
+  --     creature.stats.focus = creature.stats.focus + 9
+  --     Upgrades.FocusUpGrowth.available = false
   --   end
   -- },
 
