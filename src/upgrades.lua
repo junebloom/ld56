@@ -121,21 +121,21 @@ local upgrades = {
       Upgrades.SmartUpT2.available = true
     end
   },
-  DefenseUp = {
-    tier = 1,
-    available = true,
-    glyph = "d+",
-    name = "defense up",
-    description = "improve defense by 100%",
-    types = {
-      creature = true
-    },
-    apply = function(creature)
-      creature.stats.defense = creature.stats.defense + 1
-      Upgrades.DefenseUp.available = false
-      Upgrades.DefenseUpT2.available = true
-    end
-  },
+  -- DefenseUp = {
+  --   tier = 1,
+  --   available = true,
+  --   glyph = "d+",
+  --   name = "defense up",
+  --   description = "improve defense by 100%",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --     creature.stats.defense = creature.stats.defense + 1
+  --     Upgrades.DefenseUp.available = false
+  --     Upgrades.DefenseUpT2.available = true
+  --   end
+  -- },
   GreedUp = {
     tier = 1,
     available = true,
@@ -276,20 +276,20 @@ local upgrades = {
     end
   },
 
-  DefenseUpT2 = {
-    tier = 2,
-    available = false,
-    glyph = "d++",
-    name = "defense up ++",
-    description = "improve defense by 100%",
-    types = {
-      creature = true
-    },
-    apply = function(creature)
-      creature.stats.defense = creature.stats.defense + 1
-      Upgrades.DefenseUp.available = false
-    end
-  },
+  -- DefenseUpT2 = {
+  --   tier = 2,
+  --   available = false,
+  --   glyph = "d++",
+  --   name = "defense up ++",
+  --   description = "improve defense by 100%",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --     creature.stats.defense = creature.stats.defense + 1
+  --     Upgrades.DefenseUp.available = false
+  --   end
+  -- },
 
   GreedUpT2 = {
     tier = 2,
