@@ -48,6 +48,7 @@ end
 local shopButtonOffset = 0
 
 local UI = {
+  isShopOpen = false,
   shopButtons = {
     {
       id = ID.new(),
@@ -62,11 +63,9 @@ local UI = {
         offset = Vector(-90, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered then
+        if shopButton.hovered and not shopButton.hidden then
+          UI.topText.text = "click to buy a\ntier 1\nupgrade"
           UI.bottomText.text = "costs " .. UpgradeCosts[1] * 10 .. " loosh"
-          UI.bottomText.hidden = false
-        elseif not shopButton.hidden then
-          UI.bottomText.hidden = true
         end
 
         if shopButton.hovered or not shopButton.clicked then
@@ -104,11 +103,9 @@ local UI = {
         offset = Vector(-24, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered then
+        if shopButton.hovered and not shopButton.hidden then
+          UI.topText.text = "click to buy a\ntier 2\nupgrade"
           UI.bottomText.text = "costs " .. UpgradeCosts[2] * 10 .. " loosh"
-          UI.bottomText.hidden = false
-        elseif not shopButton.hidden then
-          UI.bottomText.hidden = true
         end
 
         if shopButton.hovered or not shopButton.clicked then
@@ -146,11 +143,9 @@ local UI = {
         offset = Vector(-24, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered then
+        if shopButton.hovered and not shopButton.hidden then
+          UI.topText.text = "click to buy a\ntier 3\nupgrade"
           UI.bottomText.text = "costs " .. UpgradeCosts[3] * 10 .. " loosh"
-          UI.bottomText.hidden = false
-        elseif not shopButton.hidden then
-          UI.bottomText.hidden = true
         end
 
         if shopButton.hovered or not shopButton.clicked then
@@ -184,7 +179,7 @@ local UI = {
   topText = {
     id = ID.new(),
     type = "label",
-    text = "choose an uwupgrade",
+    text = "pick one",
     hidden = true,
     position = Vector(center.x, center.y - 24 * PixelScale),
   },
@@ -231,6 +226,9 @@ function UI.setShopHidden(hidden)
   UI.cards[3].hidden = hidden
   UI.topText.hidden = hidden
   UI.bottomText.hidden = hidden
+
+  UI.isShopOpen = not hidden
+  UI.topText.text = "pick one"
 end
 
 function UI.setButtonsHidden(hidden)

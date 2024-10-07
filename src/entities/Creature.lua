@@ -1,6 +1,6 @@
 local states = {
   idle = {
-    name = "idle",
+    name = "idling",
     enter = function(creature)
       creature.input = Vector(0, 0)
       creature.behavior.nextTime = (13 - math.sqrt(creature.stats.focus)) * (1 / 3)
@@ -16,7 +16,7 @@ local states = {
     end
   },
   wander = {
-    name = "wander",
+    name = "wandering",
     enter = function(creature)
       creature.input.x = (math.random() - 0.5) * 2
       creature.input.y = (math.random() - 0.5) * 2
@@ -28,7 +28,7 @@ local states = {
     end
   },
   moveToNode = {
-    name = "moveToNode",
+    name = "moving to node",
     enter = function(creature)
       creature.behavior.nextTime = 99999
 
@@ -88,7 +88,7 @@ local states = {
     end
   },
   harvest = {
-    name = "harvest",
+    name = "harvesting",
     enter = function(creature)
       creature:setAnimation(creature.animations.harvest[CreatureTier])
     end,
@@ -108,7 +108,7 @@ local states = {
     end
   },
   hurt = {
-    name = "hurt",
+    name = "ouch",
     enter = function(creature)
       print("ouch")
       creature.input = Vector(0, 0)
@@ -154,7 +154,25 @@ local function create(x, y)
       efficiency = 1,
       focus = 1 -- cap 121
     },
-    ouch = 0,   -- damage received on hurt
+    hitbox = {
+      size = Vector(48, 48),
+      offset = Vector(-24, -32)
+    },
+    update = function(self, dt)
+      self.stats.smart = DebugCreature.stats.smart + BasePassive.smart *
+          DebugCreature.stats.smartGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      self.stats.scary = DebugCreature.stats.scary + BasePassive.scary *
+          DebugCreature.stats.scaryGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      self.stats.power = DebugCreature.stats.power + BasePassive.power *
+          DebugCreature.stats.powerGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
+      CheckGrowthThresholds(self)
+
+      if self.hovered and not UI.isShopOpen then
+        UI.topText.text = "creature\n\n" .. self.behavior.currentState.name
+        UI.bottomText.text = "click to split.\ntakes 10 seconds."
+      end
+    end,
+    ouch = 0, -- damage received on hurt
     input = Vector(0, 0),
     position = Vector(x, y),
     sprite = love.graphics.newQuad(0, 0, TileSize, TileSize, SpriteSheet),
@@ -272,15 +290,6 @@ local function create(x, y)
       self.frameTime = 0
       self.currentFrame = 1
       self.flashing = false
-    end,
-    update = function(self, dt)
-      self.stats.smart = DebugCreature.stats.smart + BasePassive.smart *
-          DebugCreature.stats.smartGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
-      self.stats.scary = DebugCreature.stats.scary + BasePassive.scary *
-          DebugCreature.stats.scaryGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
-      self.stats.power = DebugCreature.stats.power + BasePassive.power *
-          DebugCreature.stats.powerGrowthMulti * DebugCreature.stats.overallGrowthMulti * dt
-      CheckGrowthThresholds(self)
     end
   }
 
@@ -290,7 +299,7 @@ local function create(x, y)
 
   -- Start up behavior
   SetBehaviorState(creature, creature.behavior.states.idle)
-  creature.behavior.nextTime = 0.1
+  creature.behavior.nextTime = 1
 
   return creature
 end

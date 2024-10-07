@@ -59,6 +59,24 @@ local function create(x, y, stat)
       currentState = nil,
       states = states
     },
+    hitbox = {
+      size = Vector(48, 48),
+      offset = Vector(-24, -24)
+    },
+    update = function(self, dt)
+      if self.hovered and not UI.isShopOpen then
+        if self.stat == "smart" then
+          UI.topText.text = "fungal brain\nlv" .. self.stats.nodeTier .. "\n" .. self.behavior.currentState.name
+          UI.bottomText.text = "eating this sharpens the mind."
+        elseif self.stat == "scary" then
+          UI.topText.text = "withered fruit\nlv" .. self.stats.nodeTier .. "\n" .. self.behavior.currentState.name
+          UI.bottomText.text = "eating this makes creatures scarier."
+        elseif self.stat == "power" then
+          UI.topText.text = "cosmic vessel\nlv" .. self.stats.nodeTier .. "\n" .. self.behavior.currentState.name
+          UI.bottomText.text = "drinking from this gives strength."
+        end
+      end
+    end,
     frameTime = 0,
     currentFrame = 1,
     animation = nil,
@@ -73,16 +91,16 @@ local function create(x, y, stat)
         },
         scary = {
           fps = 3,
-          offset = Vector(-TileSize / 2, -TileSize / 2),
+          offset = Vector(-TileSize, -TileSize * 1.5),
           frames = {
-            love.graphics.newQuad(TileSize * 0, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
+            love.graphics.newQuad(TileSize * 0, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
           }
         },
         power = {
           fps = 3,
-          offset = Vector(-TileSize, -TileSize * 1.5),
+          offset = Vector(-TileSize / 2, -TileSize / 2),
           frames = {
-            love.graphics.newQuad(TileSize * 0, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
+            love.graphics.newQuad(TileSize * 0, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
           }
         }
       },
@@ -97,18 +115,19 @@ local function create(x, y, stat)
         },
         scary = {
           fps = 3,
-          offset = Vector(-TileSize / 2, -TileSize / 2),
-          frames = {
-            love.graphics.newQuad(TileSize * 1, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
-            love.graphics.newQuad(TileSize * 2, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
-          }
-        },
-        power = {
-          fps = 3,
           offset = Vector(-TileSize, -TileSize * 1.5),
           frames = {
             love.graphics.newQuad(TileSize * 2, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
             love.graphics.newQuad(TileSize * 4, TileSize * 4, TileSize * 2, TileSize * 2, SpriteSheet),
+
+          }
+        },
+        power = {
+          fps = 3,
+          offset = Vector(-TileSize / 2, -TileSize / 2),
+          frames = {
+            love.graphics.newQuad(TileSize * 1, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
+            love.graphics.newQuad(TileSize * 2, TileSize * 3, TileSize * 1, TileSize * 1, SpriteSheet),
           }
         }
       },

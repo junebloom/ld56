@@ -50,6 +50,16 @@ local function create(x, y)
       currentState = nil,
       states = states
     },
+    hitbox = {
+      size = Vector(48, 48),
+      offset = Vector(-24, -24)
+    },
+    update = function(self, dt)
+      if self.hovered and not UI.isShopOpen then
+        UI.topText.text = "loosh vent\nlv" .. self.stats.nodeTier .. "\n" .. self.behavior.currentState.name
+        UI.bottomText.text = "produces loosh for upgrades."
+      end
+    end,
     frameTime = 0,
     currentFrame = 1,
     animation = nil,

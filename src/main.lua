@@ -20,6 +20,7 @@ local drawText = require("systems.drawText")
 local drawHitBoxes = require("systems.drawHitboxes")
 
 -- Game state
+
 DEBUG = true
 TimeScale = 1
 DoomClock = 100 -- TODO: game end state
@@ -45,7 +46,23 @@ Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
 PurchasedUpgrades = {}
 
+NodePoints = {
+  Vector(29, 29),
+  Vector(50, 21),
+  Vector(70, 30),
+  Vector(92, 25),
+  Vector(64, 48),
+  Vector(112, 43),
+  Vector(96, 75),
+  Vector(76, 66),
+  Vector(70, 76),
+  Vector(48, 78),
+  Vector(22, 67),
+  Vector(46, 55)
+}
+
 -- Configure graphics
+
 local bgImage = love.graphics.newImage("assets/bg.png")
 bgImage:setFilter("nearest", "nearest")
 love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
@@ -125,11 +142,23 @@ local debugFont = love.graphics.newFont(16)
 DebugCreature = {}
 
 function love.load()
-  table.insert(Entities, ResourceNode.create(64 * PixelScale, 48 * PixelScale))
+  math.randomseed(os.time())
 
-  table.insert(Entities, StatNode.create(30 * PixelScale, 30 * PixelScale, "smart"))
-  table.insert(Entities, StatNode.create(49 * PixelScale, 78 * PixelScale, "scary"))
-  table.insert(Entities, StatNode.create(93 * PixelScale, 26 * PixelScale, "power"))
+  local n = math.random(#NodePoints)
+  table.insert(Entities, ResourceNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "smart"))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "scary"))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "power"))
+  table.remove(NodePoints, n)
 
   DebugCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
   table.insert(Entities, DebugCreature)
@@ -183,6 +212,8 @@ function love.update(dt)
   local scaledDeltaTime = dt * TimeScale
 
   DoomClock = DoomClock - scaledDeltaTime
+  SmoothClock = SmoothClock + ((DoomClock - SmoothClock) * dt)
+
   Resource = Resource + BasePassive.loosh * DebugCreature.stats.greed * scaledDeltaTime
 
   processMouseHover(Entities)
@@ -190,14 +221,13 @@ function love.update(dt)
   moveEntities(Entities, scaledDeltaTime)
   processEntityUpdate(Entities, scaledDeltaTime)
   processFacing(Entities)
-  processAnimations(Entities, scaledDeltaTime)
+  processAnimations(Entities, dt)
 end
 
-local bgFollower = DoomClock
+SmoothClock = DoomClock
 
 function love.draw()
-  bgFollower = bgFollower + ((DoomClock - bgFollower) * love.timer.getDelta() * TimeScale)
-  local bgProgress = 1 - bgFollower / 100
+  local bgProgress = 1 - SmoothClock / 100
   local bgEasing = 1 - math.sqrt(1 - bgProgress ^ 2)
   local bgScale = PixelScale - 0.1 + bgEasing
   love.graphics.setColor(1, 1, 1, 0.5)
@@ -210,7 +240,7 @@ function love.draw()
   local looshString = math.floor(Resource * 10) .. " loosh"
 
   love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
-  love.graphics.printf("t - " .. math.floor(DoomClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
+  love.graphics.printf("t - " .. math.floor(SmoothClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
   love.graphics.printf("tier" .. CreatureTier, 0, 1 * PixelScale, 128, "right", 0, PixelScale)
   if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
 
@@ -228,5 +258,6 @@ function love.draw()
     love.graphics.print("power: " .. DebugCreature.stats.power, 0, 32)
     love.graphics.print("tier: " .. CreatureTier, 0, 48)
     love.graphics.print("fps: " .. love.timer.getFPS(), 0, 64)
+    -- love.graphics.print("doom: " .. DoomClock, 0, 80)
   end
 end
