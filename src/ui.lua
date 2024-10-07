@@ -48,6 +48,20 @@ end
 local shopButtonOffset = 0
 
 local UI = {
+  tierTip = {
+    position = Vector(108 * PixelScale, 0 * PixelScale),
+    hitbox = {
+      size = Vector(20 * PixelScale, 8 * PixelScale),
+      offset = Vector(0, 0)
+    },
+    update = function(self, dt)
+      if self.hovered and not UI.isShopOpen then
+        UI.topText.text = "increase\nspookiness, strength, and smarts\nto lv" ..
+        CreatureTier + 1 .. "\nto grow to the next stage."
+        UI.bottomText.text = ""
+      end
+    end,
+  },
   statBars = {
     scary = {
       hidden = false,
@@ -59,8 +73,8 @@ local UI = {
       },
       update = function(self, dt)
         if self.hovered and not UI.isShopOpen then
-          UI.topText.text = "scariness\nlv" .. GetStatTier(DebugCreature.stats.power)
-          UI.bottomText.text = "how terrifying."
+          UI.topText.text = "scariness\nlv" .. GetStatTier(DebugCreature.stats.scary)
+          UI.bottomText.text = "how spooky."
         end
       end,
     },
@@ -89,7 +103,7 @@ local UI = {
       },
       update = function(self, dt)
         if self.hovered and not UI.isShopOpen then
-          UI.topText.text = "smarts\nlv" .. GetStatTier(DebugCreature.stats.power)
+          UI.topText.text = "smarts\nlv" .. GetStatTier(DebugCreature.stats.smart)
           UI.bottomText.text = "how cunning."
         end
       end,
@@ -268,6 +282,7 @@ function UI.init()
   table.insert(Entities, UI.topText)
   table.insert(Entities, UI.bottomText)
   table.insert(Entities, UI.looshParticles)
+  table.insert(Entities, UI.tierTip)
 end
 
 function UI.setShopHidden(hidden)

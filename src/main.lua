@@ -110,7 +110,7 @@ end
 
 function GetStatTier(n)
   local tier = 1
-  for i = 3, 1, -1 do
+  for i = 1, 3 do
     if n >= GrowthThresholds.smart[i] then tier = i + 1 end
   end
   return tier
