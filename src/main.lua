@@ -22,7 +22,7 @@ local drawHitBoxes = require("systems.drawHitboxes")
 -- Game state
 DEBUG = true
 TimeScale = 1
-DoomClock = 100
+DoomClock = 100 -- TODO: game end state
 Entities = {}
 
 Resource = 3
@@ -32,6 +32,8 @@ GrowthThresholds = {
   scary = { 2, 5, 10 },
   power = { 2, 5, 10 }
 }
+
+-- TODO: Passive income/increases
 
 Upgrades = require("upgrades")
 UpgradeCosts = { 1, 3, 9 }
@@ -139,7 +141,7 @@ function love.keypressed(key)
     if key == "5" then TimeScale = 20 end
 
     if key == "s" then
-      table.insert(Creature.create(64 * PixelScale, 64 * PixelScale))
+      table.insert(Entities, Creature.create(64 * PixelScale, 64 * PixelScale))
     end
   end
   -- else
