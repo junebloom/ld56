@@ -43,6 +43,8 @@ local states = {
         targetType = "enemyNode"
       end
 
+      if creature.behavior.nextTarget ~= nil then targetType = creature.behavior.nextTarget end
+
       -- Find closest valid node of selected type
       local closest = nil
       for _, e in pairs(Entities) do
@@ -64,6 +66,7 @@ local states = {
     end,
     exit = function(creature)
       creature.input = Vector(0, 0)
+      creature.behavior.nextTarget = nil
       local target = creature.behavior.target
       if not target then
         SetBehaviorState(creature, creature.behavior.states.idle)
@@ -130,6 +133,7 @@ local function create(x, y)
     type = "creature",
     behavior = {
       target = nil,
+      nextTarget = nil,
       nextTime = 0,
       currentState = nil,
       lastState = nil,
