@@ -66,7 +66,6 @@ local states = {
     end,
     exit = function(creature)
       creature.input = Vector(0, 0)
-      creature.behavior.nextTarget = nil
       local target = creature.behavior.target
       if not target then
         SetBehaviorState(creature, creature.behavior.states.idle)
@@ -81,6 +80,7 @@ local states = {
       end
     end,
     update = function(creature)
+      creature.behavior.nextTarget = nil
       local target = creature.behavior.target
       if not target or (creature.position - target.position).length < 8 * PixelScale then
         creature.behavior.currentState.exit(creature)
@@ -206,12 +206,15 @@ local function create(x, y)
     end
   }
 
-  SetBehaviorState(creature, creature.behavior.states.idle)
-  creature.behavior.nextTime = 0.1
-
   for _, upgrade in pairs(PurchasedUpgrades) do
     if upgrade.types.creature then upgrade.apply(creature) end
   end
+
+  -- Start up behavior
+  SetBehaviorState(creature, creature.behavior.states.idle)
+  creature.behavior.nextTarget = "resourceNode"
+  creature.behavior.nextTime = 0.1
+
 
   return creature
 end
