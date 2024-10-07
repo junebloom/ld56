@@ -3,7 +3,7 @@ local states = {
     name = "idle",
     enter = function(creature)
       creature.input = Vector(0, 0)
-      creature.behavior.nextTime = (11 - math.sqrt(creature.stats.focus)) * 0.3
+      creature.behavior.nextTime = (13 - math.sqrt(creature.stats.focus)) * (1 / 3)
       creature:setAnimation(creature.animations.idle[CreatureTier])
     end,
     exit = function(creature)
@@ -68,7 +68,7 @@ local states = {
       creature.input = Vector(0, 0)
       local target = creature.behavior.target
       if not target then
-        SetBehaviorState(creature, creature.behavior.states.idle)
+        SetBehaviorState(creature, creature.behavior.states.moveToNode)
       elseif target.type == "resourceNode" then
         SetBehaviorState(creature, creature.behavior.states.harvest)
       elseif target.type == "statNode" then

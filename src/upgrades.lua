@@ -122,7 +122,7 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.focus = creature.stats.focus + 8
+      creature.stats.focus = creature.stats.focus + 15
       Upgrades.FocusUp.available = false
       Upgrades.FocusUpT2.available = true
     end
@@ -262,7 +262,7 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.focus = creature.stats.focus + 16
+      creature.stats.focus = creature.stats.focus + 33
       Upgrades.FocusUpT2.available = false
       Upgrades.FocusUpT3.prereq = true
     end
@@ -416,7 +416,7 @@ local upgrades = {
       creature = true
     },
     apply = function(creature)
-      creature.stats.focus = creature.stats.focus + 24
+      creature.stats.focus = creature.stats.focus + 51
       Upgrades.FocusUpT3.available = false
     end
   },
