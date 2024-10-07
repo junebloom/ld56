@@ -33,16 +33,17 @@ local function create(x, y)
   local node = {
     id = ID.new(),
     type = "resourceNode",
+    supertype = "node",
     position = Vector(x, y),
     spriteOffset = Vector(-TileSize / 2, -TileSize * 1.5),
     stats = {
       production = 1,
       nodeTier = 1
     },
-    growthTime = 11,
+    growthTime = 6,
     harvestable = true,
-    baseTimeToHarvest = 10,
-    timeToHarvest = 10,
+    baseTimeToHarvest = 5,
+    timeToHarvest = 5,
     greedMultiplier = 1,
     behavior = {
       nextTime = 0,
