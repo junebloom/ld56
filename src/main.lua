@@ -63,9 +63,11 @@ NodePoints = {
 
 -- Configure graphics
 
-local bgImage = love.graphics.newImage("assets/bg.png")
-bgImage:setFilter("nearest", "nearest")
 love.graphics.setBackgroundColor(5 / 255, 31 / 255, 57 / 255)
+local bgStars = love.graphics.newImage("assets/stars.png")
+local bgPlanet = love.graphics.newImage("assets/planet.png")
+bgStars:setFilter("nearest", "nearest")
+bgPlanet:setFilter("nearest", "nearest")
 
 Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ")
 Font:setFilter("nearest", "nearest")
@@ -229,18 +231,19 @@ SmoothClock = DoomClock
 function love.draw()
   local bgProgress = 1 - SmoothClock / 100
   local bgEasing = 1 - math.sqrt(1 - bgProgress ^ 2)
-  local bgScale = PixelScale - 0.1 + bgEasing
-  love.graphics.setColor(1, 1, 1, 0.5)
-  love.graphics.draw(bgImage, -48, 0, -0.1, bgScale, bgScale)
+  local bgScale = PixelScale - 1 + bgEasing * 3
 
   love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(bgStars, 0, 0, -0.2, PixelScale, PixelScale, 72, 32)
+  love.graphics.draw(bgPlanet, 0, 0, -0.1, bgScale, bgScale, 128, 48)
+
   drawSprites(Entities)
   drawText(Entities)
 
   local looshString = math.floor(Resource * 10) .. " loosh"
 
   love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
-  love.graphics.printf("t - " .. math.floor(SmoothClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
+  love.graphics.printf("t-" .. math.floor(SmoothClock), 0, 1 * PixelScale, 128, "center", 0, PixelScale)
   love.graphics.printf("tier" .. CreatureTier, 0, 1 * PixelScale, 128, "right", 0, PixelScale)
   if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
 
