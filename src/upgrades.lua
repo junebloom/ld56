@@ -21,6 +21,7 @@ local upgrades = {
       Upgrades.MoveSpeedUp.available = false
     end
   },
+
   PowerGrowthUp = {
     tier = 1,
     available = true,
@@ -35,6 +36,7 @@ local upgrades = {
       Upgrades.PowerGrowthUp.available = false
     end
   },
+
   ScaryGrowthUp = {
     tier = 1,
     available = true,
@@ -49,6 +51,7 @@ local upgrades = {
       Upgrades.ScaryGrowthUp.available = false
     end
   },
+
   SmartGrowthUp = {
     tier = 1,
     available = true,
@@ -63,6 +66,7 @@ local upgrades = {
       Upgrades.SmartGrowthUp.available = false
     end
   },
+
   MoveSpeedMulti = {
     tier = 1,
     available = true,
@@ -77,6 +81,7 @@ local upgrades = {
       Upgrades.MoveSpeedMulti.available = false
     end
   },
+
   EfficiencyUp = {
     tier = 1,
     available = true,
@@ -91,6 +96,7 @@ local upgrades = {
       Upgrades.EfficiencyUp.available = false
     end
   },
+
   ProductionUp = {
     tier = 1,
     available = true,
@@ -106,6 +112,7 @@ local upgrades = {
       Upgrades.ProductionUp.available = false
     end
   },
+
   SmartUp = {
     tier = 1,
     available = true,
@@ -121,6 +128,7 @@ local upgrades = {
       Upgrades.SmartUpT2.available = true
     end
   },
+
   -- DefenseUp = {
   --   tier = 1,
   --   available = true,
@@ -136,6 +144,7 @@ local upgrades = {
   --     Upgrades.DefenseUpT2.available = true
   --   end
   -- },
+
   GreedUp = {
     tier = 1,
     available = true,
@@ -415,20 +424,21 @@ local upgrades = {
     end
   },
 
-  DefenseUpT3 = {
-    tier = 3,
-    available = false,
-    glyph = "+d+",
-    name = "defense up +++",
-    description = "improve defense by an additional 100%",
-    types = {
-      creature = true
-    },
-    apply = function(creature)
-      creature.stats.defense = creature.stats.defense + 1
-      Upgrades.DefenseUpT3.available = false
-    end
-  },
+  -- DefenseUpT3 = {
+  --   tier = 3,
+  --   available = false,
+  --   glyph = "+d+",
+  --   name = "defense up +++",
+  --   description = "improve defense by an additional 100%",
+  --   types = {
+  --     creature = true
+  --   },
+  --   apply = function(creature)
+  --     creature.stats.defense = creature.stats.defense + 1
+  --     Upgrades.DefenseUpT3.available = false
+  --   end
+  -- },
+
   SmartUpT3 = {
     tier = 3,
     available = false,
@@ -443,6 +453,7 @@ local upgrades = {
       Upgrades.SmartUpT2.available = false
     end
   },
+
   GreedUpT3 = {
     tier = 3,
     available = false,
@@ -477,6 +488,7 @@ local upgrades = {
       Upgrades.LooshNodeT2.available = true
     end
   },
+
   LooshNodeT2 = {
     tier = 2,
     available = false,
@@ -494,6 +506,7 @@ local upgrades = {
       Upgrades.LooshNodeT3.available = true
     end
   },
+
   LooshNodeT3 = {
     tier = 3,
     available = false,
@@ -510,6 +523,7 @@ local upgrades = {
       Upgrades.LooshNodeT3.available = false
     end
   },
+
 
   ScaryNodeT1 = {
     tier = 1,
@@ -528,6 +542,7 @@ local upgrades = {
       Upgrades.ScaryNodeT2.available = true
     end
   },
+
   ScaryNodeT2 = {
     tier = 2,
     available = false,
@@ -545,6 +560,7 @@ local upgrades = {
       Upgrades.ScaryNodeT3.available = true
     end
   },
+
   ScaryNodeT3 = {
     tier = 3,
     available = false,
@@ -561,6 +577,7 @@ local upgrades = {
       Upgrades.ScaryNodeT3.available = false
     end
   },
+
 
   SmartNodeT1 = {
     tier = 1,
@@ -579,6 +596,7 @@ local upgrades = {
       Upgrades.SmartNodeT2.available = true
     end
   },
+
   SmartNodeT2 = {
     tier = 2,
     available = false,
@@ -596,6 +614,7 @@ local upgrades = {
       Upgrades.SmartNodeT3.available = true
     end
   },
+
   SmartNodeT3 = {
     tier = 3,
     available = false,
@@ -612,6 +631,7 @@ local upgrades = {
       Upgrades.SmartNodeT3.available = false
     end
   },
+
 
   PowerNodeT1 = {
     tier = 1,
@@ -630,6 +650,7 @@ local upgrades = {
       Upgrades.PowerNodeT2.available = true
     end
   },
+
   PowerNodeT2 = {
     tier = 2,
     available = false,
@@ -647,6 +668,7 @@ local upgrades = {
       Upgrades.PowerNodeT3.available = true
     end
   },
+
   PowerNodeT3 = {
     tier = 3,
     available = false,
