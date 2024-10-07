@@ -62,8 +62,8 @@ local UI = {
         offset = Vector(-90, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered and Resource < UpgradeCosts[1] then
-          UI.bottomText.text = "need " .. UpgradeCosts[1] * 10 .. " loosh"
+        if not shopButton.hidden and shopButton.hovered then
+          UI.bottomText.text = "costs " .. UpgradeCosts[1] * 10 .. " loosh"
           UI.bottomText.hidden = false
         elseif not shopButton.hidden then
           UI.bottomText.hidden = true
@@ -104,8 +104,8 @@ local UI = {
         offset = Vector(-24, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered and Resource < UpgradeCosts[2] then
-          UI.bottomText.text = "need " .. UpgradeCosts[2] * 10 .. " loosh"
+        if not shopButton.hidden and shopButton.hovered then
+          UI.bottomText.text = "costs " .. UpgradeCosts[2] * 10 .. " loosh"
           UI.bottomText.hidden = false
         elseif not shopButton.hidden then
           UI.bottomText.hidden = true
@@ -146,8 +146,8 @@ local UI = {
         offset = Vector(-24, -20)
       },
       update = function(shopButton)
-        if not shopButton.hidden and shopButton.hovered and Resource < UpgradeCosts[3] then
-          UI.bottomText.text = "need " .. UpgradeCosts[3] * 10 .. " loosh"
+        if not shopButton.hidden and shopButton.hovered then
+          UI.bottomText.text = "costs " .. UpgradeCosts[3] * 10 .. " loosh"
           UI.bottomText.hidden = false
         elseif not shopButton.hidden then
           UI.bottomText.hidden = true
