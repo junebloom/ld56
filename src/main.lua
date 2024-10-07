@@ -31,12 +31,12 @@ local function initGameState()
 
   Entities = {}
 
-  Resource = 2.5
+  Resource = 1
   CreatureTier = 1
   GrowthThresholds = {
-    smart = { 2, 5, 10 },
-    scary = { 2, 5, 10 },
-    power = { 2, 5, 10 }
+    smart = { 1.6, 11, 31 },
+    scary = { 1.6, 11, 31 },
+    power = { 1.6, 11, 31 }
   }
 
   -- Base passive stat gain per second
@@ -48,7 +48,12 @@ local function initGameState()
   }
 
   Upgrades = require("upgrades")
-  UpgradeCosts = { 1, 3, 9 }
+  UpgradeCostsBase = { .8, 2.4, 4.8 }
+  UpgradeCosts = {
+    math.floor(UpgradeCostsBase[1] * 10) / 10,
+    math.floor(UpgradeCostsBase[2] * 10) / 10,
+    math.floor(UpgradeCostsBase[3] * 10) / 10
+  }
   PurchasedUpgrades = {}
 
   NodePoints = {
@@ -351,7 +356,41 @@ function love.update(dt)
     Dysnomia:setAnimation(Dysnomia.animations.giggle)
   end
 
-  Resource = Resource + BasePassive.loosh * DebugCreature.stats.greed * scaledDeltaTime
+  -- Game over
+  if SmoothClock < 0 then
+    GameOver = true
+    local tier = CreatureTier
+
+    initGameState()
+    TimeScale = 0
+    DoomClock = 0.01
+    SmoothClock = 0.01
+
+    UI.setShopHidden(true)
+    UI.setButtonsHidden(true)
+    UI.statBars.power.hidden = true
+    UI.statBars.scary.hidden = true
+    UI.statBars.smart.hidden = true
+    UI.looshParticles.hidden = true
+    UI.tierTip.hidden = true
+    UI.isShopOpen = true
+
+    UI.topText.hidden = false
+    UI.bottomText.hidden = false
+
+    UI.topText.text = "\npress space to play again"
+    UI.bottomText.text = "\n\ni hope they like my tiny creatures!"
+
+    table.insert(Entities, DebugCreature)
+    DebugCreature.position.x = 64 * PixelScale
+    DebugCreature.position.y = 80 * PixelScale
+    DebugCreature:setAnimation(DebugCreature.animations.harvest[tier])
+
+    Dysnomia.position = Vector(76 * PixelScale, 40 * PixelScale)
+    Dysnomia:setAnimation(Dysnomia.animations.giggle)
+  end
+
+  Resource = Resource + BasePassive.loosh * CreatureTier * DebugCreature.stats.greed * scaledDeltaTime
 
   processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)

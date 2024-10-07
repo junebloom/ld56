@@ -40,6 +40,8 @@ local function newCard(xoffset)
       ApplyUpgradeToEntities(card.upgrade)
       UI.setShopHidden(true)
       UI.setButtonsHidden(false)
+      UpgradeCostsBase[card.upgrade.tier] = UpgradeCostsBase[card.upgrade.tier] * 1.1
+      UpgradeCosts[card.upgrade.tier] = (math.floor(UpgradeCostsBase[card.upgrade.tier] * 10) / 10)
     end
   }
   return card

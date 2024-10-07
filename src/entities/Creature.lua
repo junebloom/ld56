@@ -152,7 +152,7 @@ local function create(x, y)
       nextTime = 0,
       currentState = nil,
       lastState = nil,
-      mood = 0.2, --Chance to harvest
+      mood = 0.25, --Chance to harvest
       states = states
     },
     stats = {
@@ -168,9 +168,9 @@ local function create(x, y)
       greed = 1,
       efficiency = 1,
       focus = 1, -- cap 121
-      splitTime = 15,
-      splitCost = 5,
-      splitCostUI = 50
+      splitTime = 5,
+      splitCost = 4,
+      splitCostUI = 40
     },
     hitbox = {
       size = Vector(48, 48),
@@ -216,7 +216,7 @@ local function create(x, y)
         creature.behavior.currentState.exit(creature)
         SetBehaviorState(creature, creature.behavior.states.split)
         Resource = Resource - DebugCreature.stats.splitCost
-        DebugCreature.stats.splitCost = (DebugCreature.stats.splitCost) ^ (6 / 5)
+        DebugCreature.stats.splitCost = (DebugCreature.stats.splitCost) ^ (1.25)
         DebugCreature.stats.splitCostUI = math.floor(DebugCreature.stats.splitCost * 10)
       else
         print("can't afford split")
@@ -343,9 +343,9 @@ local function create(x, y)
     end
   }
 
-  for _, upgrade in pairs(PurchasedUpgrades) do
-    if upgrade.types.creature then upgrade.apply(creature) end
-  end
+  -- for _, upgrade in pairs(PurchasedUpgrades) do
+  --   if upgrade.types.creature then upgrade.apply(creature) end
+  -- end
 
   -- Start up behavior
   SetBehaviorState(creature, creature.behavior.states.idle)
