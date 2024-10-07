@@ -48,16 +48,19 @@ end
 local shopButtonOffset = 0
 
 local UI = {
+  inCutScene = false,
+  isShopOpen = false,
   tierTip = {
+    hidden = false,
     position = Vector(108 * PixelScale, 0 * PixelScale),
     hitbox = {
       size = Vector(20 * PixelScale, 8 * PixelScale),
       offset = Vector(0, 0)
     },
     update = function(self, dt)
-      if self.hovered and not UI.isShopOpen then
+      if self.hovered and not self.hidden and not UI.isShopOpen then
         UI.topText.text = "increase\nspookiness, strength, and smarts\nto lv" ..
-        CreatureTier + 1 .. "\nto grow to the next stage."
+            CreatureTier + 1 .. "\nto grow to the next stage."
         UI.bottomText.text = ""
       end
     end,
@@ -72,7 +75,7 @@ local UI = {
         offset = Vector(0, 0)
       },
       update = function(self, dt)
-        if self.hovered and not UI.isShopOpen then
+        if self.hovered and not self.hidden and not UI.isShopOpen then
           UI.topText.text = "scariness\nlv" .. GetStatTier(DebugCreature.stats.scary)
           UI.bottomText.text = "how spooky."
         end
@@ -87,7 +90,7 @@ local UI = {
         offset = Vector(0, 0)
       },
       update = function(self, dt)
-        if self.hovered and not UI.isShopOpen then
+        if self.hovered and not self.hidden and not UI.isShopOpen then
           UI.topText.text = "strength\nlv" .. GetStatTier(DebugCreature.stats.power)
           UI.bottomText.text = "how powerful."
         end
@@ -102,14 +105,13 @@ local UI = {
         offset = Vector(0, 0)
       },
       update = function(self, dt)
-        if self.hovered and not UI.isShopOpen then
+        if self.hovered and not self.hidden and not UI.isShopOpen then
           UI.topText.text = "smarts\nlv" .. GetStatTier(DebugCreature.stats.smart)
           UI.bottomText.text = "how cunning."
         end
       end,
     }
   },
-  isShopOpen = false,
   shopButtons = {
     {
       id = ID.new(),

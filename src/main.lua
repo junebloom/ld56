@@ -21,7 +21,7 @@ local drawHitBoxes = require("systems.drawHitboxes")
 
 -- Game state
 
-local function initGame()
+local function initGameState()
   DEBUG = true
   TimeScale = 1
   DoomClock = 100         -- TODO: game end state
@@ -86,12 +86,75 @@ local function initGame()
   SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
   SpriteSheet:setFilter("nearest", "nearest")
 
+  DysnomiaSpriteSheet = love.graphics.newImage("assets/dysnomia.png")
+  DysnomiaSpriteSheet:setFilter("nearest", "nearest")
+
   TileSize = 8
   PixelScale = 6
 
   DebugFont = love.graphics.newFont(16)
-  DebugCreature = {}
 
+  DebugCreature = DebugCreature or Creature.create(64 * PixelScale, 64 * PixelScale)
+
+  local frameW = 24
+  local frameH = 40
+
+  Dysnomia = {
+    sheet = DysnomiaSpriteSheet,
+    position = Vector(108 * PixelScale, 42 * PixelScale),
+    spriteOffset = Vector(0, 0),
+    hitbox = {
+      size = Vector((frameW - 8) * PixelScale, (frameH - 8) * PixelScale),
+      offset = Vector(4 * PixelScale, 8 * PixelScale)
+    },
+    update = function(e)
+      if e.hovered and not e.hidden and not GameOver then
+        UI.topText.text = "dysnomia"
+        UI.bottomText.text = "hey thats me!"
+      end
+    end,
+    frameTime = 0,
+    currentFrame = 1,
+    animation = nil,
+    animations = {
+      bounce = {
+        fps = 6,
+        frames = {
+          love.graphics.newQuad(frameW * 0, frameH * 0, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 1, frameH * 0, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 2, frameH * 0, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 3, frameH * 0, frameW, frameH, DysnomiaSpriteSheet),
+        }
+      },
+      giggle = {
+        fps = 4,
+        frames = {
+          love.graphics.newQuad(frameW * 0, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 1, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 2, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 2, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 3, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+          love.graphics.newQuad(frameW * 3, frameH * 1, frameW, frameH, DysnomiaSpriteSheet),
+        }
+      },
+    },
+    setAnimation = function(self, animation)
+      if self.animation == animation then return end
+      self.animation = animation
+      self.frameTime = 0
+      self.currentFrame = 1
+    end
+  }
+
+  Dysnomia:setAnimation(Dysnomia.animations.bounce)
+
+  table.insert(Entities, Dysnomia)
+
+  UI = require("ui")
+  UI.init()
+end
+
+local function startGame()
   local n = math.random(#NodePoints)
   table.insert(Entities, ResourceNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale))
   table.remove(NodePoints, n)
@@ -110,9 +173,6 @@ local function initGame()
 
   DebugCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
   table.insert(Entities, DebugCreature)
-
-  UI = require("ui")
-  UI.init()
 end
 
 -- Global functions
@@ -186,11 +246,31 @@ end
 
 function love.load()
   math.randomseed(os.time())
-  initGame()
+  initGameState()
+  startGame()
 end
 
 function love.keypressed(key)
+  if key == "space" and GameOver then
+    GameOver = false
+    initGameState()
+    startGame()
+
+    UI.setShopHidden(true)
+    UI.setButtonsHidden(false)
+    UI.statBars.power.hidden = false
+    UI.statBars.scary.hidden = false
+    UI.statBars.smart.hidden = false
+    UI.looshParticles.hidden = false
+    UI.tierTip.hidden = false
+    UI.isShopOpen = false
+
+    UI.topText.hidden = true
+    UI.bottomText.hidden = true
+  end
+
   if key == "escape" then DEBUG = not DEBUG end
+
   if DEBUG then
     if key == "tab" then
       TimeScale = 0
@@ -205,13 +285,10 @@ function love.keypressed(key)
     if key == "3" then TimeScale = 5 end
     if key == "4" then TimeScale = 10 end
     if key == "5" then TimeScale = 20 end
+    if key == "6" then TimeScale = 50 end
 
     if key == "s" then
       table.insert(Entities, Creature.create(64 * PixelScale, 64 * PixelScale))
-    end
-
-    if key == "r" then
-      initGame()
     end
   end
   -- else
@@ -240,6 +317,40 @@ function love.update(dt)
   DoomClock = DoomClock - scaledDeltaTime
   SmoothClock = SmoothClock + ((DoomClock - SmoothClock) * dt)
 
+  -- Game over
+  if SmoothClock < 0 then
+    GameOver = true
+    local tier = CreatureTier
+
+    initGameState()
+    TimeScale = 0
+    DoomClock = 0.01
+    SmoothClock = 0.01
+
+    UI.setShopHidden(true)
+    UI.setButtonsHidden(true)
+    UI.statBars.power.hidden = true
+    UI.statBars.scary.hidden = true
+    UI.statBars.smart.hidden = true
+    UI.looshParticles.hidden = true
+    UI.tierTip.hidden = true
+    UI.isShopOpen = true
+
+    UI.topText.hidden = false
+    UI.bottomText.hidden = false
+
+    UI.topText.text = "\npress space to play again"
+    UI.bottomText.text = "\n\ni hope they like my tiny creatures!"
+
+    table.insert(Entities, DebugCreature)
+    DebugCreature.position.x = 64 * PixelScale
+    DebugCreature.position.y = 80 * PixelScale
+    DebugCreature:setAnimation(DebugCreature.animations.harvest[tier])
+
+    Dysnomia.position = Vector(76 * PixelScale, 40 * PixelScale)
+    Dysnomia:setAnimation(Dysnomia.animations.giggle)
+  end
+
   Resource = Resource + BasePassive.loosh * DebugCreature.stats.greed * scaledDeltaTime
 
   processMouseHover(Entities)
@@ -262,6 +373,8 @@ function love.draw()
   drawSprites(Entities)
   drawText(Entities)
 
+  love.graphics.setColor(1, 1, 1, SmoothClock)
+
   local looshString = math.floor(Resource * 10) .. " loosh"
 
   love.graphics.printf(looshString, 0, 88 * PixelScale, 128, "right", 0, PixelScale)
@@ -270,13 +383,21 @@ function love.draw()
 
 
   for stat, bar in pairs(UI.statBars) do
-    bar.hitbox.size.x = PixelScale + 128 * math.min(DebugCreature.stats[stat], 10) / 10
-
-    love.graphics.setColor(bar.color)
-    love.graphics.rectangle("fill", bar.position.x, bar.position.y, bar.hitbox.size.x, bar.hitbox.size.y)
+    if not bar.hidden then
+      bar.hitbox.size.x = PixelScale + 128 * math.min(DebugCreature.stats[stat], 10) / 10
+      love.graphics.setColor(bar.color)
+      love.graphics.rectangle("fill", bar.position.x, bar.position.y, bar.hitbox.size.x, bar.hitbox.size.y)
+    end
   end
 
-  if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
+  -- if (TimeScale == 0) then love.graphics.printf("paused", 0, 16 * PixelScale, 128, "center", 0, PixelScale) end
+
+  if GameOver then
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.printf("arrived at\nearth", 0, 1 * PixelScale, 128, "center", 0, PixelScale)
+    drawSprites(Entities)
+    drawText(Entities)
+  end
 
   if DEBUG then
     drawHitBoxes(Entities)
@@ -290,8 +411,7 @@ function love.draw()
     love.graphics.print("smart: " .. DebugCreature.stats.smart, 0, 0)
     love.graphics.print("scary: " .. DebugCreature.stats.scary, 0, 16)
     love.graphics.print("power: " .. DebugCreature.stats.power, 0, 32)
-    love.graphics.print("tier: " .. CreatureTier, 0, 48)
-    love.graphics.print("fps: " .. love.timer.getFPS(), 0, 64)
+    -- love.graphics.print("fps: " .. love.timer.getFPS(), 0, 64)
     -- love.graphics.print("doom: " .. DoomClock, 0, 80)
   end
 end

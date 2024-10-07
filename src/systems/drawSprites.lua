@@ -8,7 +8,7 @@ local function drawSprites(entities)
 
       local scale = e.flashing and PixelScale + math.sin(t * 10) * e.flashing or PixelScale
 
-      love.graphics.draw(SpriteSheet, e.sprite, e.position.x, e.position.y, 0, scale * (e.facing or 1), scale,
+      love.graphics.draw(e.sheet or SpriteSheet, e.sprite, e.position.x, e.position.y, 0, scale * (e.facing or 1), scale,
         -offset.x, -offset.y)
     end
   end
