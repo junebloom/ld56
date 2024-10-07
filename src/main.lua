@@ -115,7 +115,7 @@ function love.load()
   table.insert(Entities, StatNode.create(49 * PixelScale, 78 * PixelScale, "scary"))
   table.insert(Entities, StatNode.create(93 * PixelScale, 26 * PixelScale, "power"))
 
-  initialCreature = Creature.create(64 * PixelScale, 63 * PixelScale)
+  initialCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
   table.insert(Entities, initialCreature)
 
   UI.init()
@@ -130,12 +130,17 @@ function love.keypressed(key)
       dbg()
       print("!! Remember to unpause after closing !!")
     end
+
     if key == "0" then TimeScale = 0 end
     if key == "1" then TimeScale = 1 end
     if key == "2" then TimeScale = 3 end
     if key == "3" then TimeScale = 5 end
     if key == "4" then TimeScale = 10 end
     if key == "5" then TimeScale = 20 end
+
+    if key == "s" then
+      table.insert(Creature.create(64 * PixelScale, 64 * PixelScale))
+    end
   end
   -- else
   --   if key == "space" then
@@ -192,5 +197,6 @@ function love.draw()
     love.graphics.print("smart: " .. initialCreature.stats.smart, 0, 0)
     love.graphics.print("scary: " .. initialCreature.stats.scary, 0, 16)
     love.graphics.print("power: " .. initialCreature.stats.power, 0, 32)
+    love.graphics.print("tier: " .. CreatureTier, 0, 48)
   end
 end
