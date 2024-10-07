@@ -21,69 +21,99 @@ local drawHitBoxes = require("systems.drawHitboxes")
 
 -- Game state
 
-DEBUG = true
-TimeScale = 1
-DoomClock = 100 -- TODO: game end state
-Entities = {}
+local function initGame()
+  DEBUG = true
+  TimeScale = 1
+  DoomClock = 100         -- TODO: game end state
+  SmoothClock = DoomClock -- Smoothed doom clock (read only)
 
-Resource = 2.5
-CreatureTier = 1
-GrowthThresholds = {
-  smart = { 2, 5, 10 },
-  scary = { 2, 5, 10 },
-  power = { 2, 5, 10 }
-}
+  t = 0                   -- internal clock for certain animations
 
--- Base passive stat gain per second
-BasePassive = {
-  loosh = 0.05,
-  smart = 0.01,
-  scary = 0.01,
-  power = 0.01
-}
+  Entities = {}
 
-Upgrades = require("upgrades")
-UpgradeCosts = { 1, 3, 9 }
-PurchasedUpgrades = {}
+  Resource = 2.5
+  CreatureTier = 1
+  GrowthThresholds = {
+    smart = { 2, 5, 10 },
+    scary = { 2, 5, 10 },
+    power = { 2, 5, 10 }
+  }
 
-NodePoints = {
-  Vector(29, 29),
-  Vector(50, 21),
-  Vector(70, 30),
-  Vector(92, 25),
-  Vector(64, 48),
-  Vector(112, 43),
-  Vector(96, 75),
-  Vector(76, 66),
-  Vector(70, 76),
-  Vector(48, 78),
-  Vector(22, 67),
-  Vector(46, 55)
-}
+  -- Base passive stat gain per second
+  BasePassive = {
+    loosh = 0.05,
+    smart = 0.01,
+    scary = 0.01,
+    power = 0.01
+  }
 
--- Configure graphics
-Colors = {
-  { 5 / 255,   31 / 255,  57 / 255 },
-  { 29 / 255,  21 / 255,  89 / 255 },
-  { 74 / 255,  36 / 255,  128 / 255 },
-  { 197 / 255, 58 / 255,  157 / 255 },
-  { 244 / 255, 142 / 255, 128 / 255 },
-}
-love.graphics.setBackgroundColor(Colors[1])
-local bgStars = love.graphics.newImage("assets/stars.png")
-local bgPlanet = love.graphics.newImage("assets/planet.png")
-bgStars:setFilter("nearest", "nearest")
-bgPlanet:setFilter("nearest", "nearest")
+  Upgrades = require("upgrades")
+  UpgradeCosts = { 1, 3, 9 }
+  PurchasedUpgrades = {}
 
-Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ", -2)
-Font:setFilter("nearest", "nearest")
+  NodePoints = {
+    Vector(29, 29),
+    Vector(50, 21),
+    Vector(70, 30),
+    Vector(92, 25),
+    Vector(64, 48),
+    Vector(112, 43),
+    Vector(96, 75),
+    Vector(76, 66),
+    Vector(70, 76),
+    Vector(48, 78),
+    Vector(22, 67),
+    Vector(46, 55)
+  }
 
-SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
-SpriteSheet:setFilter("nearest", "nearest")
+  -- Configure graphics
+  Colors = {
+    { 5 / 255,   31 / 255,  57 / 255 },
+    { 29 / 255,  21 / 255,  89 / 255 },
+    { 74 / 255,  36 / 255,  128 / 255 },
+    { 197 / 255, 58 / 255,  157 / 255 },
+    { 244 / 255, 142 / 255, 128 / 255 },
+  }
+  love.graphics.setBackgroundColor(Colors[1])
+  bgStars = love.graphics.newImage("assets/stars.png")
+  bgPlanet = love.graphics.newImage("assets/planet.png")
+  bgStars:setFilter("nearest", "nearest")
+  bgPlanet:setFilter("nearest", "nearest")
 
-TileSize = 8
-PixelScale = 6
-UI = require("ui")
+  Font = love.graphics.newImageFont("assets/font.png", "abcdefghijklmnopqrstuvwxyz0123456789+-%*/.: ", -2)
+  Font:setFilter("nearest", "nearest")
+
+  SpriteSheet = love.graphics.newImage("assets/spritesheet.png")
+  SpriteSheet:setFilter("nearest", "nearest")
+
+  TileSize = 8
+  PixelScale = 6
+
+  DebugFont = love.graphics.newFont(16)
+  DebugCreature = {}
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, ResourceNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "smart"))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "scary"))
+  table.remove(NodePoints, n)
+
+  local n = math.random(#NodePoints)
+  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "power"))
+  table.remove(NodePoints, n)
+
+  DebugCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
+  table.insert(Entities, DebugCreature)
+
+  UI = require("ui")
+  UI.init()
+end
 
 -- Global functions
 
@@ -154,32 +184,9 @@ end
 
 -- Love callbacks
 
-local debugFont = love.graphics.newFont(16)
-DebugCreature = {}
-
 function love.load()
   math.randomseed(os.time())
-
-  local n = math.random(#NodePoints)
-  table.insert(Entities, ResourceNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale))
-  table.remove(NodePoints, n)
-
-  local n = math.random(#NodePoints)
-  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "smart"))
-  table.remove(NodePoints, n)
-
-  local n = math.random(#NodePoints)
-  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "scary"))
-  table.remove(NodePoints, n)
-
-  local n = math.random(#NodePoints)
-  table.insert(Entities, StatNode.create(NodePoints[n].x * PixelScale, NodePoints[n].y * PixelScale, "power"))
-  table.remove(NodePoints, n)
-
-  DebugCreature = Creature.create(64 * PixelScale, 64 * PixelScale)
-  table.insert(Entities, DebugCreature)
-
-  UI.init()
+  initGame()
 end
 
 function love.keypressed(key)
@@ -202,6 +209,10 @@ function love.keypressed(key)
     if key == "s" then
       table.insert(Entities, Creature.create(64 * PixelScale, 64 * PixelScale))
     end
+
+    if key == "r" then
+      initGame()
+    end
   end
   -- else
   --   if key == "space" then
@@ -221,7 +232,6 @@ function love.mousepressed(x, y)
 end
 
 -- internal game clock
-t = 0
 
 function love.update(dt)
   t = t + dt
@@ -239,8 +249,6 @@ function love.update(dt)
   processFacing(Entities)
   processAnimations(Entities, dt)
 end
-
-SmoothClock = DoomClock
 
 function love.draw()
   local bgProgress = 1 - SmoothClock / 100
@@ -278,7 +286,7 @@ function love.draw()
       love.graphics.circle("line", e.position.x, e.position.y, 2)
     end
 
-    love.graphics.setFont(debugFont)
+    love.graphics.setFont(DebugFont)
     love.graphics.print("smart: " .. DebugCreature.stats.smart, 0, 0)
     love.graphics.print("scary: " .. DebugCreature.stats.scary, 0, 16)
     love.graphics.print("power: " .. DebugCreature.stats.power, 0, 32)
