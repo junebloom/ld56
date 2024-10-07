@@ -705,6 +705,86 @@ local upgrades = {
 
   -- Wacky idea
 
+  SpawnLooshNode = {
+    tier = 2,
+    available = true,
+    glyph = "le",
+    name = "loosh eruption",
+    description = "spawn a new loosh vent",
+    types = {
+      creature = true
+    },
+    apply = function(node)
+      DebugCreature.nodeSpawn = true
+      DebugCreature.nodeSpawnType = "ResourceNode"
+      Upgrades.SpawnLooshNode.available = false
+    end
+  },
+
+  SpawnStatNode = {
+    tier = 1,
+    available = true,
+    glyph = "ln",
+    name = "new food source",
+    description = "spawn a random new source of tasty food",
+    types = {
+      creature = true
+    },
+    apply = function(node)
+      DebugCreature.nodeSpawn = true
+      DebugCreature.nodeSpawnType = "statNode"
+      Upgrades.SpawnStatNode.available = false
+    end
+  },
+
+  SpawnPowerNode = {
+    tier = 2,
+    available = true,
+    glyph = "ca",
+    name = "cosmic anomoly",
+    description = "spawn a new loosh node",
+    types = {
+      creature = true
+    },
+    apply = function(node)
+      DebugCreature.nodeSpawn = true
+      DebugCreature.nodeSpawnType = "power"
+      Upgrades.SpawnPowerNode.available = false
+    end
+  },
+
+  SpawnScaryNode = {
+    tier = 2,
+    available = true,
+    glyph = "ws",
+    name = "withered sprout",
+    description = "spawn a new loosh node",
+    types = {
+      creature = true
+    },
+    apply = function(node)
+      DebugCreature.nodeSpawn = true
+      DebugCreature.nodeSpawnType = "scary"
+      Upgrades.SpawnScaryNode.available = false
+    end
+  },
+
+  SpawnSmartNode = {
+    tier = 2,
+    available = true,
+    glyph = "sm",
+    name = "spore migration",
+    description = "spawn a new loosh node",
+    types = {
+      creature = true
+    },
+    apply = function(node)
+      DebugCreature.nodeSpawn = true
+      DebugCreature.nodeSpawnType = "smart"
+      Upgrades.SpawnSmartNode.available = false
+    end
+  },
+
   TimeManipulationT1 = {
     tier = 1,
     available = true,

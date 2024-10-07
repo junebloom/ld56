@@ -93,7 +93,7 @@ local function create(x, y)
   SetBehaviorState(node, node.behavior.states.ready)
 
   for _, upgrade in pairs(PurchasedUpgrades) do
-    if upgrade.type.node then upgrade.apply(node) end
+    if upgrade.types.resourceNode then upgrade.apply(node) end
   end
 
   return node

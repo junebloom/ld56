@@ -37,9 +37,9 @@ GrowthThresholds = {
 -- Base passive stat gain per second
 BasePassive = {
   loosh = 0.05,
-  smart = 0.01,
-  scary = 0.01,
-  power = 0.01
+  smart = 0.005,
+  scary = 0.005,
+  power = 0.005
 }
 
 Upgrades = require("upgrades")
