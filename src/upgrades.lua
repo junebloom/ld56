@@ -1,7 +1,8 @@
 local upgrades = {
 
-  -- TODO: Point statnodes upgrades to corresponding type
-  -- TODO: See if upgrades can create entity
+  -- TODO: Add T1/2/3 upgrades for passive loosh/growth per node
+  -- TODO: As above for growth stats/per creature? Maybe lower global growthmulti to compensate
+
 
   -- Creature Upgrades
 

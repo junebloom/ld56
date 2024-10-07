@@ -68,7 +68,7 @@ local states = {
       creature.input = Vector(0, 0)
       local target = creature.behavior.target
       if not target then
-        SetBehaviorState(creature, creature.behavior.states.moveToNode)
+        SetBehaviorState(creature, creature.behavior.states.idle)
       elseif target.type == "resourceNode" then
         SetBehaviorState(creature, creature.behavior.states.harvest)
       elseif target.type == "statNode" then

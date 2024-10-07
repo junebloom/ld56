@@ -25,7 +25,7 @@ TimeScale = 1
 DoomClock = 100 -- TODO: game end state
 Entities = {}
 
-Resource = 3
+Resource = 2.5
 CreatureTier = 1
 GrowthThresholds = {
   smart = { 2, 5, 10 },
@@ -35,7 +35,7 @@ GrowthThresholds = {
 
 -- Base passive stat gain per second
 BasePassive = {
-  loosh = 0.1,
+  loosh = 0.05,
   smart = 0.01,
   scary = 0.01,
   power = 0.01
