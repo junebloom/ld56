@@ -40,6 +40,8 @@ local function newCard(xoffset)
       ApplyUpgradeToEntities(card.upgrade)
       UI.setShopHidden(true)
       UI.setButtonsHidden(false)
+      UpgradeCostsBase[card.upgrade.tier] = UpgradeCostsBase[card.upgrade.tier] * 1.1
+      UpgradeCosts[card.upgrade.tier] = (math.floor(UpgradeCostsBase[card.upgrade.tier] * 10) / 10)
     end
   }
   return card
@@ -57,7 +59,7 @@ local UI = {
     update = function(self, dt)
       if self.hovered and not UI.isShopOpen then
         UI.topText.text = "increase\nspookiness, strength, and smarts\nto lv" ..
-        CreatureTier + 1 .. "\nto grow to the next stage."
+            CreatureTier + 1 .. "\nto grow to the next stage."
         UI.bottomText.text = ""
       end
     end,

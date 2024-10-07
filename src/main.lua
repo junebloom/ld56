@@ -31,12 +31,12 @@ local function initGame()
 
   Entities = {}
 
-  Resource = 2.5
+  Resource = 1
   CreatureTier = 1
   GrowthThresholds = {
-    smart = { 2, 5, 10 },
-    scary = { 2, 5, 10 },
-    power = { 2, 5, 10 }
+    smart = { 1.6, 11, 31 },
+    scary = { 1.6, 11, 31 },
+    power = { 1.6, 11, 31 }
   }
 
   -- Base passive stat gain per second
@@ -48,7 +48,12 @@ local function initGame()
   }
 
   Upgrades = require("upgrades")
-  UpgradeCosts = { 1, 3, 9 }
+  UpgradeCostsBase = { .8, 2.4, 4.8 }
+  UpgradeCosts = {
+    math.floor(UpgradeCostsBase[1] * 10) / 10,
+    math.floor(UpgradeCostsBase[2] * 10) / 10,
+    math.floor(UpgradeCostsBase[3] * 10) / 10
+  }
   PurchasedUpgrades = {}
 
   NodePoints = {
@@ -240,7 +245,7 @@ function love.update(dt)
   DoomClock = DoomClock - scaledDeltaTime
   SmoothClock = SmoothClock + ((DoomClock - SmoothClock) * dt)
 
-  Resource = Resource + BasePassive.loosh * DebugCreature.stats.greed * scaledDeltaTime
+  Resource = Resource + BasePassive.loosh * CreatureTier * DebugCreature.stats.greed * scaledDeltaTime
 
   processMouseHover(Entities)
   processBehaviorStates(Entities, scaledDeltaTime)
